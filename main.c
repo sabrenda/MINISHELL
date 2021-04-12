@@ -1,6 +1,3 @@
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include "libft/libft.h"
 #include "libft/get_next_line.h"
@@ -58,17 +55,16 @@ int	main(int argc, char **argv, char **env)
 	dir = ft_dir(lisa.my_env);
 	while (status)
 	{
-		// ft_putstr_fd(" |^_^)-> ", 1);
-		get_next_line(1, &line);
+		get_next_line(1, &line); //чтение ввода
 		printf("%s | (^_^)> %s\n", dir, line);
-		// parser(line, &main);
-		if (strcmp("fuck u", line) == 0)
+		// parser(line, &main); //парсим строку
+		if (strcmp("exit", line) == 0)
 		{
 			free(line);
 			break;
 		}
 		free(line);
-		// executor(&liza, env);
+		// executor(&liza, env); выполнение
 	}
 	i = -1;
 	return (0);
