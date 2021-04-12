@@ -2,11 +2,25 @@
 #include "libft/libft.h"
 #include "libft/get_next_line.h"
 
-typedef struct	s_monna
+typedef struct s_monna
 {
 	char	**commands;
 	char	**my_env;
+	char	**tokens;
+	int		status;
 }				t_monna;
+
+int	ft_lenmassive(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		i++;
+	}
+	return (i);
+}
 
 char *ft_dir(char **myenv)
 {
@@ -43,28 +57,27 @@ int	main(int argc, char **argv, char **env)
 	char	*dir;
 	t_monna	lisa;
 
-	i = -1;
-	while (env[++i]);
+	i = ft_lenmassive(env);
 	lisa.my_env = (char **)malloc(sizeof(char *) * i + 1);
 	lisa.my_env[i] = NULL;
 	i = -1;
 	while (env[++i])
 		lisa.my_env[i] = ft_strdup(env[i]);
 	i = -1;
-	status = 1;
+	lisa.status = 1;
 	dir = ft_dir(lisa.my_env);
-	while (status)
+	while (lisa.status)
 	{
 		get_next_line(1, &line); //чтение ввода
 		printf("%s | (^_^)> %s\n", dir, line);
-		// parser(line, &main); //парсим строку
+		// parser(line, &lisa); //парсим строку
 		if (strcmp("exit", line) == 0)
 		{
 			free(line);
 			break;
 		}
 		free(line);
-		// executor(&liza, env); выполнение
+		// lisa.status = executor(&lisa, env); выполнение
 	}
 	i = -1;
 	return (0);
