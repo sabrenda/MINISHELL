@@ -10,6 +10,7 @@ typedef struct s_monna
 	char	**my_env;
 	char	**tokens;
 	int		status;
+	int		pipe;
 }				t_monna;
 
 void	m(char *monna, int lisa)
@@ -86,6 +87,67 @@ int	ft_lenmassive(char **str)
 	return (i);
 }
 
+int	ft_len(char *line)
+{
+	int	i;
+	int	word;
+
+	i = 0;
+	word = 0;
+	while (line[i])
+	{
+		if (line[i] == '\t' || line[i] == ' ')
+		{
+			while (line[i] == '\t' || line[i] == ' ')
+				i++;
+			word++;
+		}
+		if (line[i] == '\0')
+			break;
+		i++;
+	}
+	return (++word);
+}
+
+int	parser(char *line, t_monna *lisa)
+{
+	int	i;
+	int word;
+	int j;
+	int flag;
+
+	i = 0;
+	word = 0;
+	lisa->tokens = (char **)malloc(sizeof(char *) * (ft_len(line) + 1));
+	lisa->tokens[ft_len(line)] = NULL;
+	while (i < ft_len(line))
+	{
+		lisa->tokens[i] = (char *)malloc(sizeof(char) * 100);
+		i++;
+	}
+	i = 0;
+	while (word < ft_len(line) && line[i])
+	{
+		j = 0;
+		flag = 1;
+		while (line[i] && flag)
+		{
+			if (line[i] == '\t' || line[i] == ' ')
+				while (line[i] == '\t' || line[i] == ' ')
+					i++;
+			else
+			{
+				while (line[i] != '\t' && line[i] != ' ' && line[i] != '\0')
+					lisa->tokens[word][j++] = line[i++];
+				flag = 0;
+			}
+		}
+		lisa->tokens[word][j] = '\0';
+		word++;
+	}
+	return (1);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	char	*line;
@@ -99,14 +161,20 @@ int	main(int argc, char **argv, char **env)
 	i = -1;
 	while (env[++i])
 		lisa.my_env[i] = ft_strdup(env[i]);
-	i = -1;
 	lisa.status = 1;
 	while (lisa.status)
 	{
 		ft_putstr_fd("\033[31m༼ つ ◕_◕ ༽つ\033[32m$ ", 1);
-		get_next_line(1, &line); //чтение ввода
-		printf("%s\n", line);
-		// parser(line, &lisa); //парсим строку
+		get_next_line(0, &line); //чтение ввода
+		// printf("%s\n", line);
+		parser(line, &lisa); //парсим строку
+		i = 0;
+		while (lisa.tokens[i])
+		{
+			ft_putstr_fd(lisa.tokens[i], 1);
+			write(1, "\n", 1);
+			i++;
+		}
 		if (strcmp("exit", line) == 0)
 		{
 			free(line);
