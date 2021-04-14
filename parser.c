@@ -20,6 +20,7 @@ typedef struct s_flag
     int f_env;
     int f_exit;
 	int nothing;
+    int ls;
     // int f8;
 }				t_flag;      
 
@@ -125,6 +126,8 @@ void search(t_flag *fl, char *str)
 		fl->f_unset = 1;
 	else if (strcmp(str,"env") == 0)
 		fl->f_env = 1;
+    else if (strcmp(str,"ls") == 0)
+		fl->f_exit = 1;
 	else if (strcmp(str,"exit") == 0)
 		fl->f_exit = 1;
 	else
@@ -168,46 +171,48 @@ int	main(int argc, char **argv, char **env)
 		// ft_putstr_fd(tok.token[0], 1);
 		get_next_line(1, &line); //чтение ввода
 		// int d = 0;
-		if(line)
-		{
+		// while(1)
+		// {
 			// ft_putstr_fd(line, 1);
 			// printf("%d", fl.f_echo);
 			// line = "echo";
 			// ft_putstr_fd("sdfsdfsd \n", 1);
-			search(&fl, line);
-			if (fl.nothing == 1)
-			{
-				ft_putstr_fd("Monoliza:", 1);
-				ft_putstr_fd(line , 1);
-				ft_putstr_fd("command not found\n", 1);
-				
-			}
-			else
-				ft_putstr_fd("small step into the minishell!\n", 1);
+        ft_bzero(&fl ,sizeof(t_flag));
+		search(&fl, line);
+		if (fl.nothing == 1)
+		{
+			ft_putstr_fd("Monoliza:", 1);
+			ft_putstr_fd(line , 1);
+			ft_putstr_fd("command not found\n", 1);
+			
+		}
+		else
+			ft_putstr_fd("small step into the minishell!\n", 1);
+       
 		// 	int b;
 		// 	if(strcmp(tok.token[0], str_t[b++] == 0)
 		// 	{
 
-		}
-		// get_next_line(1, &line); 
-		if(strcmp("pwd", line) == 0)
-		{
-			printf("%s\n",getcwd(NULL, 0));
-		}
-		// if(strcmp("ls", line) == 0)
-		// {
-		// 	// id = fork();
-		// 	waitpid(id, 0, 0);
-		// 	if(id == 0)
-		// 	{
-		// 		execve("/bin/ls", argv, env);
-		// 	}
 		// }
-		if (strcmp("exit", line) == 0)
-		{
-			free(line);
-			break;
-		}
+		// // get_next_line(1, &line); 
+		// if(strcmp("pwd", line) == 0)
+		// {
+		// 	printf("%s\n",getcwd(NULL, 0));
+		// }
+		// // if(strcmp("ls", line) == 0)
+		// // {
+		// // 	// id = fork();
+		// // 	waitpid(id, 0, 0);
+		// // 	if(id == 0)
+		// // 	{
+		// // 		execve("/bin/ls", argv, env);
+		// // 	}
+		// // }
+		// if (strcmp("exit", line) == 0)
+		// {
+		// 	free(line);
+		// 	break;
+		// }
 		free(line);
 	}
 	return (0);
