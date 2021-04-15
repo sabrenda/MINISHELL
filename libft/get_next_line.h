@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Ahmed <Ahmed@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sabrenda <sabrenda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 14:14:26 by tchariss          #+#    #+#             */
-/*   Updated: 2021/04/12 13:54:06 by Ahmed            ###   ########.fr       */
+/*   Updated: 2021/04/15 17:58:41 by sabrenda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 
 typedef struct s_gnl
 {
-	char	buf[BUFFER_SIZE + 1];
+	char	buf[BUFFER_SIZE + 2];
 	char	*ukaz_n;
 }				t_gnl;
 

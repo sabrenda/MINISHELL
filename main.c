@@ -13,6 +13,16 @@ typedef struct s_monna
 	int		pipe;
 }				t_monna;
 
+typedef struct s_pars
+{
+	int	i;
+	int j;
+	int	word;
+	int flag;
+	int flagkov;
+	char c;
+}				t_pars;
+
 void	m(char *monna, int lisa)
 {
 	write(lisa, monna, ft_strlen(monna));
@@ -89,61 +99,107 @@ int	ft_lenmassive(char **str)
 
 int	ft_len(char *line)
 {
+	t_pars	len;
+
+	ft_bzero(&len, sizeof(t_pars));
+	while (line[len.i])
+	{
+		if (line[len.i] == '\t' || line[len.i] == ' ')
+		{
+			len.flag = 0;
+			if (len.flagkov == 1)
+				len.word++;
+			len.flagkov = 0;
+			while (line[len.i] == '\t' || line[len.i] == ' ')
+				len.i++;
+			if (line[len.i] == '\0')
+				break ;
+		}
+		if (line[len.i] == '\"' || line[len.i] == '\'')
+		{
+			len.c = line[len.i];
+			while (1)
+			{
+				len.i++;
+				if (line[len.i] == '\0')
+				{
+					line[len.i++] = len.c;
+					line[len.i] = '\0';
+					break ;
+				}
+				if (line[len.i] == len.c)
+				{
+					len.i++;
+					len.flagkov = 1;
+					continue ;
+				}
+			}
+		}
+		len.i++;
+		if (len.flag == 0)
+			len.word++;
+		len.flag = 1;
+	}
+	return (len.word);
+}
+
+int ft_memory_pars(t_monna *lisa, char *line, t_pars	*pars)
+{
 	int	i;
-	int	word;
 
 	i = 0;
-	word = 0;
-	while (line[i])
+	lisa->tokens = (char **)malloc(sizeof(char *) * (ft_len(line) + 1));
+	if (lisa->tokens == NULL)
+		return (0);
+	lisa->tokens[ft_len(line)] = NULL;
+	while (i < ft_len(line))
 	{
-		if (line[i] == '\t' || line[i] == ' ')
-		{
-			while (line[i] == '\t' || line[i] == ' ')
-				i++;
-			word++;
-		}
-		if (line[i] == '\0')
-			break;
+		lisa->tokens[i] = (char *)malloc(sizeof(char) * 1000);
+		if (lisa->tokens[i] == NULL)
+			return (0);
 		i++;
 	}
-	return (++word);
+	if (ft_len(line) == 0)
+		lisa->tokens[i] = NULL;
+	pars->i = 0;
+	pars->word = -1;
+	return (1);
 }
 
 int	parser(char *line, t_monna *lisa)
 {
-	int	i;
-	int word;
-	int j;
-	int flag;
+	t_pars	pars;
 
-	i = 0;
-	word = 0;
-	lisa->tokens = (char **)malloc(sizeof(char *) * (ft_len(line) + 1));
-	lisa->tokens[ft_len(line)] = NULL;
-	while (i < ft_len(line))
+	if (ft_memory_pars(lisa, line, &pars) == 0)
+		return (0);
+	while (++pars.word < ft_len(line) && line[pars.i])
 	{
-		lisa->tokens[i] = (char *)malloc(sizeof(char) * 100);
-		i++;
-	}
-	i = 0;
-	while (word < ft_len(line) && line[i])
-	{
-		j = 0;
-		flag = 1;
-		while (line[i] && flag)
+		pars.j = 0;
+		pars.flag = 1;
+		while (line[pars.i] && pars.flag)
 		{
-			if (line[i] == '\t' || line[i] == ' ')
-				while (line[i] == '\t' || line[i] == ' ')
-					i++;
-			else
+			if (line[pars.i] == '\t' || line[pars.i] == ' ')
+				while (line[pars.i] == '\t' || line[pars.i] == ' ')
+					pars.i++;
+			if (line[pars.i] == '\0')
+				break;
+			while (line[pars.i] != '\t' && line[pars.i] != ' ' && line[pars.i] != '\0')
 			{
-				while (line[i] != '\t' && line[i] != ' ' && line[i] != '\0')
-					lisa->tokens[word][j++] = line[i++];
-				flag = 0;
+				if (line[pars.i] == '\"' || line[pars.i] == '\'')
+				{
+					pars.c = line[pars.i++];
+					while (line[pars.i])
+					{
+						if (pars.c == pars.i)
+							pars.i++;
+						lisa->tokens[pars.word][pars.j++] = line[pars.i++];
+					}
+				}
+				lisa->tokens[pars.word][pars.j++] = line[pars.i++];
 			}
+			pars.flag = 0;
 		}
-		lisa->tokens[word][j] = '\0';
-		word++;
+		lisa->tokens[pars.word][pars.j] = '\0';
 	}
 	return (1);
 }
@@ -167,6 +223,7 @@ int	main(int argc, char **argv, char **env)
 		ft_putstr_fd("\033[31m༼ つ ◕_◕ ༽つ\033[32m$ ", 1);
 		get_next_line(0, &line); //чтение ввода
 		// printf("%s\n", line);
+		printf("words = %d\n", ft_len(line));
 		parser(line, &lisa); //парсим строку
 		i = 0;
 		while (lisa.tokens[i])
@@ -183,5 +240,5 @@ int	main(int argc, char **argv, char **env)
 		free(line);
 		// lisa.status = executor(&lisa, env); выполнение
 	}
-	return (0);
+	return (1);
 }
