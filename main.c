@@ -19,7 +19,6 @@ typedef struct s_pars
 	int j;
 	int	word;
 	int flag;
-	int flagkov;
 	char c;
 }				t_pars;
 
@@ -101,15 +100,12 @@ int	ft_len(char *line)
 {
 	t_pars	len;
 
+	int count = 0;
 	ft_bzero(&len, sizeof(t_pars));
 	while (line[len.i])
 	{
 		if (line[len.i] == '\t' || line[len.i] == ' ')
 		{
-			len.flag = 0;
-			if (len.flagkov == 1)
-				len.word++;
-			len.flagkov = 0;
 			while (line[len.i] == '\t' || line[len.i] == ' ')
 				len.i++;
 			if (line[len.i] == '\0')
@@ -118,27 +114,32 @@ int	ft_len(char *line)
 		if (line[len.i] == '\"' || line[len.i] == '\'')
 		{
 			len.c = line[len.i];
-			while (1)
+			while (1) // СДЕЛАТЬ ОТДЕЛЬНУЮ ФУНКЦИЮ КОТОРАЯ ПРОВЕРЯЕТ НА НАЛИЧИЕ НОРМ СИМВОЛОВ
 			{
 				len.i++;
+				count++;
 				if (line[len.i] == '\0')
 				{
 					line[len.i++] = len.c;
 					line[len.i] = '\0';
+					// if (count == 1)
+					// 	len.flag = 1;
 					break ;
 				}
 				if (line[len.i] == len.c)
 				{
 					len.i++;
-					len.flagkov = 1;
-					continue ;
+					// if (count == 1)
+					// 	len.flag = 1;
+					break ;
 				}
 			}
 		}
-		len.i++;
-		if (len.flag == 0)
-			len.word++;
-		len.flag = 1;
+		while(line[len.i] != ' ' && line[len.i] != '\t' && line[len.i] && line[len.i] != '\"' && line[len.i] != '\'')
+			len.i++;
+		len.word++;
+		if (line[len.i] == '\0')
+			break;
 	}
 	return (len.word);
 }
@@ -190,8 +191,16 @@ int	parser(char *line, t_monna *lisa)
 					pars.c = line[pars.i++];
 					while (line[pars.i])
 					{
-						if (pars.c == pars.i)
+						if (pars.c == line[pars.i])
+						{
 							pars.i++;
+							if (line[pars.i] == '\0')
+							{
+								lisa->tokens[pars.word][pars.j] = line[pars.i];
+								return (1);
+							}
+							continue ;
+						}
 						lisa->tokens[pars.word][pars.j++] = line[pars.i++];
 					}
 				}
