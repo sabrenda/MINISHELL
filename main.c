@@ -1,8 +1,5 @@
-#include <string.h>
 #include "libft/libft.h"
 #include "libft/get_next_line.h"
-
-void	m(char *monna, int lisa);
 
 typedef struct s_monna
 {
@@ -19,6 +16,7 @@ typedef struct s_pars
 	int j;
 	int	word;
 	int flag;
+	int	count;
 	char c;
 }				t_pars;
 
@@ -74,10 +72,10 @@ void	ft_monnalisa_2(void)
 	m("!!!!!                       $$$$$$$$$hc,.,,cc$$$$$             !!\n", 1);
 	m("!!!!!                  .,zcc$$$$$$$$$$$$$$$$$$$$$$             !!\n", 1);
 	m("!!!!!               .z$$$$$$$$$$$$$$$$$$$$$$$$$$$$             !!\n", 1);
-	m("!!!!!             ,d$$$$\033[35m|..@Tchariss..|\033[0m$$$$$$$$$    \n", 1);
+	m("!!!!!             ,d$$$$\033[35m|..@Tchariss..|\033[0m$$$$$$$$$  \n", 1);
 	m("!!!!!           ,d$$$$$$\033[36m|..@Sabrenda..|\033[0m$$$$$$$$   \n", 1);
-	m("!!!!!         ,d$$$$$$$$\033[31m|..MonnaLisa..|\033[0m$$$$$$$  \n", 1);
-	m("!!!!>        c$$$$$$$$$$\033[32m|..MiniShell..|\033[0m$$$$$  \n", 1);
+	m("!!!!!         ,d$$$$$$$$\033[31m|..MonnaLisa..|\033[0m$$$$$$$    \n", 1);
+	m("!!!!>        c$$$$$$$$$$\033[32m|..MiniShell..|\033[0m$$$$$      \n", 1);
 }
 
 void	ft_davinci(void)
@@ -96,14 +94,58 @@ int	ft_lenmassive(char **str)
 	return (i);
 }
 
-int	ft_len(char *line)
+void	ft_len_kov(t_pars *len, char *line)
+{
+	len->count = 0;
+	len->c = line[len->i];
+	while (1)
+	{
+		len->i++;
+		len->count++;
+		if (line[len->i] == '\0')
+		{
+			line[len->i++] = len->c;
+			line[len->i] = '\0';
+			if (len->count > 1)
+				len->flag = 0;
+			break ;
+		}
+		if (line[len->i] == len->c)
+		{
+			len->i++;
+			if (len->count > 1)
+				len->flag = 0;
+			break ;
+		}
+	}
+}
+void	ft_len_kov_pars(t_pars *pars, char *line, t_monna *lisa)
+{
+	pars->count = 0;
+	pars->c = line[pars->i];
+	while (1)
+	{
+		pars->i++;
+		pars->count++;
+		if (line[pars->i] == pars->c)
+		{
+			pars->i++;
+			if (pars->count > 1)
+				pars->flag = 0;
+			break ;
+		}
+		lisa->tokens[pars->word][pars->j++] = line[pars->i];
+	}
+}
+
+int	ft_len_words(char *line)
 {
 	t_pars	len;
 
-	int count = 0;
 	ft_bzero(&len, sizeof(t_pars));
 	while (line[len.i])
 	{
+		len.flag = 1;
 		if (line[len.i] == '\t' || line[len.i] == ' ')
 		{
 			while (line[len.i] == '\t' || line[len.i] == ' ')
@@ -111,33 +153,23 @@ int	ft_len(char *line)
 			if (line[len.i] == '\0')
 				break ;
 		}
-		if (line[len.i] == '\"' || line[len.i] == '\'')
+		if (line[len.i] != '\t' && line[len.i] != ' ')
 		{
-			len.c = line[len.i];
-			while (1) // СДЕЛАТЬ ОТДЕЛЬНУЮ ФУНКЦИЮ КОТОРАЯ ПРОВЕРЯЕТ НА НАЛИЧИЕ НОРМ СИМВОЛОВ
+			while (line[len.i] && ((line[len.i] == '\"' || line[len.i] == '\'')
+				|| (line[len.i] != ' ' && line[len.i] != '\t')))
 			{
-				len.i++;
-				count++;
-				if (line[len.i] == '\0')
-				{
-					line[len.i++] = len.c;
-					line[len.i] = '\0';
-					// if (count == 1)
-					// 	len.flag = 1;
-					break ;
-				}
-				if (line[len.i] == len.c)
+				if (line[len.i] == '\"' || line[len.i] == '\'')
+					ft_len_kov(&len, line);
+				while(line[len.i] != ' ' && line[len.i] != '\t' && line[len.i]
+					&& line[len.i] != '\"' && line[len.i] != '\'')
 				{
 					len.i++;
-					// if (count == 1)
-					// 	len.flag = 1;
-					break ;
+					len.flag = 0;
 				}
 			}
 		}
-		while(line[len.i] != ' ' && line[len.i] != '\t' && line[len.i] && line[len.i] != '\"' && line[len.i] != '\'')
-			len.i++;
-		len.word++;
+		if (len.flag == 0)
+			len.word++;
 		if (line[len.i] == '\0')
 			break;
 	}
@@ -149,18 +181,18 @@ int ft_memory_pars(t_monna *lisa, char *line, t_pars	*pars)
 	int	i;
 
 	i = 0;
-	lisa->tokens = (char **)malloc(sizeof(char *) * (ft_len(line) + 1));
+	lisa->tokens = (char **)malloc(sizeof(char *) * (ft_len_words(line) + 1));
 	if (lisa->tokens == NULL)
 		return (0);
-	lisa->tokens[ft_len(line)] = NULL;
-	while (i < ft_len(line))
+	lisa->tokens[ft_len_words(line)] = NULL;
+	while (i < ft_len_words(line))
 	{
 		lisa->tokens[i] = (char *)malloc(sizeof(char) * 1000);
 		if (lisa->tokens[i] == NULL)
 			return (0);
 		i++;
 	}
-	if (ft_len(line) == 0)
+	if (ft_len_words(line) == 0)
 		lisa->tokens[i] = NULL;
 	pars->i = 0;
 	pars->word = -1;
@@ -173,7 +205,7 @@ int	parser(char *line, t_monna *lisa)
 
 	if (ft_memory_pars(lisa, line, &pars) == 0)
 		return (0);
-	while (++pars.word < ft_len(line) && line[pars.i])
+	while (++pars.word < ft_len_words(line) && line[pars.i])
 	{
 		pars.j = 0;
 		pars.flag = 1;
@@ -184,29 +216,21 @@ int	parser(char *line, t_monna *lisa)
 					pars.i++;
 			if (line[pars.i] == '\0')
 				break;
-			while (line[pars.i] != '\t' && line[pars.i] != ' ' && line[pars.i] != '\0')
+			if (line[pars.i] != '\t' && line[pars.i] != ' ')
 			{
-				if (line[pars.i] == '\"' || line[pars.i] == '\'')
+				while (line[pars.i] && ((line[pars.i] == '\"' || line[pars.i] == '\'')
+					|| (line[pars.i] != ' ' && line[pars.i] != '\t')))
 				{
-					pars.c = line[pars.i++];
-					while (line[pars.i])
+					if (line[pars.i] == '\"' || line[pars.i] == '\'')
+						ft_len_kov_pars(&pars, line, lisa);
+					while(line[pars.i] != ' ' && line[pars.i] != '\t' && line[pars.i]
+						&& line[pars.i] != '\"' && line[pars.i] != '\'')
 					{
-						if (pars.c == line[pars.i])
-						{
-							pars.i++;
-							if (line[pars.i] == '\0')
-							{
-								lisa->tokens[pars.word][pars.j] = line[pars.i];
-								return (1);
-							}
-							continue ;
-						}
 						lisa->tokens[pars.word][pars.j++] = line[pars.i++];
+						pars.flag = 0;
 					}
 				}
-				lisa->tokens[pars.word][pars.j++] = line[pars.i++];
 			}
-			pars.flag = 0;
 		}
 		lisa->tokens[pars.word][pars.j] = '\0';
 	}
@@ -232,7 +256,7 @@ int	main(int argc, char **argv, char **env)
 		ft_putstr_fd("\033[31m༼ つ ◕_◕ ༽つ\033[32m$ ", 1);
 		get_next_line(0, &line); //чтение ввода
 		// printf("%s\n", line);
-		printf("words = %d\n", ft_len(line));
+		printf("words = %d\n", ft_len_words(line));
 		parser(line, &lisa); //парсим строку
 		i = 0;
 		while (lisa.tokens[i])
