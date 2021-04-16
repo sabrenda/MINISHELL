@@ -138,6 +138,47 @@ void	ft_len_kov_pars(t_pars *pars, char *line, t_monna *lisa)
 	}
 }
 
+void ft_len_alpha(char *line, t_pars *len)
+{
+	while (line[len->i] && ((line[len->i] == '\"' || line[len->i] == '\'')
+		|| (line[len->i] != ' ' && line[len->i] != '\t')))
+	{
+		if (line[len->i] == '\"' || line[len->i] == '\'')
+			ft_len_kov(len, line);
+		while(line[len->i] != ' ' && line[len->i] != '\t' && line[len->i]
+			&& line[len->i] != '\"' && line[len->i] != '\'')
+		{
+			len->i++;
+			len->flag = 0;
+		}
+	}
+}
+
+void ft_len_alpha_pars(char *line, t_pars *pars, t_monna *lisa)
+{
+	while (line[pars->i] && ((line[pars->i] == '\"' || line[pars->i] == '\'')
+		|| (line[pars->i] != ' ' && line[pars->i] != '\t')))
+	{
+		if (line[pars->i] == '\"' || line[pars->i] == '\'')
+			ft_len_kov_pars(pars, line, lisa);
+		while(line[pars->i] != ' ' && line[pars->i] != '\t' && line[pars->i]
+			&& line[pars->i] != '\"' && line[pars->i] != '\'')
+		{
+			lisa->tokens[pars->word][pars->j++] = line[pars->i++];
+			pars->flag = 0;
+		}
+	}
+}
+
+int	ft_len_space_tab(char *line, t_pars *len)
+{
+	while (line[len->i] == '\t' || line[len->i] == ' ')
+		len->i++;
+	if (line[len->i] == '\0')
+		return (0);
+	return (1);
+}
+
 int	ft_len_words(char *line)
 {
 	t_pars	len;
@@ -147,27 +188,10 @@ int	ft_len_words(char *line)
 	{
 		len.flag = 1;
 		if (line[len.i] == '\t' || line[len.i] == ' ')
-		{
-			while (line[len.i] == '\t' || line[len.i] == ' ')
-				len.i++;
-			if (line[len.i] == '\0')
-				break ;
-		}
+			if (!(ft_len_space_tab(line, &len)))
+					break ;
 		if (line[len.i] != '\t' && line[len.i] != ' ')
-		{
-			while (line[len.i] && ((line[len.i] == '\"' || line[len.i] == '\'')
-				|| (line[len.i] != ' ' && line[len.i] != '\t')))
-			{
-				if (line[len.i] == '\"' || line[len.i] == '\'')
-					ft_len_kov(&len, line);
-				while(line[len.i] != ' ' && line[len.i] != '\t' && line[len.i]
-					&& line[len.i] != '\"' && line[len.i] != '\'')
-				{
-					len.i++;
-					len.flag = 0;
-				}
-			}
-		}
+			ft_len_alpha(line, &len);
 		if (len.flag == 0)
 			len.word++;
 		if (line[len.i] == '\0')
@@ -212,25 +236,10 @@ int	parser(char *line, t_monna *lisa)
 		while (line[pars.i] && pars.flag)
 		{
 			if (line[pars.i] == '\t' || line[pars.i] == ' ')
-				while (line[pars.i] == '\t' || line[pars.i] == ' ')
-					pars.i++;
-			if (line[pars.i] == '\0')
-				break;
+				if (!(ft_len_space_tab(line, &pars)))
+					break ;
 			if (line[pars.i] != '\t' && line[pars.i] != ' ')
-			{
-				while (line[pars.i] && ((line[pars.i] == '\"' || line[pars.i] == '\'')
-					|| (line[pars.i] != ' ' && line[pars.i] != '\t')))
-				{
-					if (line[pars.i] == '\"' || line[pars.i] == '\'')
-						ft_len_kov_pars(&pars, line, lisa);
-					while(line[pars.i] != ' ' && line[pars.i] != '\t' && line[pars.i]
-						&& line[pars.i] != '\"' && line[pars.i] != '\'')
-					{
-						lisa->tokens[pars.word][pars.j++] = line[pars.i++];
-						pars.flag = 0;
-					}
-				}
-			}
+				ft_len_alpha_pars(line, &pars, lisa);
 		}
 		lisa->tokens[pars.word][pars.j] = '\0';
 	}
