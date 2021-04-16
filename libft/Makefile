@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tchariss <tchariss@student.42.fr>          +#+  +:+       +#+         #
+#    By: Ahmed <Ahmed@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/09 11:33:18 by tchariss          #+#    #+#              #
-#    Updated: 2020/11/20 14:57:23 by tchariss         ###   ########.fr        #
+#    Updated: 2021/04/16 17:53:16 by Ahmed            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,8 +30,8 @@ BONUSO = $(BONUS:.c=.o)
 
 FLAGS = -Wall -Wextra -Werror -c
 
-%.o: %.c 
-	gcc $(FLAGS) $< -o $@
+%.o: %.c
+	clang $(FLAGS) $< -o $@
 
 all: $(NAME)
 
