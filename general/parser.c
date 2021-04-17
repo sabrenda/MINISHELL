@@ -8,8 +8,8 @@ int	ft_len_words(char *line) // считает колличество слов �
 	while (line[len.i])
 	{
 		len.flag = 1;
-		if (line[len.i] == '\t' || line[len.i] == ' ')
-			if (!(ft_len_space_tab(line, &len))) //пропуск ковычек
+		if (line[len.i] == '\t' || line[len.i] == ' ') //пропуск пробелов и табуляции
+			if (!(ft_len_space_tab(line, &len)))
 					break ;
 		if (line[len.i] != '\t' && line[len.i] != ' ')
 			ft_len_alpha(line, &len); // пропуск букв и работа с ковычками
@@ -60,7 +60,7 @@ int	parser(char *line, t_monna *lisa) //обрабтка строки из гн�
 				if (!(ft_len_space_tab(line, &pars))) //пропускаем space и табуляции
 					break ;
 			if (line[pars.i] != '\t' && line[pars.i] != ' ')
-				ft_len_alpha_pars(line, &pars, lisa); // добавляем символы и работа с ковычками
+				ft_len_alpha_pars(line, &pars, lisa); // добавляем символы, ковычки и экранирование
 		}
 		lisa->tokens[pars.word][pars.j] = '\0';
 	}

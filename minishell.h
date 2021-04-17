@@ -18,6 +18,7 @@ typedef struct s_monna
 	char	**tokens;
 	int		status;
 	int		pipe;
+	int		f_dollar;
 }				t_monna;
 
 typedef struct s_pars

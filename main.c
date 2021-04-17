@@ -30,6 +30,7 @@ int	main(int argc, char **argv, char **env)
 	int		i;
 
 	ft_davinci();
+	lisa.f_dollar = 0;
 	lisa.my_env = (char **)malloc(sizeof(char *) * ft_lenmassive(env) + 1);
 	lisa.my_env[ft_lenmassive(env)] = NULL;
 	i = -1;
