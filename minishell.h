@@ -26,6 +26,7 @@ typedef struct s_pars
 	int		j;
 	int		word;
 	int		flag;
+	int		ecran;
 	int		count;
 	char	c;
 }			t_pars;
