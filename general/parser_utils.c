@@ -2,7 +2,6 @@
 
 void	ft_len_kov(t_pars *len, char *line) // ковычки для счетчика слов
 {
-	len->count = 0;
 	len->c = line[len->i++]; //копирую ковычку " или ' в char, и пропускаю эту ковычку
 	while (1)
 	{
@@ -25,7 +24,8 @@ void	ft_len_kov(t_pars *len, char *line) // ковычки для счетчик
 				len->flag = 0; // флаг для счетчика слов
 			break ;
 		}
-		len->i++; //пробегаемся по строке
+		if (!(len->c == '\"' && line[len->i] == '\\'))
+			len->i++; //пробегаемся по строке
 	}
 }
 
@@ -61,6 +61,7 @@ void	ft_len_alpha(char *line, t_pars *len) // пропуск символов и
 	while (line[len->i] && ((line[len->i] == '\"' || line[len->i] == '\'')
 		|| (line[len->i] != ' ' && line[len->i] != '\t')))
 	{
+		len->count = 0;
 		if (line[len->i] == '\"' || line[len->i] == '\'')
 			ft_len_kov(len, line); // работа с ковычками (счетчик слов)
 		if (line[len->i] == '\\') // работа с экранированием
