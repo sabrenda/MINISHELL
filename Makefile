@@ -13,7 +13,7 @@ GCC = clang
 FLAGS = -Wall -Wextra -Werror
 
 %.o: %.c
-	$(GCC) -c $<  -o $(<:.c=.o)
+	$(GCC) -c $< -o $(<:.c=.o)
 
 all: $(NAME)
 

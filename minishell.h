@@ -19,6 +19,7 @@ typedef struct s_monna
 	int		status;
 	int		pipe;
 	int		f_dollar;
+	char	**pars_tokk;
 }				t_monna;
 
 typedef struct s_pars
@@ -31,6 +32,27 @@ typedef struct s_pars
 	int		count;
 	char	c;
 }			t_pars;
+
+typedef struct s_lvl_1
+
+{
+	struct s_lvl_1	*next;
+	struct s_lvl_2	*start;
+}			t_lvl_1;
+
+typedef struct s_lvl_2
+{
+	struct s_lvl_2	*next;
+	struct s_lvl_3	*start;
+	int	flag_pipe;
+}			t_lvl_2;
+
+typedef struct s_lvl_3
+{
+	struct s_lvl_2	*next;
+	char	*content;
+	int	flag_dollar;
+}		t_lvl_3;
 
 // typedef struct s_flag
 // {
@@ -55,9 +77,13 @@ void	ft_davinci(void);
 void	ft_monnalisa(void);
 void	ft_monnalisa_2(void);
 void	m(char *monna, int lisa);
-void	ft_len_kov(t_pars *len, char *line);
+void	ft_len_kov(t_pars *n, char *l);
 void	ft_len_alpha(char *line, t_pars *len);
 void	ft_len_kov_pars(t_pars *pars, char *line, t_monna *lisa);
 void	ft_len_alpha_pars(char *line, t_pars *pars, t_monna *lisa);
+char	*del_start_space(char *line);
+void	ft_tochka_zapitaya(t_pars *len, char *line);
+void	ft_operator_pars(t_pars *pars, char *line, t_monna *lisa);
+int	ft_operator(t_pars *len, char *line);
 
 #endif
