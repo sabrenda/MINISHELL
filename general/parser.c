@@ -6,6 +6,36 @@ void	ft_tochka_zapitaya(t_pars *len, char *line)
 		len->i++;
 }
 
+void	ft_redirect(t_pars *len, char *line)
+{
+	len->flag = 0;
+	if (line[len->i] == '>')
+	{
+		if (line[++len->i] == '>')
+			len->i++;
+	}
+	else
+	{
+		if (line[++len->i] == '<')
+			len->i++;
+	}
+}
+void	ft_redirect_pars(t_pars *len, t_monna *lisa, char *line)
+{
+	len->flag = 0;
+	if (line[len->i] == '>')
+	{
+		lisa->tokens[len->word][len->j++] = line[len->i++];
+		if (line[len->i] == '>')
+			lisa->tokens[len->word][len->j++] = line[len->i++];
+	}
+	else
+	{
+		lisa->tokens[len->word][len->j++] = line[len->i++];
+		if (line[len->i] == '<')
+			lisa->tokens[len->word][len->j++] = line[len->i++];
+	}
+}
 int	ft_len_words(char *line) // считает колличество слов в строке из гнл с учетом ковычек
 {
 	t_pars	len;
@@ -21,8 +51,11 @@ int	ft_len_words(char *line) // считает колличество слов �
 			ft_tochka_zapitaya(&len, line);
 		if (line[len.i] == '|' || line[len.i] == '&')
 		 	ft_operator(&len, line);
+		if (line[len.i] == '<' || line[len.i] == '>')
+		 	ft_redirect(&len, line);
 		if (line[len.i] != '\t' && line[len.i] != ' ' && line[len.i] != ';'
-			&& len.flag && line[len.i] != '&' && line[len.i] != '|')
+			&& len.flag && line[len.i] != '&' && line[len.i] != '|'
+				&& line[len.i] != '<' && line[len.i] != '>')
 			ft_len_alpha(line, &len); // пропуск букв и работа с ковычками
 		if (len.flag == 0)
 			len.word++;
@@ -98,6 +131,8 @@ int	parser(char *line, t_monna *lisa) //обрабтка строки из гн�
 				ft_len_alpha_pars(line, &pars, lisa); // добавляем символы, ковычки и экранирование
 			if ((line[pars.i] == '|' || line[pars.i] == '&') && pars.flag)
 		 		ft_operator_pars(&pars, line, lisa);
+			if ((line[pars.i] == '<' || line[pars.i] == '>') && pars.flag)
+		 		ft_redirect_pars(&pars, lisa, line);
 			if (line[pars.i] == ';' && pars.flag)
 			{
 				lisa->tokens[pars.word][pars.j++] = line[pars.i++];
