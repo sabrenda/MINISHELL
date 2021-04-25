@@ -36,7 +36,7 @@ void	ft_redirect_pars(t_pars *len, t_monna *lisa, char *line)
 			lisa->tokens[len->word][len->j++] = line[len->i++];
 	}
 }
-int	ft_len_words(char *line) // считает колличество слов в строке из гнл с учетом ковычек
+int	ft_len_words(char *line, t_monna *lisa) // считает колличество слов в строке из гнл с учетом ковычек
 {
 	t_pars	len;
 
@@ -56,7 +56,7 @@ int	ft_len_words(char *line) // считает колличество слов �
 		if (line[len.i] != '\t' && line[len.i] != ' ' && line[len.i] != ';'
 			&& len.flag && line[len.i] != '&' && line[len.i] != '|'
 				&& line[len.i] != '<' && line[len.i] != '>')
-			ft_len_alpha(line, &len); // пропуск букв и работа с ковычками
+			ft_len_alpha(line, &len, lisa); // пропуск букв и работа с ковычками
 		if (len.flag == 0)
 			len.word++;
 	}
@@ -68,18 +68,18 @@ int ft_memory_pars(t_monna *lisa, char *line, t_pars *pars)
 	int	i;
 
 	i = 0;
-	lisa->tokens = (char **)malloc(sizeof(char *) * (ft_len_words(line) + 1));
+	lisa->tokens = (char **)malloc(sizeof(char *) * (ft_len_words(line, lisa) + 1));
 	if (lisa->tokens == NULL)
 		return (0);
-	lisa->tokens[ft_len_words(line)] = NULL;
-	while (i < ft_len_words(line))
+	lisa->tokens[ft_len_words(line, lisa)] = NULL;
+	while (i < ft_len_words(line, lisa))
 	{
 		lisa->tokens[i] = (char *)malloc(sizeof(char) * 1000);
 		if (lisa->tokens[i] == NULL)
 			return (0);
 		i++;
 	}
-	if (ft_len_words(line) == 0) // если слов (символов) == 0
+	if (ft_len_words(line, lisa) == 0) // если слов (символов) == 0
 		lisa->tokens[i] = NULL;
 	pars->i = 0;
 	pars->word = -1;
@@ -117,7 +117,7 @@ int	parser(char *line, t_monna *lisa) //обрабтка строки из гн�
 
 	if (ft_memory_pars(lisa, line, &pars) == 0)// выделяем память для двумерного массива
 		return (0);
-	while (++pars.word < ft_len_words(line) && line[pars.i])
+	while (++pars.word < ft_len_words(line, lisa) && line[pars.i])
 	{
 		pars.j = 0;
 		pars.flag = 1;
@@ -128,11 +128,11 @@ int	parser(char *line, t_monna *lisa) //обрабтка строки из гн�
 					break ;
 			if (line[pars.i] != '\t' && line[pars.i] != ' ' && line[pars.i] != ';'
 				&& line[pars.i] != '&' && line[pars.i] != '|')
-				ft_len_alpha_pars(line, &pars, lisa); // добавляем символы, ковычки и экранирование
+				ft_len_alpha_pars(line, &pars, lisa); // добавляе символов, ковычки и экранирование
 			if ((line[pars.i] == '|' || line[pars.i] == '&') && pars.flag)
-		 		ft_operator_pars(&pars, line, lisa);
+		 		ft_operator_pars(&pars, line, lisa); // разделение операторов
 			if ((line[pars.i] == '<' || line[pars.i] == '>') && pars.flag)
-		 		ft_redirect_pars(&pars, lisa, line);
+		 		ft_redirect_pars(&pars, lisa, line); // разделение редиректов
 			if (line[pars.i] == ';' && pars.flag)
 			{
 				lisa->tokens[pars.word][pars.j++] = line[pars.i++];

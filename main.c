@@ -21,35 +21,7 @@
 //	else
 //		fl->nothing = 1;
 //}
-int g_error;
-
-void	ft_len_razdel(char *line, t_pars *len) // пропуск символов и ковычки (для счетчика слов)
-{
-	while (line[len->i] && ((line[len->i] == '\"' || line[len->i] == '\'')
-		|| (line[len->i] != ' ' && line[len->i] != '\t')))
-	{
-		len->count = 0;
-		if (line[len->i] == '\"')
-			ft_len_kov_1(len, line); // работа с ковычками (счетчик слов)
-		if (line[len->i] == '\'')
-			ft_len_kov_2(len, line); // работа с ковычками (счетчик слов)
-		if (line[len->i] == '\\') // работа с экранированием
-		{
-			len->i++;
-			if (line[len->i] == '\\' || line[len->i] == '\"' || line[len->i] == '\'' || line[len->i] == ';')
-			{
-				len->i++;
-				len->flag = 0;
-			}
-		}
-		while(line[len->i] != ' ' && line[len->i] != '\t' && line[len->i]
-			&& line[len->i] != '\"' && line[len->i] != '\'' && line[len->i] != '\\')
-		{
-			len->i++;
-			len->flag = 0; //флаг для счетчика слов
-		}
-	}
-}
+int g_error; //на будущее, придумать где использовать глобальнуюю помимо ошибок
 
 char *del_start_space(char *line)
 {
@@ -86,14 +58,21 @@ int	main(int argc, char **argv, char **env)
 	char	*line;
 	int		status;
 	int		i;
+	int		tmp = 0;
 
 	ft_davinci();
-	lisa.f_dollar = 0;
+	ft_bzero(&lisa, sizeof(t_monna));
 	lisa.my_env = (char **)malloc(sizeof(char *) * ft_lenmassive(env) + 1);
 	lisa.my_env[ft_lenmassive(env)] = NULL;
-	i = -1;
-	while (env[++i])
+	lisa.tmp_env = (char *)malloc(sizeof(char *) * 300);
+
+	i = 0;
+	while (env[i])
+	{
 		lisa.my_env[i] = ft_strdup(env[i]);
+		i++;
+	}
+	lisa.my_env[i] = NULL;
 	lisa.status = 1;
 	while (lisa.status)
 	{
@@ -102,11 +81,12 @@ int	main(int argc, char **argv, char **env)
 		line = del_start_space(line); // удаляю пробелы и табы в начале + (поиск ошибки при & |;)
 		if (line == NULL)
 			continue;
-		// printf("%s\n", line);
-		printf("words = %d\n", ft_len_words(line));
-		// parser_token(line, lisa);
+		printf("words = %d\n", ft_len_words(line, &lisa)); // счетчик слов
 		parser(line, &lisa); //парсим строку
 		i = 0;
+		// write(1, "tmp_env = ", 10); // ЕСЛИ ЗАХОЧЕШЬ ПОСМОТРЕТЬ ЧТО В СТРОКЕ где $ то раскоменти
+		// ft_putstr_fd(lisa.tmp_env, 1);
+		// write(1, "\n", 1);
 		while (lisa.tokens[i])
 		{
 			ft_putstr_fd(lisa.tokens[i], 1);
@@ -117,6 +97,17 @@ int	main(int argc, char **argv, char **env)
 		{
 			free(line);
 			break;
+		}
+		i = 0;
+		if (strcmp("env", line) == 0)
+		{
+			while (lisa.my_env[i])
+			{
+				ft_putstr_fd(lisa.my_env[i], 1);
+				write(1, "\n", 1);
+				i++;
+			}
+
 		}
 		free(line);
 		// lisa.status = executor(&lisa, env); выполнение
