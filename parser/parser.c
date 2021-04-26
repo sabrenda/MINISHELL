@@ -40,6 +40,33 @@ int ft_memory_pars(t_monna *lisa, char *line, t_pars *pars)
 	return (1);
 }
 
+
+void ft_operator_pars(t_pars *pars, char *line, t_monna *lisa)
+{
+	if (line[pars->i] == '&')
+	{
+		if (line[pars->i + 1] == '&')
+		{
+			lisa->tokens[pars->word][pars->j++] = line[pars->i++];
+			lisa->tokens[pars->word][pars->j++] = line[pars->i++];
+			pars->flag = 0;
+			return ;
+		}
+		pars->i++;
+	}
+	else
+	{
+		pars->flag = 0;
+		if (line[pars->i + 1] == '|')
+		{
+			lisa->tokens[pars->word][pars->j++] = line[pars->i++];
+			lisa->tokens[pars->word][pars->j++] = line[pars->i++];
+			return ;
+		}
+		lisa->tokens[pars->word][pars->j++] = line[pars->i++];
+	}
+}
+
 void	ft_len_alpha_pars(char *line, t_pars *pars, t_monna *lisa) //для добавляния символов,ковычки,экранирование
 {
 	while (line[pars->i] && (line[pars->i] != ' '
@@ -65,32 +92,6 @@ void	ft_len_alpha_pars(char *line, t_pars *pars, t_monna *lisa) //для доб�
 			lisa->tokens[pars->word][pars->j++] = line[pars->i++]; // добавляем в наш массив символы
 			pars->flag = 0;
 		}
-	}
-}
-
-void ft_operator_pars(t_pars *pars, char *line, t_monna *lisa)
-{
-	if (line[pars->i] == '&')
-	{
-		if (line[pars->i + 1] == '&')
-		{
-			lisa->tokens[pars->word][pars->j++] = line[pars->i++];
-			lisa->tokens[pars->word][pars->j++] = line[pars->i++];
-			pars->flag = 0;
-			return ;
-		}
-		pars->i++;
-	}
-	else
-	{
-		pars->flag = 0;
-		if (line[pars->i + 1] == '|')
-		{
-			lisa->tokens[pars->word][pars->j++] = line[pars->i++];
-			lisa->tokens[pars->word][pars->j++] = line[pars->i++];
-			return ;
-		}
-		lisa->tokens[pars->word][pars->j++] = line[pars->i++];
 	}
 }
 

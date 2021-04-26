@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-int	ft_dollar_ili_net(t_monna *lisa, t_pars *len) //поиск в env нашего слова (счетчик слов)
+void	ft_dollar_ili_net(t_monna *lisa, t_pars *len) //поиск в env нашего слова (счетчик слов)
 {
 	int	i;
 
@@ -8,10 +8,13 @@ int	ft_dollar_ili_net(t_monna *lisa, t_pars *len) //поиск в env нашег
 	while(lisa->my_env[i])
 	{
 		if (!(strncmp(lisa->tmp_env, lisa->my_env[i], ft_strlen(lisa->tmp_env))))
-			return (1);
+		{
+			len->count++;
+			len->flag = 0;
+			return ;
+		}
 		i++;
 	}
-	return (0);
 }
 
 void	ft_dollar_ili_net_pars(t_monna *lisa, t_pars *pars) //поиск в env нашего слова (парсер)
@@ -45,12 +48,8 @@ void	ft_kov_dollar(t_monna *lisa, char *line, t_pars *len) // $ в ковычк�
 {
 	int tmp = 0;
 
-	while (tmp < 300)
-	{
-		lisa->tmp_env[tmp] = '\0';
-		tmp++;
-	}
 	tmp = 0;
+	ft_clean_tmp_env(lisa);
 	if (!(ft_isalnum(line[len->i + 1])) && line[len->i + 1] != '?')
 	{
 		len->i += 2;
@@ -58,11 +57,8 @@ void	ft_kov_dollar(t_monna *lisa, char *line, t_pars *len) // $ в ковычк�
 		len->flag = 0;
 		return ;
 	}
-	if (ft_isdigit(line[len->i + 1]))
-	{
-		len->i += 2;
+	if (proverka_isdigit(line, len))
 		return ;
-	}
 	if (line[len->i + 1] == '?')
 	{
 		len->i += 2;
@@ -70,54 +66,37 @@ void	ft_kov_dollar(t_monna *lisa, char *line, t_pars *len) // $ в ковычк�
 		len->flag = 0;
 		return ;
 	}
-	len->i++;
-	while (ft_isalnum(line[len->i]))
-	{
-		lisa->tmp_env[tmp] = line[len->i];
-		len->i++;
-		tmp++;
-	}
-	lisa->tmp_env[tmp++] = '=';
-	lisa->tmp_env[tmp] = '\0';
-	if (ft_dollar_ili_net(lisa, len))
-	{
-		len->count++;
-		len->flag = 0;
-	}
+	while (ft_isalnum(line[++len->i]) || line[len->i] == '_')
+		lisa->tmp_env[tmp++] = line[len->i];
+	lisa->tmp_env[tmp] = '=';
+	ft_dollar_ili_net(lisa, len);
 }
 
-void	ft_kov_dollar_pars(t_monna *lisa, char *line, t_pars *pars) // $ в ковычках (парсер)
+void	ft_kov_dollar_pars(t_monna *lisa, char *line, t_pars *len) // $ в ковычках (парсер)
 {
 	int tmp = 0;
 
-	while (tmp < 300)
-	{
-		lisa->tmp_env[tmp] = '\0';
-		tmp++;
-	}
 	tmp = 0;
-	if (!(ft_isalnum(line[pars->i + 1])) && line[pars->i + 1] != '?')
+	ft_clean_tmp_env(lisa);
+	if (!(ft_isalnum(line[len->i + 1])) && line[len->i + 1] != '?')
 	{
-		lisa->tokens[pars->word][pars->j++] = line[pars->i++];
-		lisa->tokens[pars->word][pars->j++] = line[pars->i++];
-		pars->flag = 0;
+		lisa->tokens[len->word][len->j++] = line[len->i++];
+		lisa->tokens[len->word][len->j++] = line[len->i++];
+		len->flag = 0;
 		return ;
 	}
-	if (ft_isdigit(line[pars->i + 1]))
+	if (proverka_isdigit(line, len))
+		return ;
+	if (line[len->i + 1] == '?')
 	{
-		pars->i += 2;
+		lisa->tokens[len->word][len->j++] = line[len->i++];
+		lisa->tokens[len->word][len->j++] = lisa->flag_error + 48;
+		len->i++;
+		len->flag = 0;
 		return ;
 	}
-	if (line[pars->i + 1] == '?')
-	{
-		lisa->tokens[pars->word][pars->j++] = line[pars->i++];
-		lisa->tokens[pars->word][pars->j++] = lisa->flag_error + 48;
-		pars->i++;
-		pars->flag = 0;
-		return ;
-	}
-	while (ft_isalnum(line[++pars->i]))
-		lisa->tmp_env[tmp++] = line[pars->i];
+	while (ft_isalnum(line[++len->i]) || line[len->i] == '_')
+		lisa->tmp_env[tmp++] = line[len->i];
 	lisa->tmp_env[tmp] = '=';
-	ft_dollar_ili_net_pars(lisa, pars);
+	ft_dollar_ili_net_pars(lisa, len);
 }

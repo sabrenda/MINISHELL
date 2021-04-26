@@ -8,3 +8,25 @@ int	ft_len_space_tab(char *line, t_pars *len) //пропуск табов и с�
 		return (0);
 	return (1);
 }
+
+void	ft_clean_tmp_env(t_monna *lisa)
+{
+	int tmp;
+
+	tmp = 0;
+	while (tmp < 300)
+	{
+		lisa->tmp_env[tmp] = '\0';
+		tmp++;
+	}
+}
+
+int proverka_isdigit(char *line, t_pars *len)
+{
+	if (ft_isdigit(line[len->i + 1]))
+	{
+		len->i += 2;
+		return 1;
+	}
+	return 0;
+}
