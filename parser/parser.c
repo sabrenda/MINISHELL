@@ -1,25 +1,5 @@
 #include "../minishell.h"
 
-void	ft_tochka_zapitaya(t_pars *len, char *line)
-{
-		len->flag = 0;
-		len->i++;
-}
-
-void	ft_redirect(t_pars *len, char *line)
-{
-	len->flag = 0;
-	if (line[len->i] == '>')
-	{
-		if (line[++len->i] == '>')
-			len->i++;
-	}
-	else
-	{
-		if (line[++len->i] == '<')
-			len->i++;
-	}
-}
 void	ft_redirect_pars(t_pars *len, t_monna *lisa, char *line)
 {
 	len->flag = 0;
@@ -35,32 +15,6 @@ void	ft_redirect_pars(t_pars *len, t_monna *lisa, char *line)
 		if (line[len->i] == '<')
 			lisa->tokens[len->word][len->j++] = line[len->i++];
 	}
-}
-int	ft_len_words(char *line, t_monna *lisa) // считает колличество слов в строке из гнл с учетом ковычек
-{
-	t_pars	len;
-
-	ft_bzero(&len, sizeof(t_pars));
-	while (line[len.i])
-	{
-		len.flag = 1;
-		if (line[len.i] == '\t' || line[len.i] == ' ') //пропуск пробелов и табуляции
-			if (!(ft_len_space_tab(line, &len)))
-					break ;
-		if (line[len.i] == ';')
-			ft_tochka_zapitaya(&len, line);
-		if (line[len.i] == '|' || line[len.i] == '&')
-		 	ft_operator(&len, line);
-		if (line[len.i] == '<' || line[len.i] == '>')
-		 	ft_redirect(&len, line);
-		if (line[len.i] != '\t' && line[len.i] != ' ' && line[len.i] != ';'
-			&& len.flag && line[len.i] != '&' && line[len.i] != '|'
-				&& line[len.i] != '<' && line[len.i] != '>')
-			ft_len_alpha(line, &len, lisa); // пропуск букв и работа с ковычками
-		if (len.flag == 0)
-			len.word++;
-	}
-	return (len.word);
 }
 
 int ft_memory_pars(t_monna *lisa, char *line, t_pars *pars)
@@ -85,6 +39,35 @@ int ft_memory_pars(t_monna *lisa, char *line, t_pars *pars)
 	pars->word = -1;
 	return (1);
 }
+
+void	ft_len_alpha_pars(char *line, t_pars *pars, t_monna *lisa) //для добавляния символов,ковычки,экранирование
+{
+	while (line[pars->i] && (line[pars->i] != ' '
+		&& line[pars->i] != '\t' && line[pars->i] != ';'
+			&& line[pars->i] != '&' && line[pars->i] != '|'
+				&& line[pars->i] != '>' && line[pars->i] != '<'))
+	{
+		if (line[pars->i] == '\"') // работа с ковычками ""
+			ft_len_kov_pars_1(pars, line, lisa);
+		if (line[pars->i] == '\'') // работа с ковычками '
+			ft_len_kov_pars_2(pars, line, lisa);
+		if (line[pars->i] == '$')// работа с $
+			ft_kov_dollar_pars(lisa, line, pars);
+		if (line[pars->i] == '\\') // работа с экранированием
+			ft_ecran_pars(pars, line, lisa);
+		while (line[pars->i] && line[pars->i] != ' ' && line[pars->i] != '\t'
+			&& line[pars->i] != '\"' && line[pars->i] != '\''
+				&& line[pars->i] != '\\' && line[pars->i] != ';'
+					&& line[pars->i] != '&' && line[pars->i] != '|'
+						&& line[pars->i] != '>' && line[pars->i] != '<'
+							&& line[pars->i] != '$')
+		{
+			lisa->tokens[pars->word][pars->j++] = line[pars->i++]; // добавляем в наш массив символы
+			pars->flag = 0;
+		}
+	}
+}
+
 void ft_operator_pars(t_pars *pars, char *line, t_monna *lisa)
 {
 	if (line[pars->i] == '&')
@@ -128,16 +111,13 @@ int	parser(char *line, t_monna *lisa) //обрабтка строки из гн�
 					break ;
 			if (line[pars.i] != '\t' && line[pars.i] != ' ' && line[pars.i] != ';'
 				&& line[pars.i] != '&' && line[pars.i] != '|')
-				ft_len_alpha_pars(line, &pars, lisa); // добавляе символов, ковычки и экранирование
+				ft_len_alpha_pars(line, &pars, lisa); // добавляе символов,ковычки,экранирование,$
 			if ((line[pars.i] == '|' || line[pars.i] == '&') && pars.flag)
 		 		ft_operator_pars(&pars, line, lisa); // разделение операторов
 			if ((line[pars.i] == '<' || line[pars.i] == '>') && pars.flag)
 		 		ft_redirect_pars(&pars, lisa, line); // разделение редиректов
 			if (line[pars.i] == ';' && pars.flag)
-			{
-				lisa->tokens[pars.word][pars.j++] = line[pars.i++];
-				break;
-			}
+				ft_tochka_zapitaya_pars(&pars, line, lisa); // разделение ;
 		}
 		lisa->tokens[pars.word][pars.j] = '\0';
 	}

@@ -1,10 +1,15 @@
 NAME = minishell
 
 SRCS = main.c\
-			general/parser.c\
-			general/parser_utils.c\
-			general/utils.c\
-			general/davinci.c
+			parser/dollar.c\
+			parser/kovichki.c\
+			parser/parser_words.c\
+			parser/parser_words2.c\
+			parser/parser.c\
+			parser/parser2.c\
+			parser/utils.c\
+			utils/davinci.c\
+			utils/utils.c\
 
 OBJS = $(SRCS:.c=.o)
 

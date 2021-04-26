@@ -6,7 +6,7 @@
 #    By: Ahmed <Ahmed@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/09 11:33:18 by tchariss          #+#    #+#              #
-#    Updated: 2021/04/16 17:53:16 by Ahmed            ###   ########.fr        #
+#    Updated: 2021/04/26 00:45:55 by Ahmed            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,4 +50,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY:  all clean fclean re bonus
+.PHONY: all clean fclean re bonus
