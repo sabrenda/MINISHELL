@@ -8,6 +8,8 @@ SRCS = main.c\
 			parser/parser.c\
 			parser/parser2.c\
 			parser/utils.c\
+			parser/zvezda.c\
+			parser/zvezda2.c\
 			utils/davinci.c\
 			utils/utils.c\
 

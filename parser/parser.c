@@ -105,6 +105,7 @@ int	parser(char *line, t_monna *lisa) //обрабтка строки из гн�
 	{
 		pars.j = 0;
 		pars.flag = 1;
+		lisa->flag_block_zvezda = 0;
 		while (line[pars.i] && pars.flag)
 		{
 			if (line[pars.i] == '\t' || line[pars.i] == ' ')
@@ -114,13 +115,15 @@ int	parser(char *line, t_monna *lisa) //обрабтка строки из гн�
 				&& line[pars.i] != '&' && line[pars.i] != '|')
 				ft_len_alpha_pars(line, &pars, lisa); // добавляе символов,ковычки,экранирование,$
 			if ((line[pars.i] == '|' || line[pars.i] == '&') && pars.flag)
-		 		ft_operator_pars(&pars, line, lisa); // разделение операторов
+				ft_operator_pars(&pars, line, lisa); // разделение операторов
 			if ((line[pars.i] == '<' || line[pars.i] == '>') && pars.flag)
-		 		ft_redirect_pars(&pars, lisa, line); // разделение редиректов
+				ft_redirect_pars(&pars, lisa, line); // разделение редиректов
 			if (line[pars.i] == ';' && pars.flag)
 				ft_tochka_zapitaya_pars(&pars, line, lisa); // разделение ;
 		}
 		lisa->tokens[pars.word][pars.j] = '\0';
+		if (!lisa->flag_block_zvezda)
+			ft_zvezda_epta(lisa, pars.word);
 	}
 	return (1);
 }

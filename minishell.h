@@ -10,6 +10,11 @@
 # include <stdio.h>
 # include <curses.h>
 # include <term.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <dirent.h>
 
 typedef struct s_monna
 {
@@ -21,6 +26,7 @@ typedef struct s_monna
 	int		pipe;
 	char	**pars_tokk;
 	int		flag_error;
+	int		flag_block_zvezda;
 }				t_monna;
 
 typedef struct s_pars
@@ -48,12 +54,20 @@ typedef struct s_pars
 // 	int f8;
 // }				t_flag;
 
+int	ft_lenmassive(char **str);
 int	parser(char *line, t_monna *lisa);
-int	ft_memory_pars(t_monna *lisa, char *line, t_pars *pars);
+int	ft_operator(t_pars *len, char *line);
 int	ft_len_words(char *line, t_monna *lisa);
 int	ft_len_space_tab(char *line, t_pars *len);
-int	ft_lenmassive(char **str);
-int	ft_operator(t_pars *len, char *line);
+int	proverka_isdigit(char *line, t_pars *len);
+int	ft_zvezda_v_shoke(char *str, char *dir_name);
+int	ft_memory_pars(t_monna *lisa, char *line, t_pars *pars);
+int	ft_zvezda_nachalo(char *str, char *dir_name, int *flag);
+int	ft_zvezda_seredina(char *str, char *dir_name, int flag);
+int	ft_zvezda_konec(char *str, char *dir_name);
+int	ft_zvezda_nachalo_2(int i, char *str ,char *dir_name);
+int ft_zvezda_seredina_2(int i, char *str ,char *dir_name);
+int ft_zvezda_konec_2(int i, char *str ,char *dir_name);
 char	*del_start_space(char *line);
 void	ft_davinci(void);
 void	ft_monnalisa(void);
@@ -77,6 +91,6 @@ void	ft_dollar_ili_net_pars(t_monna *lisa, t_pars *pars);
 void	ft_kov_dollar(t_monna *lisa, char *line, t_pars *len);
 void	ft_kov_dollar_pars(t_monna *lisa, char *line, t_pars *pars);
 void	ft_clean_tmp_env(t_monna *lisa);
-int proverka_isdigit(char *line, t_pars *len);
+void	ft_zvezda_epta(t_monna *lisa, int nomer_ukaza);
 
 #endif
