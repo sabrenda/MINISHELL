@@ -13,6 +13,7 @@ SRCS = main.c\
 			utils/davinci.c\
 			utils/utils.c\
 			executor/executor.c\
+			executor/env.c\
 
 OBJS = $(SRCS:.c=.o)
 
