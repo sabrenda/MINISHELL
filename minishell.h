@@ -42,6 +42,8 @@ typedef struct s_pars
 	char	c;
 }			t_pars;
 
+int g_error;
+
 // typedef struct s_flag
 // {
 // 	int f_echo;
@@ -56,6 +58,7 @@ typedef struct s_pars
 // 	int f8;
 // }				t_flag;
 
+//parser
 int	ft_lenmassive(char **str);
 int	parser(char *line, t_monna *lisa);
 int	ft_operator(t_pars *len, char *line);
@@ -95,13 +98,14 @@ void	ft_kov_dollar_pars(t_monna *lisa, char *line, t_pars *pars);
 void	ft_clean_tmp_env(t_monna *lisa);
 void	ft_zvezda_epta(t_monna *lisa, int nomer_ukaza);
 
-int	ft_executor(t_monna *lisa);
-void	ft_command_start(t_monna *lisa, int *count);
+//executor
 int	ft_search_com(char *str);
+int	ft_executor(t_monna *lisa);
 int	ft_env(t_monna *lisa, int *count);
+int	ft_operators(char *str);
+void	ft_command_start(t_monna *lisa, int *count);
 void	ft_ili(t_monna *lisa, int *count);
 void	ft_ampersant(t_monna *lisa, int *count);
-int	ft_operators(char *str);
 
 
 #endif
