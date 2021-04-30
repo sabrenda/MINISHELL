@@ -42,7 +42,7 @@ int	ft_search_com(char *str) // является ли это комадой
 	return (0);
 }
 
-int	ft_command(t_monna *lisa, int *count) // работа команд
+int	ft_command_start(t_monna *lisa, int *count) // работа команд
 {
 	if (!(strcmp(lisa->tokens[*count], "echo")))
 		lisa->flag_command = ft_echo(lisa, count);
@@ -68,7 +68,7 @@ int	ft_executor(t_monna *lisa) // основная функция выполне
 	while (lisa->tokens[count])
 	{
 		if (ft_search_com(lisa->tokens[count])) // ft_search_com смотрит является ли это командой
-			ft_commanda(lisa, &count); // выполнение команд
+			ft_command_start(lisa, &count); // выполнение команд
 		else if (strcmp(lisa->tokens[count], "&&") == 0)
 			ft_ampersant(lisa, &count); // &&
 		else if (strcmp(lisa->tokens[count], "||") == 0)
