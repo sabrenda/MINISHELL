@@ -95,6 +95,20 @@ void	ft_len_alpha_pars(char *line, t_pars *pars, t_monna *lisa) //для доб�
 	}
 }
 
+void ft_block_operator(t_monna *lisa, int nomer_ukaza)
+{
+	int i;
+
+	i = 0;
+	while (lisa->tokens[nomer_ukaza][i])
+		i++;
+	i++;
+	if (lisa->flag_block_operator == 1)
+		lisa->tokens[nomer_ukaza][i] = 1; // заблочить оператов
+	else
+		lisa->tokens[nomer_ukaza][i] = 0; // разрешить
+}
+
 int	parser(char *line, t_monna *lisa) //обрабтка строки из гнл
 {
 	t_pars	pars;
@@ -106,6 +120,7 @@ int	parser(char *line, t_monna *lisa) //обрабтка строки из гн�
 		pars.j = 0;
 		pars.flag = 1;
 		lisa->flag_block_zvezda = 0;
+		lisa->flag_block_operator = 0;
 		while (line[pars.i] && pars.flag)
 		{
 			if (line[pars.i] == '\t' || line[pars.i] == ' ')
@@ -124,6 +139,7 @@ int	parser(char *line, t_monna *lisa) //обрабтка строки из гн�
 		lisa->tokens[pars.word][pars.j] = '\0';
 		if (!lisa->flag_block_zvezda)
 			ft_zvezda_epta(lisa, pars.word);
+		ft_block_operator(lisa, pars.word);
 	}
 	return (1);
 }

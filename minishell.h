@@ -28,6 +28,7 @@ typedef struct s_monna
 	char	**pars_tokk;
 	int		flag_error;
 	int		flag_block_zvezda;
+	int		flag_block_operator;
 	int		flag_command;
 }				t_monna;
 

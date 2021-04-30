@@ -46,9 +46,11 @@ run:
 	./minishell
 
 norm:
-	norminette *.c
+	norminette ./parser/*.c
+	norminette ./executor/*.c
+	norminette ./utils/*.c
 	norminette ./libft/*.c
-	norminette *.h
 	norminette ./libft/*.h
+	norminette *.h
 
 .PHONY:	all bonus clean fclean re norm run

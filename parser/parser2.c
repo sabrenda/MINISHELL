@@ -7,6 +7,7 @@ void	ft_ecran_pars(t_pars *pars, char *line, t_monna *lisa)
 		pars->flag = 0;
 		lisa->tokens[pars->word][pars->j++] = line[pars->i++];
 		lisa->flag_block_zvezda = 1; //если в слове был знак экрана то звезда не робит
+		lisa->flag_block_operator = 1; //если в слове был знак экрана то оператов не робит
 	}
 }
 

@@ -66,7 +66,6 @@ void	ft_len_kov_pars_1(t_pars *pars, char *line, t_monna *lisa) // ковычк�
 		pars->count++; //счетчик символов внутри ковычек
 		if (line[pars->i] == '\\') //работа с экранированием
 		{
-			lisa->flag_block_zvezda = 1; // если в строке есть знак экрана то не работает зведзда
 			if (line[pars->i + 1] == '\"' || line[pars->i + 1] == '$')
 			{
 				lisa->tokens[pars->word][pars->j++] = line[++pars->i];
@@ -84,7 +83,11 @@ void	ft_len_kov_pars_1(t_pars *pars, char *line, t_monna *lisa) // ковычк�
 		{
 			pars->i++; // пропуск ковычки
 			if (pars->count > 1)
+			{
 				pars->flag = 0; //флаг для счетчика слов
+				lisa->flag_block_zvezda = 1; //флаг блока звезды
+				lisa->flag_block_operator = 1; //флаг блока оператора
+			}
 			break ;
 		}
 		if (line[pars->i] && line[pars->i] != '\\' && line[pars->i] != '$')
@@ -103,11 +106,13 @@ void	ft_len_kov_pars_2(t_pars *pars, char *line, t_monna *lisa) // ковычк�
 		{
 			pars->i++; // пропуск ковычки
 			if (pars->count > 1)
+			{
 				pars->flag = 0; //флаг для счетчика слов
+				lisa->flag_block_zvezda = 1; //флаг блока звезды
+				lisa->flag_block_operator = 1; //флаг блока оператора
+			}
 			break ;
 		}
-		if (line[pars->i] == '*')
-			lisa->flag_block_zvezda = 1;
 		lisa->tokens[pars->word][pars->j++] = line[pars->i++]; //добавляет при нахождении символов
 	}
 }

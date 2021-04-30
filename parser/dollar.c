@@ -87,7 +87,7 @@ void	ft_kov_dollar_pars(t_monna *lisa, char *line, t_pars *len) // $ в ковы
 	}
 	if (proverka_isdigit(line, len))
 		return ;
-	if (line[len->i + 1] == '?')
+	if (line[len->i + 1] == '?') // добавляет вместо вопроса цифру с ошибки, можно atoi для большего числа
 	{
 		lisa->tokens[len->word][len->j++] = line[len->i++];
 		lisa->tokens[len->word][len->j++] = lisa->flag_error + 48;

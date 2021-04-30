@@ -32,15 +32,15 @@ int	main(int argc, char **argv, char **env)
 			continue;
 		// printf("words = %d\n", ft_len_words(line, &lisa)); // счетчик слов
 		parser(line, &lisa); //парсим строку
-		// i = 0;
-		// while (lisa.tokens[i])
-		// {
-		// 	ft_putstr_fd(lisa.tokens[i], 1);
-		// 	write(1, "\n", 1);
-		// 	i++;
-		// }
+		i = 0;
+		while (lisa.tokens[i])
+		{
+			ft_putstr_fd(lisa.tokens[i], 1);
+			write(1, "\n", 1);
+			i++;
+		}
 		free(line);
-		lisa.status = ft_executor(&lisa); // выполнение
+		// lisa.status = ft_executor(&lisa); // выполнение
 	}
 	return (0);
 }
