@@ -12,6 +12,7 @@ SRCS = main.c\
 			parser/zvezda2.c\
 			utils/davinci.c\
 			utils/utils.c\
+			executor/executor.c\
 
 OBJS = $(SRCS:.c=.o)
 

@@ -15,6 +15,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <dirent.h>
+# include <fcntl.h>
 
 typedef struct s_monna
 {
@@ -93,5 +94,14 @@ void	ft_kov_dollar(t_monna *lisa, char *line, t_pars *len);
 void	ft_kov_dollar_pars(t_monna *lisa, char *line, t_pars *pars);
 void	ft_clean_tmp_env(t_monna *lisa);
 void	ft_zvezda_epta(t_monna *lisa, int nomer_ukaza);
+
+int	ft_executor(t_monna *lisa);
+void	ft_command_start(t_monna *lisa, int *count);
+int	ft_search_com(char *str);
+int	ft_env(t_monna *lisa, int *count);
+void	ft_ili(t_monna *lisa, int *count);
+void	ft_ampersant(t_monna *lisa, int *count);
+int	ft_operators(char *str);
+
 
 #endif

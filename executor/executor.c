@@ -15,6 +15,10 @@
 
 // int	ft_echo(t_monna *lisa, int *i)
 // {
+
+// int	fd;
+// fd = open("fileX", O_CREAT, O_RDWR);
+
 // 	*i++;
 // 	while (1)
 // 	{
@@ -33,6 +37,61 @@
 // 	return (1);
 // }
 
+int	ft_operators(char *str) //проверяет является ли это оператором
+{
+	if (!(strcmp(str, "&&")) || !(strcmp(str, "||"))
+		|| !(strcmp(str, "|")) || !(strcmp(str, ";")))
+		return (0);
+	return (1);
+}
+
+void	ft_ampersant(t_monna *lisa, int *count)
+{
+	if (lisa->flag_command == 1) //если в прошлой отработке была ошибка то пропускаем аргументы до оператора || или ;
+	{
+		while (lisa->tokens[*count] && strcmp(lisa->tokens[*count], "||")
+			&& strcmp(lisa->tokens[*count], ";")) // пример: sdfsdfsd && -> пропуск (echo lala asdds sdds) || echo lala
+			*count += 1;
+	}
+	else
+	{
+		*count += 1;
+	}
+}
+
+void	ft_ili(t_monna *lisa, int *count)
+{
+	if (lisa->flag_command == 0) //если в прошлой отработке не было ошибки то пропускаем аргументы до оператора | && и ;
+	{
+		while (lisa->tokens[*count] && strcmp(lisa->tokens[*count], "|")
+			&& strcmp(lisa->tokens[*count], "&&")
+				&& strcmp(lisa->tokens[*count], ";")) // пример: echo kola || -> пропуск (echo lala asdds sdds) || echo lala
+			*count += 1;
+	}
+	else
+	{
+		*count += 1;
+	}
+}
+
+int	ft_env(t_monna *lisa, int *count) //енв
+{
+	int	i;
+
+	i = 0;
+	while (lisa->my_env[i])
+	{
+		ft_putstr_fd(lisa->my_env[i], 1);
+		write(1, "\n", 1);
+		i++;
+	}
+	lisa->flag_command = 0;
+	*count += 1;
+	while (lisa->tokens[*count] && ft_operators(lisa->tokens[*count])) //пропускаем аргрументы если есть после env, так как по сабжу без них надо
+		*count += 1;
+	return (0);
+}
+
 int	ft_search_com(char *str) // является ли это комадой
 {
 	if (!(strcmp(str, "echo")) || !(strcmp(str, "cd")) || !(strcmp(str, "pwd"))
@@ -42,22 +101,22 @@ int	ft_search_com(char *str) // является ли это комадой
 	return (0);
 }
 
-int	ft_command_start(t_monna *lisa, int *count) // работа команд
+void	ft_command_start(t_monna *lisa, int *count) // работа команд
 {
-	if (!(strcmp(lisa->tokens[*count], "echo")))
-		lisa->flag_command = ft_echo(lisa, count);
-	else if (!(strcmp(lisa->tokens[*count], "cd")))
-		lisa->flag_command = ft_cd(lisa, count);
-	else if (!(strcmp(lisa->tokens[*count], "pwd")))
-		lisa->flag_command = ft_pwd(lisa, count);// если после pwd идут просто аргументы то пропускаешь их до && || | ; или NULL
-	else if (!(strcmp(lisa->tokens[*count], "export")))
-		lisa->flag_command = ft_export(lisa, count);
-	else if (!(strcmp(lisa->tokens[*count], "unset")))
-		lisa->flag_command = ft_unset(lisa, count);
-	else if (!(strcmp(lisa->tokens[*count], "env")))
-		lisa->flag_command = ft_env(lisa, count); // если после env идут просто аргументы то пропускаешь их до && || | ; или NULL
-	else if (!(strcmp(lisa->tokens[*count], "exit")))
-		ft_exit(lisa, count);
+	if (!(strcmp(lisa->tokens[*count], "env")))
+		lisa->flag_command = ft_env(lisa, count);
+	// else if (!(strcmp(lisa->tokens[*count], "cd")))
+	// 	lisa->flag_command = ft_cd(lisa, count);
+	// else if (!(strcmp(lisa->tokens[*count], "pwd")))
+	// 	lisa->flag_command = ft_pwd(lisa, count);// если после pwd идут просто аргументы то пропускаешь их до && || | ; или NULL
+	// else if (!(strcmp(lisa->tokens[*count], "export")))
+	// 	lisa->flag_command = ft_export(lisa, count);
+	// else if (!(strcmp(lisa->tokens[*count], "unset")))
+	// 	lisa->flag_command = ft_unset(lisa, count);
+	// else if (!(strcmp(lisa->tokens[*count], "echo")))
+	// 	lisa->flag_command = ft_echo(lisa, count); // если после env идут просто аргументы то пропускаешь их до && || | ; или NULL
+	// else if (!(strcmp(lisa->tokens[*count], "exit")))
+	// 	ft_exit(lisa, count);
 }
 
 int	ft_executor(t_monna *lisa) // основная функция выполнения
@@ -72,14 +131,11 @@ int	ft_executor(t_monna *lisa) // основная функция выполне
 		else if (strcmp(lisa->tokens[count], "&&") == 0)
 			ft_ampersant(lisa, &count); // &&
 		else if (strcmp(lisa->tokens[count], "||") == 0)
-			ft_ili(lisa); // ||
-		else if (strcmp(lisa->tokens[count], "|") == 0)
-			ft_pipe(lisa); // |
-		else if (strcmp(lisa->tokens[count], ";") == 0)
-			ft_tochka_z(lisa); // ;
-		else
-			ft_prosto_argument(lisa); // blabla
-		count++;
+			ft_ili(lisa, &count); // ||
+		// else if (strcmp(lisa->tokens[count], "|") == 0)
+		// 	ft_pipe(lisa); // |
+		// else
+		// 	ft_prosto_argument(lisa); // blabla
 	}
-	return (0);
+	return (1);
 }
