@@ -1,78 +1,86 @@
-#include "minishell.h"
+#include "../minishell.h"
 
-int	ft_zvezda_konec(char *str, char *dir_name)
+int	ft_zvezda_konec(char *str, char *dir_name, int *flag)
 {
 	int	i;
-	int	j;
 
-	i = 0;
+	i = *flag;
 	// **mba или **mb*** *am*a* *am*****b****
 	while (str[i] == '*')
 		i++;
-	j = i;
 	if (ft_zvezda_konec_2(i, str ,dir_name))
 		return (1);
 	return (0);
 }
 
-// int	ft_zvezda_seredina(char *str, char *dir_name, int *flag)
-// {
-// 	int	i;
-// 	int	j;
-
-// 	i = 0;
-// 	// **mba или **mb*** *am*a* *am*****b****
-// 	while (str[i] == '*')
-// 		i++;
-// 	j = i;
-// 	if (ft_zvezda_seredina_2(i, str ,dir_name))
-// 		return (1);
-// 	return (0);
-// }
-
-int	ft_zvezda_nachalo(char *str, char *dir_name, int *flag)
+int	ft_zvezda_seredina(char *str, char *dir_name, int *flag)
 {
 	int	i;
 	int	j;
 
-	i = 0;
+	i = *flag;
+	j = 0;
+	// **mba или **mb*** *am*a* *am*****b****
+	while (str[i] == '*')
+		i++;
+	while (str[i] != '*' && str[i] != '\0')
+	{
+		i++;
+		if (str[i] == '*')
+			j++;
+	}
+	if (j == 0)
+		return (2);
+	while (str[*flag] == '*')
+		*flag += 1;
+	if (ft_zvezda_seredina_2(str ,dir_name, flag))
+		return (1);
+	return (0);
+}
+
+int	ft_zvezda_nachalo(char *str, char *dir_name, int *flag)
+{
+	int	j;
+
 	j = 0;
 	// lam** или l**am*** l*amba* l*a*ba* l*mba
-	while (str[i] != '*')
-		i++;
-	j = i;
-	while (str[j])
-	{
-		if (str[j] == '*')
-			*flag = i;
-		j++;
-	}
-	if (*flag == 0)
-		*flag == -1;
-	if (ft_zvezda_nachalo_2(i, str ,dir_name))
+	while (str[*flag] != '*')
+		*flag += 1;
+	if (ft_zvezda_nachalo_2(*flag, str ,dir_name))
 		return (1);
 	return (0);
 }
 
 int	ft_zvezda_v_shoke(char *str, char *dir_name)
 {
-	int	i;
 	int	j;
 	int	flag;
+	int	a;
 
-	i = 0;
 	flag = 0;
-	if (str[i] && str[i] != '*') //проверка начала lam** или l**am*** l*amba* l*a*ba* l*mba
-		if (!(ft_zvezda_nachalo(str, dir_name, &flag)))
+	if (str[flag] && str[flag] != '*') //проверка начала lam** или l**am*** l*amba* l*a*ba* l*mba
+	{
+		a = ft_zvezda_nachalo(str, dir_name, &flag);
+		if (a == 0)
 			return (0);
-	if (flag > 0)
-		i = flag;
-	if (str[i] == '*' && flag != -1) // проверка середины **am*** *a*a*
-		if (!(ft_zvezda_seredina(str, dir_name, &flag)))
+	}
+	if (str[flag] == '*') // проверка середины **am*** *a*a*
+	{
+		while (1)
+		{
+			a = ft_zvezda_seredina(str, dir_name, &flag);
+			if (a == 0)
+				return (0);
+			if (a == 2)
+				break ;
+		}
+	}
+	if (str[flag] == '*' && str[ft_strlen(str) - 1] != '*') //проверка концовки **mba или **mb *am*a
+	{
+		a = ft_zvezda_konec(str, dir_name, &flag);
+		if (a == 0)
 			return (0);
-	if (str[i] == '*' && str[ft_strlen(str) - 1] != '*') //проверка концовки **mba или **mb*** *am*a* *am*****b****
-		if (!(ft_zvezda_konec(str, dir_name)))
-			return (0);
+	}
 	return (1);
 }
 

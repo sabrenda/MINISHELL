@@ -23,10 +23,11 @@ typedef struct s_monna
 	char	**tokens;
 	char	*tmp_env;
 	int		status;
-	int		pipe;
+	// int		pipe;
 	char	**pars_tokk;
 	int		flag_error;
 	int		flag_block_zvezda;
+	int		flag_command;
 }				t_monna;
 
 typedef struct s_pars
@@ -63,10 +64,10 @@ int	proverka_isdigit(char *line, t_pars *len);
 int	ft_zvezda_v_shoke(char *str, char *dir_name);
 int	ft_memory_pars(t_monna *lisa, char *line, t_pars *pars);
 int	ft_zvezda_nachalo(char *str, char *dir_name, int *flag);
-int	ft_zvezda_seredina(char *str, char *dir_name, int flag);
-int	ft_zvezda_konec(char *str, char *dir_name);
+int	ft_zvezda_seredina(char *str, char *dir_name, int *flag);
+int	ft_zvezda_konec(char *str, char *dir_name, int *flag);
 int	ft_zvezda_nachalo_2(int i, char *str ,char *dir_name);
-int ft_zvezda_seredina_2(int i, char *str ,char *dir_name);
+int ft_zvezda_seredina_2(char *str ,char *dir_name, int *flag);
 int ft_zvezda_konec_2(int i, char *str ,char *dir_name);
 char	*del_start_space(char *line);
 void	ft_davinci(void);
