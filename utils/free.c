@@ -5,7 +5,8 @@ void	free_all_1(char *line, t_monna *lisa)
 	int	i;
 
 	i = 0;
-	free (line);
+	if (line)
+		free (line);
 	while (lisa->tokens[i])
 	{
 		free (lisa->tokens[i]);
@@ -19,7 +20,8 @@ void	free_all_2(char *line, t_monna *lisa)
 	int	i;
 
 	i = 0;
-	free (line);
+	if (line)
+		free (line);
 	while (lisa->tokens[i])
 	{
 		free (lisa->tokens[i]);

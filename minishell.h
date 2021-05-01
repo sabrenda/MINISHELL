@@ -43,7 +43,7 @@ typedef struct s_pars
 	char	c;
 }			t_pars;
 
-int g_error;
+// int g_error;
 
 // typedef struct s_flag
 // {
