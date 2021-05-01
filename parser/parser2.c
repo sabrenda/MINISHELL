@@ -11,13 +11,27 @@ void	ft_ecran_pars(t_pars *pars, char *line, t_monna *lisa)
 	}
 }
 
+void	ft_block_operator(t_monna *lisa, int nomer_ukaza)
+{
+	int i;
+
+	i = 0;
+	while (lisa->tokens[nomer_ukaza][i])
+		i++;
+	i++;
+	if (lisa->flag_block_operator == 1)
+		lisa->tokens[nomer_ukaza][i] = 1; // заблочить оператов
+	else
+		lisa->tokens[nomer_ukaza][i] = 0; // разрешить
+}
+
 void	ft_tochka_zapitaya_pars(t_pars *pars, char *line, t_monna *lisa)
 {
 	lisa->tokens[pars->word][pars->j++] = line[pars->i++];
 	pars->flag = 0;
 }
 
-char *del_start_space(char *line)
+char	*del_start_space(char *line)
 {
 	char	*tmp;
 	int		i;
@@ -37,14 +51,11 @@ char *del_start_space(char *line)
 	while (tmp[i])
 		line[j++] = tmp[i++];
 	line[j] = tmp[i];
-	free(tmp);
-	// a = ft_search_error(line);
-	// if (line[0] == ';' || line[0] == '|' || line[0] == '&')
-	// {
-	// 	g_error = 1;
-	// 	write(1, "syntax error near unexpected token\n", 35);
-	// 	free(line);
-	// 	return (NULL);
-	// }
+	free (tmp);
+	if (line [0] == '\0')
+	{
+		free (line);
+		return (NULL);
+	}
 	return (line);
 }

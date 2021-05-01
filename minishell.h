@@ -60,7 +60,7 @@ int g_error;
 // }				t_flag;
 
 //parser
-int	ft_lenmassive(char **str);
+int	ft_init_all(t_monna	*lisa, char **env);
 int	parser(char *line, t_monna *lisa, t_pars *pars);
 int	ft_operator(t_pars *len, char *line);
 int	ft_len_words(char *line, t_monna *lisa);
@@ -75,10 +75,6 @@ int	ft_zvezda_nachalo_2(int i, char *str ,char *dir_name);
 int ft_zvezda_seredina_2(char *str ,char *dir_name, int *flag);
 int ft_zvezda_konec_2(int i, char *str ,char *dir_name);
 char	*del_start_space(char *line);
-void	ft_davinci(void);
-void	ft_monnalisa(void);
-void	ft_monnalisa_2(void);
-void	m(char *monna, int lisa);
 void	ft_len_kov_1(t_pars *n, char *l, t_monna *lisa);
 void	ft_len_kov_2(t_pars *len, char *line);
 void	ft_len_kov_pars_1(t_pars *pars, char *line, t_monna *lisa);
@@ -99,6 +95,7 @@ void	ft_kov_dollar_pars(t_monna *lisa, char *line, t_pars *pars);
 void	ft_clean_tmp_env(t_monna *lisa);
 void	ft_zvezda_epta(t_monna *lisa, int nomer_ukaza);
 void	ft_init_pars(t_monna *lisa,t_pars *pars);
+void	ft_block_operator(t_monna *lisa, int nomer_ukaza);
 
 //executor
 int	ft_search_com(char *str);
@@ -109,5 +106,14 @@ void	ft_command_start(t_monna *lisa, int *count);
 void	ft_ili(t_monna *lisa, int *count);
 void	ft_ampersant(t_monna *lisa, int *count);
 
+//utils
+int	ft_lenmassive(char **str);
+int	ft_init_all(t_monna	*lisa, char **env);
+void	ft_monnalisa(void);
+void	ft_monnalisa_2(void);
+void	m(char *monna, int lisa);
+void	ft_davinci(void);
+void	free_all_1(char *line, t_monna *lisa);
+void	free_all_2(char *line, t_monna *lisa);
 
 #endif

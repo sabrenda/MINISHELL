@@ -17,7 +17,7 @@ void	ft_redirect_pars(t_pars *len, t_monna *lisa, char *line)
 	}
 }
 
-int ft_memory_pars(t_monna *l, char *line, t_pars *pars)
+int	ft_memory_pars(t_monna *l, char *line, t_pars *pars)
 {
 	int	i;
 
@@ -40,8 +40,7 @@ int ft_memory_pars(t_monna *l, char *line, t_pars *pars)
 	return (1);
 }
 
-
-void ft_operator_pars(t_pars *pars, char *line, t_monna *lisa)
+void	ft_operator_pars(t_pars *pars, char *line, t_monna *lisa)
 {
 	if (line[pars->i] == '&')
 	{
@@ -70,24 +69,24 @@ void ft_operator_pars(t_pars *pars, char *line, t_monna *lisa)
 void	ft_len_alpha_pars(char *line, t_pars *pars, t_monna *lisa) //для добавляния символов,ковычки,экранирование
 {
 	while (line[pars->i] && (line[pars->i] != ' '
-		&& line[pars->i] != '\t' && line[pars->i] != ';'
+			&& line[pars->i] != '\t' && line[pars->i] != ';'
 			&& line[pars->i] != '&' && line[pars->i] != '|'
-				&& line[pars->i] != '>' && line[pars->i] != '<'))
+			&& line[pars->i] != '>' && line[pars->i] != '<'))
 	{
 		if (line[pars->i] == '\"') // работа с ковычками ""
 			ft_len_kov_pars_1(pars, line, lisa);
 		if (line[pars->i] == '\'') // работа с ковычками '
 			ft_len_kov_pars_2(pars, line, lisa);
-		if (line[pars->i] == '$')// работа с $
+		if (line[pars->i] == '$') // работа с $
 			ft_kov_dollar_pars(lisa, line, pars);
 		if (line[pars->i] == '\\') // работа с экранированием
 			ft_ecran_pars(pars, line, lisa);
 		while (line[pars->i] && line[pars->i] != ' ' && line[pars->i] != '\t'
 			&& line[pars->i] != '\"' && line[pars->i] != '\''
-				&& line[pars->i] != '\\' && line[pars->i] != ';'
-					&& line[pars->i] != '&' && line[pars->i] != '|'
-						&& line[pars->i] != '>' && line[pars->i] != '<'
-							&& line[pars->i] != '$')
+			&& line[pars->i] != '\\' && line[pars->i] != ';'
+			&& line[pars->i] != '&' && line[pars->i] != '|'
+			&& line[pars->i] != '>' && line[pars->i] != '<'
+			&& line[pars->i] != '$')
 		{
 			lisa->tokens[pars->word][pars->j++] = line[pars->i++]; // добавляем в наш массив символы
 			pars->flag = 0;
@@ -95,23 +94,9 @@ void	ft_len_alpha_pars(char *line, t_pars *pars, t_monna *lisa) //для доб�
 	}
 }
 
-void ft_block_operator(t_monna *lisa, int nomer_ukaza)
-{
-	int i;
-
-	i = 0;
-	while (lisa->tokens[nomer_ukaza][i])
-		i++;
-	i++;
-	if (lisa->flag_block_operator == 1)
-		lisa->tokens[nomer_ukaza][i] = 1; // заблочить оператов
-	else
-		lisa->tokens[nomer_ukaza][i] = 0; // разрешить
-}
-
 int	parser(char *line, t_monna *lisa, t_pars *p) //обрабтка строки из гнл
 {
-	if (ft_memory_pars(lisa, line, p) == 0)// выделяем память для двумерного массива
+	if (ft_memory_pars(lisa, line, p) == 0) // выделяем память для двумерного массива
 		return (0);
 	while (++p->word < ft_len_words(line, lisa) && line[p->i])
 	{

@@ -12,6 +12,8 @@ SRCS = main.c\
 			parser/zvezda2.c\
 			utils/davinci.c\
 			utils/utils.c\
+			utils/free.c\
+			utils/init_all.c\
 			executor/executor.c\
 			executor/env.c\
 
