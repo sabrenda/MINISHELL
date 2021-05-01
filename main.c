@@ -4,10 +4,9 @@ int g_error; //на будущее, придумать где использов
 int	main(int argc, char **argv, char **env)
 {
 	t_monna	lisa;
+	t_pars	pars;
 	char	*line;
-	int		status;
 	int		i;
-	int		tmp = 0;
 
 	ft_davinci();
 	ft_bzero(&lisa, sizeof(t_monna));
@@ -27,11 +26,15 @@ int	main(int argc, char **argv, char **env)
 	{
 		ft_putstr_fd("\033[31m༼ つ ◕_◕ ༽つ\033[32m$ ", 1);
 		get_next_line(0, &line); //чтение ввода
-		line = del_start_space(line); // удаляю пробелы и табы в начале + (поиск ошибки при & |;)
+		line = del_start_space(line); // удаляю пробелы и табы в начале + (поиск ошибки при << < > >> & |;)
 		if (line == NULL)
 			continue;
 		// printf("words = %d\n", ft_len_words(line, &lisa)); // счетчик слов
-		parser(line, &lisa); //парсим строку
+		parser(line, &lisa, &pars); //парсим строку
+		// if (ft_search_error(&lisa))
+		// {
+		// 	ft_syntax_error();
+		// }
 		i = 0;
 		while (lisa.tokens[i])
 		{
@@ -40,7 +43,7 @@ int	main(int argc, char **argv, char **env)
 			i++;
 		}
 		free(line);
-		// lisa.status = ft_executor(&lisa); // выполнение
+		// ft_executor(&lisa); // выполнение , после exit статус = 0
 	}
 	return (0);
 }

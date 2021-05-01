@@ -97,6 +97,8 @@ void	ft_zvezda_epta(t_monna *lisa, int nomer_ukaza)
 	count = 0;
 	i = 0;
 	j = 0;
+	if (lisa->flag_block_zvezda)
+		return ;
 	ft_clean_tmp_env(lisa);
 	ft_strcopy(lisa->tmp_env, lisa->tokens[nomer_ukaza]);
 	while (lisa->tmp_env[i])

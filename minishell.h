@@ -61,7 +61,7 @@ int g_error;
 
 //parser
 int	ft_lenmassive(char **str);
-int	parser(char *line, t_monna *lisa);
+int	parser(char *line, t_monna *lisa, t_pars *pars);
 int	ft_operator(t_pars *len, char *line);
 int	ft_len_words(char *line, t_monna *lisa);
 int	ft_len_space_tab(char *line, t_pars *len);
@@ -98,6 +98,7 @@ void	ft_kov_dollar(t_monna *lisa, char *line, t_pars *len);
 void	ft_kov_dollar_pars(t_monna *lisa, char *line, t_pars *pars);
 void	ft_clean_tmp_env(t_monna *lisa);
 void	ft_zvezda_epta(t_monna *lisa, int nomer_ukaza);
+void	ft_init_pars(t_monna *lisa,t_pars *pars);
 
 //executor
 int	ft_search_com(char *str);

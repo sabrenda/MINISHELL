@@ -26,6 +26,8 @@ char *del_start_space(char *line)
 	i = 0;
 	j = 0;
 	tmp = ft_strdup(line);
+	if (tmp == NULL)
+			return (NULL);
 	free (line);
 	while (tmp[i] == ' ' || tmp[i] == '\t')
 		i++;
@@ -36,12 +38,13 @@ char *del_start_space(char *line)
 		line[j++] = tmp[i++];
 	line[j] = tmp[i];
 	free(tmp);
-	if (line[0] == ';' || line[0] == '|' || line[0] == '&')
-	{
-		g_error = 1;
-		write(1, "syntax error near unexpected token\n", 35);
-		free(line);
-		return (NULL);
-	}
+	// a = ft_search_error(line);
+	// if (line[0] == ';' || line[0] == '|' || line[0] == '&')
+	// {
+	// 	g_error = 1;
+	// 	write(1, "syntax error near unexpected token\n", 35);
+	// 	free(line);
+	// 	return (NULL);
+	// }
 	return (line);
 }

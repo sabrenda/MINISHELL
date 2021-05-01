@@ -17,24 +17,24 @@ void	ft_redirect_pars(t_pars *len, t_monna *lisa, char *line)
 	}
 }
 
-int ft_memory_pars(t_monna *lisa, char *line, t_pars *pars)
+int ft_memory_pars(t_monna *l, char *line, t_pars *pars)
 {
 	int	i;
 
 	i = 0;
-	lisa->tokens = (char **)malloc(sizeof(char *) * (ft_len_words(line, lisa) + 1));
-	if (lisa->tokens == NULL)
+	l->tokens = (char **)malloc(sizeof(char *) * (ft_len_words(line, l) + 1));
+	if (l->tokens == NULL)
 		return (0);
-	lisa->tokens[ft_len_words(line, lisa)] = NULL;
-	while (i < ft_len_words(line, lisa))
+	l->tokens[ft_len_words(line, l)] = NULL;
+	while (i < ft_len_words(line, l))
 	{
-		lisa->tokens[i] = (char *)malloc(sizeof(char) * 1000);
-		if (lisa->tokens[i] == NULL)
+		l->tokens[i] = (char *)malloc(sizeof(char) * 1000);
+		if (l->tokens[i] == NULL)
 			return (0);
 		i++;
 	}
-	if (ft_len_words(line, lisa) == 0) // если слов (символов) == 0
-		lisa->tokens[i] = NULL;
+	if (ft_len_words(line, l) == 0) // если слов (символов) == 0
+		l->tokens[i] = NULL;
 	pars->i = 0;
 	pars->word = -1;
 	return (1);
@@ -109,37 +109,31 @@ void ft_block_operator(t_monna *lisa, int nomer_ukaza)
 		lisa->tokens[nomer_ukaza][i] = 0; // разрешить
 }
 
-int	parser(char *line, t_monna *lisa) //обрабтка строки из гнл
+int	parser(char *line, t_monna *lisa, t_pars *p) //обрабтка строки из гнл
 {
-	t_pars	pars;
-
-	if (ft_memory_pars(lisa, line, &pars) == 0)// выделяем память для двумерного массива
+	if (ft_memory_pars(lisa, line, p) == 0)// выделяем память для двумерного массива
 		return (0);
-	while (++pars.word < ft_len_words(line, lisa) && line[pars.i])
+	while (++p->word < ft_len_words(line, lisa) && line[p->i])
 	{
-		pars.j = 0;
-		pars.flag = 1;
-		lisa->flag_block_zvezda = 0;
-		lisa->flag_block_operator = 0;
-		while (line[pars.i] && pars.flag)
+		ft_init_pars(lisa, p);
+		while (line[p->i] && p->flag)
 		{
-			if (line[pars.i] == '\t' || line[pars.i] == ' ')
-				if (!(ft_len_space_tab(line, &pars))) //пропускаем space и табуляции
+			if (line[p->i] == '\t' || line[p->i] == ' ')
+				if (!(ft_len_space_tab(line, p))) //пропускаем space и табуляции
 					break ;
-			if (line[pars.i] != '\t' && line[pars.i] != ' ' && line[pars.i] != ';'
-				&& line[pars.i] != '&' && line[pars.i] != '|')
-				ft_len_alpha_pars(line, &pars, lisa); // добавляе символов,ковычки,экранирование,$
-			if ((line[pars.i] == '|' || line[pars.i] == '&') && pars.flag)
-				ft_operator_pars(&pars, line, lisa); // разделение операторов
-			if ((line[pars.i] == '<' || line[pars.i] == '>') && pars.flag)
-				ft_redirect_pars(&pars, lisa, line); // разделение редиректов
-			if (line[pars.i] == ';' && pars.flag)
-				ft_tochka_zapitaya_pars(&pars, line, lisa); // разделение ;
+			if (line[p->i] != '\t' && line[p->i] != ' ' && line[p->i] != ';'
+				&& line[p->i] != '&' && line[p->i] != '|')
+				ft_len_alpha_pars(line, p, lisa); // добавляе символов,ковычки,экранирование,$
+			if ((line[p->i] == '|' || line[p->i] == '&') && p->flag)
+				ft_operator_pars(p, line, lisa); // разделение операторов
+			if ((line[p->i] == '<' || line[p->i] == '>') && p->flag)
+				ft_redirect_pars(p, lisa, line); // разделение редиректов
+			if (line[p->i] == ';' && p->flag)
+				ft_tochka_zapitaya_pars(p, line, lisa); // разделение ;
 		}
-		lisa->tokens[pars.word][pars.j] = '\0';
-		if (!lisa->flag_block_zvezda)
-			ft_zvezda_epta(lisa, pars.word);
-		ft_block_operator(lisa, pars.word);
+		lisa->tokens[p->word][p->j] = '\0';
+		ft_zvezda_epta(lisa, p->word); // проверка звезд
+		ft_block_operator(lisa, p->word); // проверка операторов
 	}
 	return (1);
 }

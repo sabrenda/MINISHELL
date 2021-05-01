@@ -30,3 +30,11 @@ int proverka_isdigit(char *line, t_pars *len)
 	}
 	return 0;
 }
+
+void	ft_init_pars(t_monna *lisa,t_pars *pars)
+{
+	pars->j = 0;
+	pars->flag = 1;
+	lisa->flag_block_zvezda = 0;
+	lisa->flag_block_operator = 0;
+}
