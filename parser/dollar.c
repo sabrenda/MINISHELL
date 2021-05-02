@@ -74,9 +74,11 @@ void	ft_kov_dollar(t_monna *lisa, char *line, t_pars *len) // $ в ковычк�
 
 void	ft_kov_dollar_pars(t_monna *lisa, char *line, t_pars *len) // $ в ковычках (парсер)
 {
+	char *str;
 	int tmp = 0;
 
 	tmp = 0;
+	
 	ft_clean_tmp_env(lisa);
 	if (!(ft_isalnum(line[len->i + 1])) && line[len->i + 1] != '?')
 	{
@@ -89,8 +91,13 @@ void	ft_kov_dollar_pars(t_monna *lisa, char *line, t_pars *len) // $ в ковы
 		return ;
 	if (line[len->i + 1] == '?') // добавляет вместо вопроса цифру с ошибки, можно atoi для большего числа
 	{
-		lisa->tokens[len->word][len->j++] = line[len->i++];
-		lisa->tokens[len->word][len->j++] = lisa->flag_error + 48;
+		len->i++;
+
+		str = ft_itoa(lisa->flag_error);
+		
+		int l = 0;
+		while (str[l])
+			lisa->tokens[len->word][len->j++] = str[l++];
 		len->i++;
 		len->flag = 0;
 		return ;

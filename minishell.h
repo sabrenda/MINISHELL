@@ -115,5 +115,6 @@ void	m(char *monna, int lisa);
 void	ft_davinci(void);
 void	free_all_1(char *line, t_monna *lisa);
 void	free_all_2(char *line, t_monna *lisa);
+int		ft_pwd(t_monna *lisa, int *count);
 
 #endif

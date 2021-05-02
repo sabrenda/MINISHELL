@@ -16,6 +16,7 @@ SRCS = main.c\
 			utils/init_all.c\
 			executor/executor.c\
 			executor/env.c\
+			executor/ft_pwd.c\
 
 OBJS = $(SRCS:.c=.o)
 

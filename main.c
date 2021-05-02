@@ -57,7 +57,7 @@ int	main(int argc, char **argv, char **env)
 		return (0);
 	while (lisa.status)
 	{
-		ft_putstr_fd("\033[31m༼ つ ◕_◕ ༽つ\033[32m$ ", 1);
+		ft_putstr_fd("\033[31m༼ つ ◕_◕ ༽つ\033[32m ", 1);
 		get_next_line(0, &line); //чтение ввода
 		line = del_start_space(line); // удаляю пробелы и табы в начале + (поиск ошибки при << < > >> & |;)
 		if (line == NULL)

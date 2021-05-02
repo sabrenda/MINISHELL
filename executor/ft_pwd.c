@@ -1,15 +1,11 @@
 #include "../minishell.h"
 
-int	ft_env(t_monna *lisa, int *count) //енв
+int ft_pwd(t_monna *lisa, int *count)
 {
-	int	i;
+	char *s1;
 
-	i = 0;
-	while (lisa->my_env[i])
-	{
-		ft_putendl_fd(lisa->my_env[i], 1);
-		i++;
-	}
+	s1 = getcwd(NULL, 0);
+	ft_putendl_fd(s1, 1);
 	lisa->flag_command = 0;
 	*count += 1;
 	while (lisa->tokens[*count] && ft_operators(lisa->tokens[*count])) //пропускаем аргрументы если есть после env, так как по сабжу без них надо
