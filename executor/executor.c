@@ -1,18 +1,5 @@
 #include "../minishell.h"
 
-// void ft_ampersant(t_monna *lisa, int *i)
-// {
-// 	if (flag != 1)
-// 	{
-// 		while (lisa->tokens[*i] && ft_check(lisa->tokens[*i]))
-// 		{
-// 			*i++
-// 		}
-
-// 	}
-
-// }
-
 // int	ft_echo(t_monna *lisa, int *i)
 // {
 
@@ -115,8 +102,8 @@ int	ft_executor(t_monna *lisa) // основная функция выполне
 			ft_command_start(lisa, &count); // выполнение команд
 		else if (strcmp(lisa->tokens[count], "&&") == 0)
 			ft_ampersant(lisa, &count); // &&
-		// else if (strcmp(lisa->tokens[count], "||") == 0)
-		// 	ft_ili(lisa, &count); // ||
+		else if (strcmp(lisa->tokens[count], "||") == 0)
+			ft_ili(lisa, &count); // ||
 		// else if (strcmp(lisa->tokens[count], "|") == 0)
 		// 	ft_pipe(lisa); // |
 		// else

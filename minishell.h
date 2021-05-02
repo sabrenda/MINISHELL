@@ -43,6 +43,12 @@ typedef struct s_pars
 	char	c;
 }			t_pars;
 
+typedef struct s_er3
+{
+	int		i;
+	int		flag;
+}			t_er3;
+
 // int g_error;
 
 // typedef struct s_flag
@@ -97,6 +103,13 @@ void	ft_zvezda_epta(t_monna *lisa, int nomer_ukaza);
 void	ft_init_pars(t_monna *lisa,t_pars *pars);
 void	ft_block_operator(t_monna *lisa, int nomer_ukaza);
 
+//syntax err
+void	er3_init(t_er3 *er);
+int	ft_err_1(t_monna *lisa);
+int	ft_err_2(t_monna *lisa);
+int	ft_err_3(t_monna *lisa);
+int	ft_search_syntax_error(t_monna *lisa, char* line);
+
 //executor
 int	ft_search_com(char *str);
 int	ft_executor(t_monna *lisa);
@@ -109,12 +122,12 @@ void	ft_ampersant(t_monna *lisa, int *count);
 //utils
 int	ft_lenmassive(char **str);
 int	ft_init_all(t_monna	*lisa, char **env);
+int		ft_pwd(t_monna *lisa, int *count);
 void	ft_monnalisa(void);
 void	ft_monnalisa_2(void);
 void	m(char *monna, int lisa);
 void	ft_davinci(void);
 void	free_all_1(char *line, t_monna *lisa);
 void	free_all_2(char *line, t_monna *lisa);
-int		ft_pwd(t_monna *lisa, int *count);
 
 #endif

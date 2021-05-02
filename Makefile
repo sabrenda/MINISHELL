@@ -10,6 +10,7 @@ SRCS = main.c\
 			parser/utils.c\
 			parser/zvezda.c\
 			parser/zvezda2.c\
+			parser/syntax_err.c\
 			utils/davinci.c\
 			utils/utils.c\
 			utils/free.c\
