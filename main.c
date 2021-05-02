@@ -73,7 +73,7 @@ int	main(int argc, char **argv, char **env)
 			write(1, "\n", 1);
 			i++;
 		}
-		// ft_executor(&lisa); // выполнение , после exit статус = 0
+		ft_executor(&lisa); // выполнение , или после exit статус = 0
 		free_all_1(line, &lisa);
 	}
 	free_all_2(line, &lisa);

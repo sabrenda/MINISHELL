@@ -39,8 +39,10 @@
 
 int	ft_operators(char *str) //проверяет является ли это оператором
 {
-	if (!(strcmp(str, "&&")) || !(strcmp(str, "||"))
-		|| !(strcmp(str, "|")) || !(strcmp(str, ";")))
+	if ((!(strcmp(str, "&&")) && str[3] == 0)
+		|| (!(strcmp(str, "||")) && str[3] == 0)
+		|| (!(strcmp(str, "|")) && str[2] == 0)
+		|| (!(strcmp(str, ";")) && str[2] == 0))
 		return (0);
 	return (1);
 }
@@ -106,18 +108,21 @@ int	ft_executor(t_monna *lisa) // основная функция выполне
 	int	count;
 
 	lisa->flag_command = 0; // флаг который определяет выполнилась ли команда (если да то 0, нет 1)
+	count = 0;
 	while (lisa->tokens[count])
 	{
 		if (ft_search_com(lisa->tokens[count])) // ft_search_com смотрит является ли это командой
 			ft_command_start(lisa, &count); // выполнение команд
-		else if (strcmp(lisa->tokens[count], "&&") == 0)
-			ft_ampersant(lisa, &count); // &&
-		else if (strcmp(lisa->tokens[count], "||") == 0)
-			ft_ili(lisa, &count); // ||
+		// else if (strcmp(lisa->tokens[count], "&&") == 0)
+		// 	ft_ampersant(lisa, &count); // &&
+		// else if (strcmp(lisa->tokens[count], "||") == 0)
+		// 	ft_ili(lisa, &count); // ||
 		// else if (strcmp(lisa->tokens[count], "|") == 0)
 		// 	ft_pipe(lisa); // |
 		// else
 		// 	ft_prosto_argument(lisa); // blabla
+		else
+			return (0);
 	}
 	return (1);
 }
