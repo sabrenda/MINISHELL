@@ -1,34 +1,14 @@
 #include "../minishell.h"
 
-// int	ft_echo(t_monna *lisa, int *i)
-// {
-
-// int	fd;
-// fd = open("fileX", O_CREAT, O_RDWR);
-
-// 	*i++;
-// 	while (1)
-// 	{
-// 		if (lisa->tokens[*i] == NULL || ft_check(lisa->tokens[*i]))
-// 		{
-// 			file = '\n';
-// 			break;
-// 		}
-// 		if (lisa->tokens[*i] && ft_check(lisa->tokens[*i]) != 1)
-// 		{
-// 			file = lisa->tokens[*i];
-// 			file = ' ';
-// 		}
-// 		*i++;
-// 	}
-// 	return (1);
-// }
-
 int	ft_operators(char *str) //проверяет является ли это оператором
 {
 	if ((!(strcmp(str, "&&")) && str[3] == 0)
 		|| (!(strcmp(str, "||")) && str[3] == 0)
 		|| (!(strcmp(str, "|")) && str[2] == 0)
+		|| (!(strcmp(str, ">")) && str[2] == 0)
+		|| (!(strcmp(str, "<")) && str[2] == 0)
+		|| (!(strcmp(str, ">>")) && str[3] == 0)
+		|| (!(strcmp(str, "<<")) && str[3] == 0)
 		|| (!(strcmp(str, ";")) && str[2] == 0))
 		return (0);
 	return (1);
@@ -43,9 +23,7 @@ void	ft_ampersant(t_monna *lisa, int *count)
 			*count += 1;
 	}
 	else
-	{
 		*count += 1;
-	}
 }
 
 void	ft_ili(t_monna *lisa, int *count)
@@ -90,10 +68,81 @@ void	ft_command_start(t_monna *lisa, int *count) // работа команд
 	// 	ft_exit(lisa, count);
 }
 
+char **ft_copy_massive(t_monna *lisa, int i)
+{
+	char	**str;
+	int		j;
+	int		tmp;
+
+	tmp = i;
+	j = 0;
+	while (lisa->tokens[i] && ft_operators(lisa->tokens[i]))
+	{
+		i++;
+		j++;
+	}
+	i = tmp;
+	str = (char **)malloc(sizeof(char *) * (j + 1));
+	j = 0;
+	while (lisa->tokens[i] && ft_operators(lisa->tokens[i]))
+	{
+		str[j] = ft_strdup(lisa->tokens[i]);
+		j++;
+		i++;
+	}
+	str[j] = NULL;
+	return (str);
+}
+void	ft_free_mass(char	**mas)
+{
+	int	i = 0;
+
+	while (mas[i])
+		free (mas[i++]);
+	free (mas);
+}
+
+int	ft_any_argument(t_monna *lisa, int *count)
+{
+	pid_t	pid;
+	pid_t	wpid;
+	int		status;
+	char	*str;
+	char	**mas;
+
+	mas = ft_copy_massive(lisa, *count);
+	pid = fork();
+	if (pid == 0) // Дочерний процесс
+	{
+		str = ft_strjoin("/bin/", mas[0]);
+		if (execve(str, mas, lisa->my_env) == -1)
+		{
+			printf("minishell: %s: command not found\n", mas[0]);
+			lisa->flag_error = 1;
+		}
+		free (str);
+		exit(EXIT_FAILURE);
+	}
+	else // Родительский процес
+	{
+		wpid = waitpid(pid, &status, WUNTRACED);
+		while (!WIFEXITED(status) && !WIFSIGNALED(status))
+			wpid = waitpid(pid, &status, WUNTRACED);
+	}
+	ft_free_mass(mas);
+	mas = NULL;
+	return (status);
+}
+
 int	ft_executor(t_monna *lisa) // основная функция выполнения
 {
 	int	count;
-
+	// int fildes[2];
+	// 0 - 0
+	// int std1 = dup(1);
+	// dup2(fildes[1], 1);
+	// dup2(fildes[0], 0);
+	// 1 - 1
 	lisa->flag_command = 0; // флаг который определяет выполнилась ли команда (если да то 0, нет 1)
 	count = 0;
 	while (lisa->tokens[count])
@@ -106,10 +155,16 @@ int	ft_executor(t_monna *lisa) // основная функция выполне
 			ft_ili(lisa, &count); // ||
 		// else if (strcmp(lisa->tokens[count], "|") == 0)
 		// 	ft_pipe(lisa); // |
-		// else
-		// 	ft_prosto_argument(lisa); // blabla
 		else
+		{
+			lisa->flag_command = ft_any_argument(lisa, &count); // blabla
+			lisa->flag_error = lisa->flag_command;
+			while (lisa->tokens[count] && ft_operators(lisa->tokens[count])) //пропускаем аргрументы если есть после env, так как по сабжу без них надо
+				count += 1;
+		}
+		if (lisa->tokens[count] == NULL)
 			return (0);
 	}
+	// dup2(std1, 1);
 	return (1);
 }

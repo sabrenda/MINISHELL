@@ -6,7 +6,7 @@
 #    By: sabrenda <sabrenda@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/09 11:33:18 by tchariss          #+#    #+#              #
-#    Updated: 2021/04/28 15:49:11 by sabrenda         ###   ########.fr        #
+#    Updated: 2021/05/03 20:35:53 by sabrenda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ BONUS = ft_lstnew.c ft_lstiter.c \
 
 BONUSO = $(BONUS:.c=.o)
 
-FLAGS = -Wall -Wextra -Werror -c
+FLAGS = -g -Wall -Wextra -Werror -c
 
 %.o: %.c
 	clang $(FLAGS) $< -o $@

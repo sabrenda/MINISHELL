@@ -23,7 +23,7 @@ OBJS = $(SRCS:.c=.o)
 
 GCC = clang
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -g -Wall -Wextra -Werror
 
 %.o: %.c
 	$(GCC) -c $< -o $(<:.c=.o)
