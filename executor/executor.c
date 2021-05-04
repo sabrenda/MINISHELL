@@ -31,8 +31,8 @@ void	ft_command_start(t_monna *lisa, int *count) // работа команд
 {
 	if (!(strcmp(lisa->tokens[*count], "env")))
 		lisa->flag_command = ft_env(lisa, count);
-	// else if (!(strcmp(lisa->tokens[*count], "cd")))
-	// 	lisa->flag_command = ft_cd(lisa, count);
+	else if (!(strcmp(lisa->tokens[*count], "cd")))
+		lisa->flag_command = ft_cd(lisa, count);
 	else if (!(strcmp(lisa->tokens[*count], "pwd")))
 		lisa->flag_command = ft_pwd(lisa, count);// если после pwd идут просто аргументы то пропускаешь их до && || | ; или NULL
 	// else if (!(strcmp(lisa->tokens[*count], "export")))

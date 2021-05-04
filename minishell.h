@@ -144,4 +144,18 @@ void	ft_davinci(void);
 void	free_all_1(char *line, t_monna *lisa);
 void	free_all_2(char *line, t_monna *lisa);
 
+
+//cd
+int	ft_cd(t_monna *lisa, int *count);
+void	change_oldpwd(t_monna *lisa, char *cur_k);
+void	go_change_pat_pwd(t_monna *lisa, char *s);  //cur_k станет oldpwd
+char	*search_home(t_monna *lisa);
+int search_arg(t_monna *lisa, int *count);
+int	ft_copy_massive_env(t_monna *lisa, char *tmp);
+char	*strchr_boss(const char *s, int c);
+
+
+
+
+
 #endif
