@@ -49,6 +49,15 @@ typedef struct s_er3
 	int		flag;
 }			t_er3;
 
+typedef struct s_any
+{
+	pid_t	pid;
+	pid_t	wpid;
+	int		status;
+	char	*str;
+	char	**mas;
+}			t_any;
+
 // int g_error;
 
 // typedef struct s_flag
@@ -118,6 +127,11 @@ int	ft_operators(char *str);
 void	ft_command_start(t_monna *lisa, int *count);
 void	ft_ili(t_monna *lisa, int *count);
 void	ft_ampersant(t_monna *lisa, int *count);
+int		ft_any_argument(t_monna *lisa, int *count);
+void	ft_free_mass(char	**mas);
+char **ft_copy_massive(t_monna *lisa, int i);
+int	ft_search_com(char *str);
+int	ft_operators(char *str);
 
 //utils
 int	ft_lenmassive(char **str);

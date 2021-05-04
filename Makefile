@@ -17,6 +17,8 @@ SRCS = main.c\
 			utils/init_all.c\
 			executor/executor.c\
 			executor/env.c\
+			executor/any_argument.c\
+			executor/ex_utils.c\
 			executor/ft_pwd.c\
 
 OBJS = $(SRCS:.c=.o)
