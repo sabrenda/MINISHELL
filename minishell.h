@@ -55,6 +55,7 @@ typedef struct s_any
 	pid_t	wpid;
 	int		status;
 	char	*str;
+	char	*tmp;
 	char	**mas;
 }			t_any;
 
@@ -132,6 +133,7 @@ void	ft_free_mass(char	**mas);
 char **ft_copy_massive(t_monna *lisa, int i);
 int	ft_search_com(char *str);
 int	ft_operators(char *str);
+void ft_proverka_absol_relat(t_any *any);
 
 //utils
 int	ft_lenmassive(char **str);
@@ -145,15 +147,31 @@ void	free_all_1(char *line, t_monna *lisa);
 void	free_all_2(char *line, t_monna *lisa);
 
 
+
 //cd
 int	ft_cd(t_monna *lisa, int *count);
 void	change_oldpwd(t_monna *lisa, char *cur_k);
 void	go_change_pat_pwd(t_monna *lisa, char *s);  //cur_k станет oldpwd
-char	*search_home(t_monna *lisa);
+int		search_home(t_monna *lisa);
 int search_arg(t_monna *lisa, int *count);
 int	ft_copy_massive_env(t_monna *lisa, char *tmp);
 char	*strchr_boss(const char *s, int c);
+void	err_cd(t_monna *lisa, int *count);
 
+//export
+int	ft_export(t_monna *lisa, int *count);
+void sort_env(t_monna *lisa);
+void	print_sort_env(t_monna *lisa);
+void	err_exp(t_monna *lisa, char *s);
+int	search_per_env(t_monna *lisa, char *str, int len);
+int	len_arg(char *str);
+void	add_per_env(t_monna *lisa, char *str);
+void	keep_exp(t_monna *lisa, char *str);
+
+//unset
+int	ft_unset(t_monna *lisa, int *count);
+int	delete_per(t_monna *lisa, char *str);
+void	err_uns(t_monna *lisa, char *s);
 
 
 

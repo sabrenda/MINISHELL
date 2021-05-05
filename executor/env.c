@@ -7,7 +7,8 @@ int	ft_env(t_monna *lisa, int *count) //енв
 	i = 0;
 	while (lisa->my_env[i])
 	{
-		ft_putendl_fd(lisa->my_env[i], 1);
+		// if (strchr(lisa->my_env[i], 61) == 0)
+			ft_putendl_fd(lisa->my_env[i], 1);
 		i++;
 	}
 	lisa->flag_command = 0;

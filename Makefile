@@ -20,7 +20,10 @@ SRCS = main.c\
 			executor/any_argument.c\
 			executor/ex_utils.c\
 			executor/ft_pwd.c\
-			executor/cd1.c\
+			executor/cd.c\
+			executor/utils2.c\
+			executor/ft_export.c\
+			executor/ft_unset.c\
 
 OBJS = $(SRCS:.c=.o)
 

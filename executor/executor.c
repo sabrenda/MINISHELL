@@ -35,10 +35,10 @@ void	ft_command_start(t_monna *lisa, int *count) // работа команд
 		lisa->flag_command = ft_cd(lisa, count);
 	else if (!(strcmp(lisa->tokens[*count], "pwd")))
 		lisa->flag_command = ft_pwd(lisa, count);// если после pwd идут просто аргументы то пропускаешь их до && || | ; или NULL
-	// else if (!(strcmp(lisa->tokens[*count], "export")))
-	// 	lisa->flag_command = ft_export(lisa, count);
-	// else if (!(strcmp(lisa->tokens[*count], "unset")))
-	// 	lisa->flag_command = ft_unset(lisa, count);
+	else if (!(strcmp(lisa->tokens[*count], "export")))
+		lisa->flag_command = ft_export(lisa, count);
+	else if (!(strcmp(lisa->tokens[*count], "unset")))
+		lisa->flag_command = ft_unset(lisa, count);
 	// else if (!(strcmp(lisa->tokens[*count], "echo")))
 	// 	lisa->flag_command = ft_echo(lisa, count); // если после env идут просто аргументы то пропускаешь их до && || | ; или NULL
 	// else if (!(strcmp(lisa->tokens[*count], "exit")))
