@@ -48,34 +48,25 @@ void	ft_command_start(t_monna *lisa, int *count) // работа команд
 int	ft_executor(t_monna *lisa) // основная функция выполнения
 {
 	int	count;
-	// int fildes[2];
-	// 0 - 0
-	// int std1 = dup(1);
-	// dup2(fildes[1], 1);
-	// dup2(fildes[0], 0);
-	// 1 - 1
 	lisa->flag_command = 0; // флаг который определяет выполнилась ли команда (если да то 0, нет 1)
 	count = 0;
 	while (lisa->tokens[count])
 	{
+		ft_pipe(lisa, count);
 		if (ft_search_com(lisa->tokens[count])) // ft_search_com смотрит является ли это командой
 			ft_command_start(lisa, &count); // выполнение команд
-		else if (strcmp(lisa->tokens[count], "&&") == 0)
-			ft_ampersant(lisa, &count); // &&
-		else if (strcmp(lisa->tokens[count], "||") == 0)
-			ft_ili(lisa, &count); // ||
-		// else if (strcmp(lisa->tokens[count], "|") == 0)
-		// 	ft_pipe(lisa); // |
+		else if (!strcmp(lisa->tokens[count], "&&"))
+			ft_ampersant(lisa, &count);
+		else if (!strcmp(lisa->tokens[count], "||"))
+			ft_ili(lisa, &count);
 		else
 		{
 			lisa->flag_command = ft_any_argument(lisa, &count); // другая команда либо ошибка
 			lisa->flag_error = lisa->flag_command;
-			while (lisa->tokens[count] && ft_operators(lisa->tokens[count]))
-				count += 1;
 		}
+		ft_pipe2(lisa, &count);
 		if (lisa->tokens[count] == NULL)
 			return (0);
 	}
-	// dup2(std1, 1);
 	return (1);
 }

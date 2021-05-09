@@ -3,23 +3,18 @@
 void	keep_exp(t_monna *lisa, char *str)
 {
 	int i;
+	int check;
 
+	check = 0;
 	i = 0;
-	while (lisa->my_env[i])
+	while (lisa->my_env[i] && strcmp(lisa->my_env[i], str) == 0)
 	{
 		if (strcmp(lisa->my_env[i], str) == 0)
-		{
-			// ft_free_mass(lisa->my_env);
-			ft_copy_massive_env(lisa, str);
-		}
+			check = 1;
 		i++;
 	}
-}
-
-void	add_per_env(t_monna *lisa, char *str)
-{
-	// ft_free_mass(lisa->my_env);
-	ft_copy_massive_env(lisa, str);
+	if (check != 1)
+		ft_copy_massive_env(lisa, str);
 }
 
 int	len_arg(char *str)
@@ -27,9 +22,9 @@ int	len_arg(char *str)
 	int i;
 
 	i = 0;
-	while (str)
+	while (str[i])
 	{
-		if (*str == '=')
+		if (str[i] == '=')
 		{
 			i++;
 			return (i);
@@ -40,16 +35,17 @@ int	len_arg(char *str)
 }
 
 int	search_per_env(t_monna *lisa, char *str, int len)
-{// ищет такую переменную в структуре
+{
 	int i;
 
 	i = 0;
 	while(lisa->my_env[i])
 	{
+	
 		if (ft_strncmp(lisa->my_env[i], str, len) == 0) 
 		{
 			free(lisa->my_env[i]);
-			lisa->my_env[i] = ft_strdup(str);  // malloc
+			lisa->my_env[i] = ft_strdup(str);
 			return (0);
 		}
 		i++;
@@ -130,15 +126,14 @@ int	ft_export(t_monna *lisa, int *count)
 		if (strchr(lisa->tokens[*count], 61) != NULL)
 		{
 			t = search_per_env(lisa, lisa->tokens[*count], len_arg(lisa->tokens[*count]));
-			// t = 0 // переменная существовала и мы ее изменили
 			if (t == 1)
-				add_per_env(lisa, lisa->tokens[*count]);
+				ft_copy_massive_env(lisa, lisa->tokens[*count]);
 		}
 		else
 			keep_exp(lisa, lisa->tokens[*count]);		
 	}
 	lisa->flag_command = 0;
-	while (lisa->tokens[*count] && ft_operators(lisa->tokens[*count])) //пропускаем аргрументы если есть после env, так как по сабжу без них надо
+	while (lisa->tokens[*count] && ft_operators(lisa->tokens[*count]))
 		*count += 1;
 	lisa->flag_error = 0;
 	return (0);

@@ -24,6 +24,7 @@ SRCS = main.c\
 			executor/utils2.c\
 			executor/ft_export.c\
 			executor/ft_unset.c\
+			executor/pipe.c\
 
 OBJS = $(SRCS:.c=.o)
 

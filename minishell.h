@@ -24,7 +24,10 @@ typedef struct s_monna
 	char	**tokens;
 	char	*tmp_env;
 	int		status;
-	// int		pipe;
+	int		fildes[2];
+	int		flag_pipe;
+	int		fd_input;
+	int		fd_output;
 	char	**pars_tokk;
 	int		flag_error;
 	int		flag_block_zvezda;
@@ -133,6 +136,7 @@ void	ft_free_mass(char	**mas);
 char **ft_copy_massive(t_monna *lisa, int i);
 int	ft_search_com(char *str);
 int	ft_operators(char *str);
+int	ft_operators_2(char *str);
 void ft_proverka_absol_relat(t_any *any);
 
 //utils
@@ -146,7 +150,11 @@ void	ft_davinci(void);
 void	free_all_1(char *line, t_monna *lisa);
 void	free_all_2(char *line, t_monna *lisa);
 
-
+//pipe
+void	ft_pipe(t_monna *lisa, int i);
+void	ft_pipe_stdin(t_monna *lisa);
+void	ft_pipe_end(t_monna *lisa);
+void	ft_pipe2(t_monna *lisa, int *count);
 
 //cd
 int	ft_cd(t_monna *lisa, int *count);

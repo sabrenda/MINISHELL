@@ -18,6 +18,7 @@ int	ft_bin(char	*str)
 }
 void ft_proverka_absol_relat(t_any *any)
 {
+	any->str = NULL;
 	if (ft_bin(any->mas[0])) // bin
 		any->str = ft_strjoin("/bin/", any->mas[0]);
 	if (!any->str && !(ft_strncmp(any->mas[0], "./", 2))) // релатив
@@ -30,15 +31,15 @@ void ft_proverka_absol_relat(t_any *any)
 		any->str = ft_strjoin("" , any->mas[0]);
 }
 
-int	ft_any_argument(t_monna *lisa, int *count)
+
+int	ft_any_argument(t_monna *lisa, int *count) //
 {
 	t_any	any;
+	int		fd;
 
-	any.mas = ft_copy_massive(lisa, *count);
-	any.str = NULL;
+	any.mas = ft_copy_massive(lisa, *count); //копируем аргументы до "&& || > < ; |"
+	//fd = ft_rederect;
 	ft_proverka_absol_relat(&any); // проверяю /bin/ релативный и абсолютный путь
-	if (!any.str)
-		any.str = ft_strjoin("" , any.mas[0]);
 	any.pid = fork();
 	if (any.pid == 0) // Дочерний процесс
 	{
@@ -54,5 +55,8 @@ int	ft_any_argument(t_monna *lisa, int *count)
 	ft_free_mass(any.mas);
 	if (any.status == 256)
 		any.status = 127;
+	// printf("flag = %d\n", lisa->flag_pipe);
+	while (lisa->tokens[*count] && ft_operators_2(lisa->tokens[*count]))
+		*count += 1;
 	return (any.status);
 }

@@ -57,3 +57,26 @@ int	ft_operators(char *str) //проверяет является ли это о
 		return (0);
 	return (1);
 }
+
+int	ft_operators_2(char *str) //проверяет является ли это оператором
+{
+	if ((!(strcmp(str, "&&")) && str[3] == 0)
+		|| (!(strcmp(str, "||")) && str[3] == 0)
+		|| (!(strcmp(str, "|")) && str[2] == 0)
+		|| (!(strcmp(str, "<")) && str[2] == 0)
+		|| (!(strcmp(str, ">")) && str[2] == 0)
+		|| (!(strcmp(str, ">>")) && str[3] == 0)
+		|| (!(strcmp(str, "<<")) && str[3] == 0)
+		|| (!(strcmp(str, ";")) && str[2] == 0))
+		return (0);
+	return (1);
+}
+int	ft_red_serch(char *str) //проверяет является ли это редиректом
+{
+	if ((!(strcmp(str, ">")) && str[2] == 0)
+		|| (!(strcmp(str, "<")) && str[2] == 0)
+		|| (!(strcmp(str, ">>")) && str[3] == 0)
+		|| (!(strcmp(str, "<<")) && str[3] == 0))
+		return (1);
+	return (0);
+}

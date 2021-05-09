@@ -94,6 +94,8 @@ int	ft_search_syntax_error(t_monna *lisa, char* line)
 	int	w;
 	int	e;
 
+	lisa->fd_input = dup(0);
+	lisa->fd_output = dup(1);
 	q = ft_err_1(lisa); // проверка на начало и повтор операторов
 	w = ft_err_2(lisa); // проверка на концовку операторов
 	e = ft_err_3(lisa); // проверка есть ли аргумент после редиректа
