@@ -14,6 +14,7 @@ SRCS = main.c\
 			utils/davinci.c\
 			utils/utils.c\
 			utils/free.c\
+			utils/shell_lvl.c\
 			utils/init_all.c\
 			executor/executor.c\
 			executor/env.c\
@@ -25,6 +26,7 @@ SRCS = main.c\
 			executor/ft_export.c\
 			executor/ft_unset.c\
 			executor/pipe.c\
+			executor/ft_echo.c\
 
 OBJS = $(SRCS:.c=.o)
 

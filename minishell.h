@@ -19,12 +19,12 @@
 
 typedef struct s_monna
 {
-	char	**commands;
 	char	**my_env;
 	char	**tokens;
 	char	*tmp_env;
 	int		status;
 	int		fildes[2];
+	int		shell_lvl;
 	int		flag_pipe;
 	int		fd_input;
 	int		fd_output;
@@ -64,19 +64,10 @@ typedef struct s_any
 
 // int g_error;
 
-// typedef struct s_flag
-// {
-// 	int f_echo;
-// 	int f_cd;
-// 	int f_pwd;
-// 	int f_export;
-// 	int f_unset;
-// 	int f_env;
-// 	int f_exit;
-// 	int nothing;
-// 	int f_ls;
-// 	int f8;
-// }				t_flag;
+//shell_lvl
+void	ft_shell_lvl(char **argv, t_monna *lisa);
+void	ft_shell_else(t_monna *lisa, int u, char **argv);
+void	ft_shell_if(t_monna *lisa, int u);
 
 //parser
 int	ft_init_all(t_monna	*lisa, char **env);
@@ -155,6 +146,10 @@ void	ft_pipe(t_monna *lisa, int i);
 void	ft_pipe_stdin(t_monna *lisa);
 void	ft_pipe_end(t_monna *lisa);
 void	ft_pipe2(t_monna *lisa, int *count);
+
+//echo
+int	ft_echo(t_monna *lisa, int *count);
+int search_n(char *str);
 
 //cd
 int	ft_cd(t_monna *lisa, int *count);

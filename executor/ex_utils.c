@@ -23,8 +23,9 @@ char **ft_copy_massive(t_monna *lisa, int i)
 		j++;
 	}
 	i = tmp;
-	str = (char **)malloc(sizeof(char *) * (j + 1));
+	str = (char **)malloc(sizeof(char *) * (j + 2)); // добавить ее в лизу
 	j = 0;
+	ft_bzero(str, sizeof(char **));
 	while (lisa->tokens[i] && ft_operators(lisa->tokens[i]))
 	{
 		str[j] = ft_strdup(lisa->tokens[i]);
@@ -32,6 +33,20 @@ char **ft_copy_massive(t_monna *lisa, int i)
 		i++;
 	}
 	str[j] = NULL;
+	str[j + 1] = NULL;
+	if (str[0] && !strncmp(str[0], "./minishell", 11))
+	{
+		if (str[1] == NULL)
+		{
+			str[1] = ft_strdup(ft_itoa(lisa->shell_lvl));
+			str[2] = NULL;
+		}
+		else
+		{
+			free (str[1]);
+			str[1] = ft_strdup(ft_itoa(lisa->shell_lvl));
+		}
+	}
 	return (str);
 }
 

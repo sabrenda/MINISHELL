@@ -3,13 +3,13 @@
 
 int	main(int argc, char **argv, char **env)
 {
-	int		i;
 	t_monna	lisa;
 	t_pars	pars;
 	char	*line;
 
 	if (!(ft_init_all(&lisa, env)))
 		return (0);
+	ft_shell_lvl(argv, &lisa);
 	while (lisa.status)
 	{
 		ft_putstr_fd("\033[0;1;41m༼ つ ◕_◕ ༽つ\033[0;32m$ ", 0);
@@ -21,13 +21,6 @@ int	main(int argc, char **argv, char **env)
 		parser(line, &lisa, &pars); //парсим строку
 		if (ft_search_syntax_error(&lisa, line))
 			continue;
-		// i = 0;
-		// while (lisa.tokens[i])
-		// {
-		// 	ft_putstr_fd(lisa.tokens[i], 1);
-		// 	write(1, "\n", 1);
-		// 	i++;
-		// }
 		ft_executor(&lisa); // выполнение , или после exit статус = 0
 		free_all_1(line, &lisa);
 	}
