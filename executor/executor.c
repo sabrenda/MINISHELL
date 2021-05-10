@@ -27,14 +27,14 @@ void	ft_ili(t_monna *lisa, int *count)
 	}
 }
 
-void	ft_command_start(t_monna *lisa, int *count) // работа команд
+void	ft_command_start(t_monna *lisa, int *count)      // работа команд
 {
 	if (!(strcmp(lisa->tokens[*count], "env")))
 		lisa->flag_command = ft_env(lisa, count);
 	else if (!(strcmp(lisa->tokens[*count], "cd")))
 		lisa->flag_command = ft_cd(lisa, count);
 	else if (!(strcmp(lisa->tokens[*count], "pwd")))
-		lisa->flag_command = ft_pwd(lisa, count);// если после pwd идут просто аргументы то пропускаешь их до && || | ; или NULL
+		lisa->flag_command = ft_pwd(lisa, count);        // если после pwd идут просто аргументы то пропускаешь их до && || | ; или NULL
 	else if (!(strcmp(lisa->tokens[*count], "export")))
 		lisa->flag_command = ft_export(lisa, count);
 	else if (!(strcmp(lisa->tokens[*count], "unset")))
@@ -53,12 +53,15 @@ int	ft_executor(t_monna *lisa) // основная функция выполне
 	while (lisa->tokens[count])
 	{
 		ft_pipe(lisa, count);
+		// ft_redirect_executor(lisa, count);
 		if (ft_search_com(lisa->tokens[count])) // ft_search_com смотрит является ли это командой
-			ft_command_start(lisa, &count); // выполнение команд
+			ft_command_start(lisa, &count);     // выполнение команд
 		else if (!strcmp(lisa->tokens[count], "&&"))
 			ft_ampersant(lisa, &count);
 		else if (!strcmp(lisa->tokens[count], "||"))
 			ft_ili(lisa, &count);
+		else if (!strcmp(lisa->tokens[count], ";"))
+			count += 1;
 		else
 		{
 			lisa->flag_command = ft_any_argument(lisa, &count); // другая команда либо ошибка
@@ -70,3 +73,4 @@ int	ft_executor(t_monna *lisa) // основная функция выполне
 	}
 	return (1);
 }
+ //                    echo asd > a > b

@@ -7,4 +7,3 @@ echo 'a'*
 echo ""*''
 
 echo dsd && sadssadas > sas > fas < tas > zas // остановится на tas так как такого файла нету (zas создан не будет)
-expo0+

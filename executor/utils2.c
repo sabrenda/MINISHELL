@@ -54,10 +54,11 @@ int	ft_copy_massive_env(t_monna *lisa, char *tmp)
 
 int	search_arg(t_monna *lisa, int *count)
 {
-	if (!(lisa->tokens[*count]) || strcmp(lisa->tokens[*count], "&&") == 0
-		|| strcmp(lisa->tokens[*count], "||") == 0
-		|| strcmp(lisa->tokens[*count], "|") == 0
-		|| strcmp(lisa->tokens[*count], ";") == 0)
+	if (!(lisa->tokens[*count])
+		|| (!strcmp(lisa->tokens[*count], "&&") && lisa->tokens[*count][3] == 0)
+		|| (!strcmp(lisa->tokens[*count], "||") && lisa->tokens[*count][3] == 0)
+		|| (!strcmp(lisa->tokens[*count], "|") && lisa->tokens[*count][2] == 0)
+		|| (!strcmp(lisa->tokens[*count], ";") && lisa->tokens[*count][2] == 0))
 		return 0;
 	return 1;
 }

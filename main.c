@@ -21,6 +21,11 @@ int	main(int argc, char **argv, char **env)
 		parser(line, &lisa, &pars); //парсим строку
 		if (ft_search_syntax_error(&lisa, line))
 			continue;
+		//---------------------------------------------
+		// int i = 0;
+		// while (lisa.tokens[i])
+		// 	printf("%s\n", lisa.tokens[i++]);
+		//---------------------------------------------
 		ft_executor(&lisa); // выполнение , или после exit статус = 0
 		free_all_1(line, &lisa);
 	}

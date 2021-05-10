@@ -14,12 +14,24 @@ void	err_cd(t_monna *lisa, int *count)
 int	search_home(t_monna *lisa)
 {
 	int i;
+	int j;
+
 	i = 0;
 	while (lisa->my_env[i])
 	{
-		if (strncmp(lisa->my_env[i], "HOME=", 5) == 0)
+		if (!strncmp(lisa->my_env[i], "HOME=", 5))
 		{
-			chdir(strchr_boss(lisa->my_env[i], '='));
+			chdir(lisa->my_env[i] + 5);
+			j = 0;
+			while (lisa->my_env[j])
+			{
+				if (!strncmp(lisa->my_env[j], "PWD=", 4))
+				{
+					free (lisa->my_env[j]);
+					lisa->my_env[j] = ft_strjoin("PWD=", lisa->my_env[i] + 5);
+				}
+				j++;
+			}
 			return (0);
 		}
 		i++;
