@@ -41,8 +41,34 @@ void	ft_command_start(t_monna *lisa, int *count)      // работа коман
 		lisa->flag_command = ft_unset(lisa, count);
 	else if (!(strcmp(lisa->tokens[*count], "echo")))
 		lisa->flag_command = ft_echo(lisa, count);
-	// else if (!(strcmp(lisa->tokens[*count], "exit")))
-	// 	ft_exit(lisa, count);
+	else if (!(strcmp(lisa->tokens[*count], "exit")))
+		ft_exit(lisa, count);
+}
+
+int	ft_operators_red(char *str) //проверяет является ли это оператором
+{
+	if ((!(strcmp(str, "&&")) && str[3] == 0)
+		|| (!(strcmp(str, "||")) && str[3] == 0)
+		|| (!(strcmp(str, ";")) && str[2] == 0))
+		return (0);
+	return (1);
+}
+
+void	ft_redirect_executor(t_monna *lisa, int i)
+{
+	int flag = 0;
+
+	while (lisa->tokens[i] && ft_operators_red(lisa->tokens[i]))
+	{
+		if ((!(strcmp(lisa->tokens[i], "|")) && lisa->tokens[2] == 0) && flag)
+			break ;
+		if (ft_red_serch(lisa->tokens[i]))
+			flag = 1;
+		i++;
+	}
+	if (!flag)
+		return ;
+
 }
 
 int	ft_executor(t_monna *lisa) // основная функция выполнения
@@ -53,7 +79,7 @@ int	ft_executor(t_monna *lisa) // основная функция выполне
 	while (lisa->tokens[count])
 	{
 		ft_pipe(lisa, count);
-		// ft_redirect_executor(lisa, count);
+		ft_redirect_executor(lisa, count);
 		if (ft_search_com(lisa->tokens[count])) // ft_search_com смотрит является ли это командой
 			ft_command_start(lisa, &count);     // выполнение команд
 		else if (!strcmp(lisa->tokens[count], "&&"))

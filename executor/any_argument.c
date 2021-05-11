@@ -38,7 +38,6 @@ int	ft_any_argument(t_monna *lisa, int *count) //
 	int		fd;
 
 	any.mas = ft_copy_massive(lisa, *count); //копируем аргументы до "&& || > < ; |"
-	//fd = ft_rederect;
 	ft_proverka_absol_relat(&any); // проверяю /bin/ релативный и абсолютный путь
 	any.pid = fork();
 	if (any.pid == 0) // Дочерний процесс
@@ -55,7 +54,6 @@ int	ft_any_argument(t_monna *lisa, int *count) //
 	ft_free_mass(any.mas);
 	if (any.status == 256)
 		any.status = 127;
-	// printf("flag = %d\n", lisa->flag_pipe);
 	while (lisa->tokens[*count] && ft_operators_2(lisa->tokens[*count]))
 		*count += 1;
 	return (any.status);

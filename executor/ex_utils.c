@@ -34,7 +34,7 @@ char **ft_copy_massive(t_monna *lisa, int i)
 	}
 	str[j] = NULL;
 	str[j + 1] = NULL;
-	if (str[0] && !strncmp(str[0], "./minishell", 11))
+	if (str[0] && !strncmp(str[0], "./minishell", 11)) // можно переделать на execve("/bin/ps", .., ..) и считать bash и ./minishell
 	{
 		if (str[1] == NULL)
 		{
