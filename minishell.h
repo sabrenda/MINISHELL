@@ -178,7 +178,7 @@ void	err_uns(t_monna *lisa, char *s);
 
 //exit
 int	ft_exit(t_monna *lisa, int *count);
-int	boss_isdigit(int c);
+int	boss_isdigit(char *c);
 int	err_many_arg(t_monna *lisa);
 int	ft_lenstr(char **mas);
 int	boss_atoi(t_monna *lisa, int *count, const char *str);

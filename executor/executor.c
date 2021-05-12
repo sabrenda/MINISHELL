@@ -54,22 +54,22 @@ int	ft_operators_red(char *str) //проверяет является ли эт�
 	return (1);
 }
 
-void	ft_redirect_executor(t_monna *lisa, int i)
-{
-	int flag = 0;
+// void	ft_redirect_executor(t_monna *lisa, int i)
+// {
+// 	int flag = 0;
 
-	while (lisa->tokens[i] && ft_operators_red(lisa->tokens[i]))
-	{
-		if ((!(strcmp(lisa->tokens[i], "|")) && lisa->tokens[2] == 0) && flag)
-			break ;
-		if (ft_red_serch(lisa->tokens[i]))
-			flag = 1;
-		i++;
-	}
-	if (!flag)
-		return ;
+// 	while (lisa->tokens[i] && ft_operators_red(lisa->tokens[i]))
+// 	{
+// 		if ((!(strcmp(lisa->tokens[i], "|")) && lisa->tokens[2] == 0) && flag)
+// 			break ;
+// 		if (ft_red_serch(lisa->tokens[i]))
+// 			flag = 1;
+// 		i++;
+// 	}
+// 	if (!flag)
+// 		return ;
 
-}
+// }
 
 int	ft_executor(t_monna *lisa) // основная функция выполнения
 {
@@ -79,7 +79,7 @@ int	ft_executor(t_monna *lisa) // основная функция выполне
 	while (lisa->tokens[count])
 	{
 		ft_pipe(lisa, count);
-		ft_redirect_executor(lisa, count);
+		// ft_redirect_executor(lisa, count);
 		if (ft_search_com(lisa->tokens[count])) // ft_search_com смотрит является ли это командой
 			ft_command_start(lisa, &count);     // выполнение команд
 		else if (!strcmp(lisa->tokens[count], "&&"))
