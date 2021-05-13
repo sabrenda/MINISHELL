@@ -54,11 +54,17 @@ int	ft_operators_red(char *str) //проверяет является ли эт�
 	return (1);
 }
 
-void	ft_redirect_executor(t_monna *lisa, int i)//создает файлы
+void	ft_redirect_executor(t_monna *lisa, int i)//создает файлы заранее
 {
 	int flag = 0;
+	int	tmp = 0;
 
-	while (lisa->tokens[i] && ft_operators_red(lisa->tokens[i]))
+	while (lisa->tokens[tmp])
+	{
+
+	}
+
+	while (lisa->tokens[i] && ft_operators_red(lisa->tokens[i])) //  echo asd > a > b > c < a
 	{
 		if ((!(strcmp(lisa->tokens[i], "|")) && lisa->tokens[2] == 0) && flag)
 			break ;
@@ -73,10 +79,6 @@ void	ft_redirect_executor(t_monna *lisa, int i)//создает файлы
 
 			}
 			else if (!(strcmp(lisa->tokens[i], ">>")) && lisa->tokens[i][3] == 0)
-			{
-
-			}
-			else if (!(strcmp(lisa->tokens[i], "<<")) && lisa->tokens[i][3] == 0)
 			{
 
 			}
