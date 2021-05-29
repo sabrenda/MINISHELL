@@ -2,6 +2,7 @@
 
 void	ft_ampersant(t_monna *lisa, int *count)
 {
+	lisa->flag_red_files = 0;
 	if (lisa->flag_command) //если в прошлой отработке была ошибка то пропускаем аргументы до оператора || или ;
 	{
 		while (lisa->tokens[*count] && strcmp(lisa->tokens[*count], "||")
@@ -14,6 +15,7 @@ void	ft_ampersant(t_monna *lisa, int *count)
 
 void	ft_ili(t_monna *lisa, int *count)
 {
+	lisa->flag_red_files = 0;
 	if (!lisa->flag_command) //если в прошлой отработке не было ошибки то пропускаем аргументы до оператора | && и ;
 	{
 		while (lisa->tokens[*count] && strcmp(lisa->tokens[*count], "|")
@@ -45,10 +47,11 @@ void	ft_command_start(t_monna *lisa, int *count)      // работа коман
 		ft_exit(lisa, count);
 }
 
-int	ft_operators_red(char *str) //проверяет является ли это оператором
+int	ft_operators_red(char *str)
 {
 	if ((!(strcmp(str, "&&")) && str[3] == 0)
 		|| (!(strcmp(str, "||")) && str[3] == 0)
+		|| (!(strcmp(str, "|")) && str[2] == 0)
 		|| (!(strcmp(str, ";")) && str[2] == 0))
 		return (0);
 	return (1);
@@ -56,37 +59,43 @@ int	ft_operators_red(char *str) //проверяет является ли эт�
 
 void	ft_redirect_executor(t_monna *lisa, int i)//создает файлы заранее
 {
-	int flag = 0;
-	int	tmp = 0;
-
-	while (lisa->tokens[tmp])
-	{
-
-	}
+	int fd;
 
 	while (lisa->tokens[i] && ft_operators_red(lisa->tokens[i])) //  echo asd > a > b > c < a
 	{
-		if ((!(strcmp(lisa->tokens[i], "|")) && lisa->tokens[2] == 0) && flag)
+		if ((!(strcmp(lisa->tokens[i], "|")) && lisa->tokens[2] == 0))
 			break ;
 		if (ft_red_serch(lisa->tokens[i]))
 		{
 			if (!(strcmp(lisa->tokens[i], ">")) && lisa->tokens[i][2] == 0)
 			{
-
+				i++;
+				fd = open(lisa->tokens[i], O_WRONLY|O_TRUNC|O_CREAT);
 			}
 			else if (!(strcmp(lisa->tokens[i], "<")) && lisa->tokens[i][2] == 0)
 			{
-
+				i++;
+				fd = open(lisa->tokens[i], O_RDONLY);
+				if (fd == -1)
+				{
+					ft_putstr_fd("minishell: ", 1);
+					ft_putstr_fd(lisa->tokens[i - 1], 1);
+					ft_putendl_fd(" No such file or directory", 1);
+					lisa->flag_red_files = 1;
+					return ;
+				}
 			}
 			else if (!(strcmp(lisa->tokens[i], ">>")) && lisa->tokens[i][3] == 0)
 			{
-
+				i++;
+				fd = open(lisa->tokens[i], O_WRONLY|O_CREAT);
 			}
+			lisa->flag_red_files = 1;
+			if (fd > 0)
+				close(fd);
 		}
 		i++;
 	}
-	if (!flag)
-		return ;
 }
 
 int	ft_executor(t_monna *lisa) // основная функция выполнения
@@ -97,7 +106,8 @@ int	ft_executor(t_monna *lisa) // основная функция выполне
 	while (lisa->tokens[count])
 	{
 		ft_pipe(lisa, count);
-		ft_redirect_executor(lisa, count);
+		if (!lisa->flag_red_files)
+			ft_redirect_executor(lisa, count);
 		if (ft_search_com(lisa->tokens[count])) // ft_search_com смотрит является ли это командой
 			ft_command_start(lisa, &count);     // выполнение команд
 		else if (!strcmp(lisa->tokens[count], "&&"))
@@ -105,7 +115,10 @@ int	ft_executor(t_monna *lisa) // основная функция выполне
 		else if (!strcmp(lisa->tokens[count], "||"))
 			ft_ili(lisa, &count);
 		else if (!strcmp(lisa->tokens[count], ";"))
+		{
+			lisa->flag_red_files = 0;
 			count += 1;
+		}
 		else
 		{
 			lisa->flag_command = ft_any_argument(lisa, &count); // другая команда либо ошибка

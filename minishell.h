@@ -33,6 +33,7 @@ typedef struct s_monna
 	int		flag_block_zvezda;
 	int		flag_block_operator;
 	int		flag_command;
+	int		flag_red_files;
 }				t_monna;
 
 typedef struct s_pars
@@ -116,6 +117,7 @@ int	ft_search_syntax_error(t_monna *lisa, char* line);
 
 //executor
 int	ft_search_com(char *str);
+int	ft_red_serch(char *str);
 int	ft_executor(t_monna *lisa);
 int	ft_env(t_monna *lisa, int *count);
 int	ft_operators(char *str);
