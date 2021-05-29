@@ -7,7 +7,7 @@ void	keep_exp(t_monna *lisa, char *str)
 
 	check = 0;
 	i = 0;
-	while (lisa->my_env[i] && strcmp(lisa->my_env[i], str) == 0)
+	while (lisa->my_env[i] && ft_strcmp(lisa->my_env[i], str) == 0)
 	{
 		if (strcmp(lisa->my_env[i], str) == 0)
 			check = 1;
@@ -41,8 +41,8 @@ int	search_per_env(t_monna *lisa, char *str, int len)
 	i = 0;
 	while(lisa->my_env[i])
 	{
-	
-		if (ft_strncmp(lisa->my_env[i], str, len) == 0) 
+
+		if (ft_strncmp(lisa->my_env[i], str, len) == 0)
 		{
 			free(lisa->my_env[i]);
 			lisa->my_env[i] = ft_strdup(str);
@@ -130,7 +130,7 @@ int	ft_export(t_monna *lisa, int *count)
 				ft_copy_massive_env(lisa, lisa->tokens[*count]);
 		}
 		else
-			keep_exp(lisa, lisa->tokens[*count]);		
+			keep_exp(lisa, lisa->tokens[*count]);
 	}
 	lisa->flag_command = 0;
 	while (lisa->tokens[*count] && ft_operators(lisa->tokens[*count]))

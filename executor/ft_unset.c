@@ -7,9 +7,9 @@ void	err_uns(t_monna *lisa, char *s)
 
 int	delete_per(t_monna *lisa, char *str)
 {
-	int i;
-	int b;
-	char **new_mas;
+	int		i;
+	int		b;
+	char	**new_mas;
 
 	b = 0;
 	i = 0;
@@ -22,7 +22,7 @@ int	delete_per(t_monna *lisa, char *str)
 	k = 0;
 	while(lisa->my_env[i])
 	{
-		if (ft_strncmp(lisa->my_env[i], str, ft_strlen(str)) == 0) 
+		if (ft_strncmp(lisa->my_env[i], str, ft_strlen(str)) == 0)
 			i++;
 		new_mas[k] = ft_strdup(lisa->my_env[i]);
 		i++;
@@ -37,7 +37,7 @@ int	delete_per(t_monna *lisa, char *str)
 int	ft_unset(t_monna *lisa, int *count)
 {
 	*count += 1;
-	if ((ft_isalpha(*lisa->tokens[*count]) == 0 && strcmp(lisa->tokens[*count], "_") != 0) || (strchr(lisa->tokens[*count], '=') != NULL))
+	if ((ft_isalpha(*lisa->tokens[*count]) == 0 && ft_strcmp(lisa->tokens[*count], "_") != 0) || (strchr(lisa->tokens[*count], '=') != NULL))
 		err_uns(lisa, lisa->tokens[*count]);
 	else
 		delete_per(lisa, lisa->tokens[*count]);

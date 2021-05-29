@@ -48,7 +48,7 @@ void	go_change_pat_pwd(t_monna *lisa, char *s)
 	s = getcwd(NULL, 0);
 	while (lisa->my_env[i])
 	{
-		if (strncmp(lisa->my_env[i], "PWD=", 4) == 0)
+		if (ft_strncmp(lisa->my_env[i], "PWD=", 4) == 0)
 		{
 			free(lisa->my_env[i]);
 			lisa->my_env[i] = ft_strjoin("PWD=", s);
@@ -66,7 +66,7 @@ void	change_oldpwd(t_monna *lisa, char *cur_k)
 	i = 0;
 	while (lisa->my_env[i])
 	{
-		if (strncmp(lisa->my_env[i], "OLDPWD=", 7) == 0)
+		if (ft_strncmp(lisa->my_env[i], "OLDPWD=", 7) == 0)
 		{
 			free(lisa->my_env[i]);
 			lisa->my_env[i] = ft_strjoin("OLDPWD=", cur_k);

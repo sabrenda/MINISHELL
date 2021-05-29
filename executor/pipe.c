@@ -26,7 +26,7 @@ void	ft_pipe2(t_monna *lisa, int *count)
 		ft_pipe_stdin(lisa);
 	if (lisa->flag_pipe == 2)
 		ft_pipe_end(lisa);
-	if (lisa->tokens[*count] && !strcmp(lisa->tokens[*count], "|"))
+	if (lisa->tokens[*count] && !ft_strcmp(lisa->tokens[*count], "|"))
 		*count += 1;
 }
 
@@ -34,7 +34,7 @@ void	ft_pipe(t_monna *lisa, int i)
 {
 	while (lisa->tokens[i] && ft_operators(lisa->tokens[i]))
 		i++;
-	if (lisa->tokens[i] && (!strcmp(lisa->tokens[i], "|") && lisa->tokens[i][2] == 0))
+	if (lisa->tokens[i] && (!ft_strcmp(lisa->tokens[i], "|") && lisa->tokens[i][2] == 0))
 	{
 		lisa->flag_pipe = 1;
 		pipe(lisa->fildes);
