@@ -34,6 +34,7 @@ typedef struct s_monna
 	int		flag_block_operator;
 	int		flag_command;
 	int		flag_red_files;
+	int		flag_red_ex;
 }				t_monna;
 
 typedef struct s_pars
@@ -148,6 +149,11 @@ void	ft_pipe(t_monna *lisa, int i);
 void	ft_pipe_stdin(t_monna *lisa);
 void	ft_pipe_end(t_monna *lisa);
 void	ft_pipe2(t_monna *lisa, int *count);
+
+//redirect
+void	ft_redirect_executor(t_monna *lisa, int i, int *count); //создает файлы заранее
+int	ft_red_serch_2(char *str);
+
 
 //echo
 int	ft_echo(t_monna *lisa, int *count);

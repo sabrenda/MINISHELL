@@ -95,3 +95,13 @@ int	ft_red_serch(char *str) //проверяет является ли это р
 		return (1);
 	return (0);
 }
+
+int	ft_red_serch_2(char *str)
+{
+	if ((!(strcmp(str, "&&")) && str[3] == 0)
+		|| (!(strcmp(str, "|")) && str[2] == 0)
+		|| (!(strcmp(str, "||")) && str[3] == 0)
+		|| (!(strcmp(str, ";")) && str[2] == 0))
+		return (1);
+	return (0);
+}

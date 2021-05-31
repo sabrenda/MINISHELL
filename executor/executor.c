@@ -104,28 +104,27 @@ void	ft_redirect_executor(t_monna *lisa, int i, int *count)//создает фа
 	}
 }
 
-void	ft_redirect_executor_2(t_monna *lisa, int i)
+void	ft_redirect_executor_2(t_monna *lisa, int i, int *count) // осталось добить функции ft_red и сделать как ft_pipe2 для возвразения фд дескрипторов 1 и 0 на полку как было
 {
 	while (lisa->tokens[i] && ft_operators(lisa->tokens[i]))
 		i++;
 	if (lisa->tokens[i] && ft_red_serch(lisa->tokens[i]))
 	{
-		if (!(ft_strcmp(str, ">")) && str[2] == 0)
-			ft_red_1();
-		else if (!(ft_strcmp(str, "<")) && str[2] == 0)
-			ft_red_2();
-		else if (!(ft_strcmp(str, ">>")) && str[3] == 0)
-			ft_red_3();
-		else if (!(ft_strcmp(str, "<<")) && str[3] == 0)
-			ft_red_4();
+		while (lisa->tokens[i] && !ft_red_serch_2(lisa->tokens[i]))
+		{
+		if (!(ft_strcmp(lisa->tokens[i], ">")) && lisa->tokens[i][2] == 0)
+			ft_red_1(lisa->tokens, &i);
+		else if (!(ft_strcmp(lisa->tokens[i], "<")) && lisa->tokens[i][2] == 0)
+			ft_red_2(lisa->tokens, &i);
+		else if (!(ft_strcmp(lisa->tokens[i], ">>")) && lisa->tokens[i][3] == 0)
+			ft_red_3(lisa->tokens, &i);
+		else if (!(ft_strcmp(lisa->tokens[i], "<<")) && lisa->tokens[i][3] == 0)
+			ft_red_4(lisa->tokens, &i);
+		}
+		lisa->flag_red_ex = 1;
 	}
 	else
-	{
-		if (lisa->flag_pipe == 1)
-			lisa->flag_pipe = 2;
-		else
-			lisa->flag_pipe = 0;
-	}
+		lisa->flag_red_ex = 0;
 }
 
 int	ft_executor(t_monna *lisa) // основная функция выполнения
@@ -160,4 +159,4 @@ int	ft_executor(t_monna *lisa) // основная функция выполне
 	}
 	return (1);
 }
- //                    echo asd > a > b
+ //                    echo asd jjn jnjn jj > a >> b
