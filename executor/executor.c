@@ -57,6 +57,18 @@ int	ft_operators_red(char *str)
 	return (1);
 }
 
+void	ft_redirect_end(t_monna *lisa)
+{
+	if (lisa->flag_red_input)
+	{
+		dup2(lisa->fd_input, 0);
+	}
+	if (lisa->flag_red_output)
+	{
+		dup2(lisa->fd_output, 1);
+	}
+}
+
 void	ft_redirect_executor(t_monna *lisa, int i, int *count)//создает файлы заранее
 {
 	int fd;
@@ -95,13 +107,78 @@ void	ft_redirect_executor(t_monna *lisa, int i, int *count)//создает фа
 				fd = open(lisa->tokens[i], O_WRONLY|O_CREAT, S_IWRITE | S_IREAD);
 			}
 			lisa->flag_red_files = 1;
-			if (fd != -1)
+			if (fd > 0)
 				close(fd);
 			if (fd == -1)
 				return ;
 		}
 		i++;
 	}
+}
+
+void	ft_red_1(t_monna *lisa, int *count)
+{
+	int	fd;
+
+	lisa->flag_red_output = 1;
+	*count += 1;
+	fd = open(lisa->tokens[*count], O_WRONLY|O_TRUNC|O_CREAT, S_IWRITE | S_IREAD);
+	dup2(fd,1);
+	close(fd);
+}
+
+void	ft_red_2(t_monna *lisa, int *count)
+{
+	int	fd;
+
+	lisa->flag_red_input = 1;
+	*count += 1;
+	fd = open(lisa->tokens[*count], O_RDONLY);
+	dup2(fd, 0);
+	close(fd);
+}
+
+void	ft_red_3(t_monna *lisa, int *count)
+{
+	int	fd;
+
+	lisa->flag_red_output = 1;
+	*count += 1;
+	fd = open(lisa->tokens[*count], O_WRONLY|O_CREAT, S_IWRITE | S_IREAD);
+	dup2(fd,1);
+	close(fd);
+}
+
+void	ft_red_4(t_monna *lisa, int *count) // добить ----------------
+{
+	int		temp_fd;
+	char	*str;
+	char	**bonus_red;
+
+
+	lisa->flag_red_input = 1;
+	if (lisa->bonus_red)
+		ft_free_mass(lisa->bonus_red);
+	lisa->bonus_red = NULL;
+	dup2(1, temp_fd);
+	dup2(lisa->fd_output, 1);
+	*count += 1;
+	while(1)
+	{
+		get_next_line(1, &str);
+		ft_putstr_fd("> ", 1);
+		ft_putendl_fd(lisa->tokens[*count], 1);
+		if (!ft_strcmp(str, lisa->tokens[*count]))
+			break ;
+		// if (!lisa->bonus_red)
+		// 	ft_incepcion_red(&lisa); // добить // создание 2-го массива
+		// else
+		// 	ft_continue_red(&lisa); // добить // продолжение строк , потом сделать в any_arg и в других чтение из fd 0 с функции ft_putendl_fd
+		ft_putendl_fd(lisa->tokens[*count], 0);
+		free (str);
+	}
+	dup2(temp_fd, 1);
+	close(temp_fd);
 }
 
 void	ft_redirect_executor_2(t_monna *lisa, int i, int *count) // осталось добить функции ft_red и сделать как ft_pipe2 для возвразения фд дескрипторов 1 и 0 на полку как было
@@ -113,23 +190,23 @@ void	ft_redirect_executor_2(t_monna *lisa, int i, int *count) // осталос�
 		while (lisa->tokens[i] && !ft_red_serch_2(lisa->tokens[i]))
 		{
 		if (!(ft_strcmp(lisa->tokens[i], ">")) && lisa->tokens[i][2] == 0)
-			ft_red_1(lisa->tokens, &i);
+			ft_red_1(lisa, &i);
 		else if (!(ft_strcmp(lisa->tokens[i], "<")) && lisa->tokens[i][2] == 0)
-			ft_red_2(lisa->tokens, &i);
+			ft_red_2(lisa, &i);
 		else if (!(ft_strcmp(lisa->tokens[i], ">>")) && lisa->tokens[i][3] == 0)
-			ft_red_3(lisa->tokens, &i);
+			ft_red_3(lisa, &i);
 		else if (!(ft_strcmp(lisa->tokens[i], "<<")) && lisa->tokens[i][3] == 0)
-			ft_red_4(lisa->tokens, &i);
+			ft_red_4(lisa, &i);
+		else
+			i++;
 		}
-		lisa->flag_red_ex = 1;
 	}
-	else
-		lisa->flag_red_ex = 0;
 }
 
-int	ft_executor(t_monna *lisa) // основная функция выполнения
+void	ft_executor(t_monna *lisa) // основная функция выполнения
 {
 	int	count;
+
 	lisa->flag_command = 0; // флаг который определяет выполнилась ли команда (если да то 0, нет 1)
 	count = 0;
 	while (lisa->tokens[count])
@@ -137,6 +214,7 @@ int	ft_executor(t_monna *lisa) // основная функция выполне
 		ft_pipe(lisa, count);
 		if (!lisa->flag_red_files)
 			ft_redirect_executor(lisa, count, &count);
+		ft_redirect_executor_2(lisa, count, &count);
 		if (ft_search_com(lisa->tokens[count])) // ft_search_com смотрит является ли это командой
 			ft_command_start(lisa, &count);     // выполнение команд
 		else if (!ft_strcmp(lisa->tokens[count], "&&"))
@@ -154,9 +232,7 @@ int	ft_executor(t_monna *lisa) // основная функция выполне
 			lisa->flag_error = lisa->flag_command;
 		}
 		ft_pipe2(lisa, &count);
-		if (lisa->tokens[count] == NULL)
-			return (0);
+		ft_redirect_end(lisa);
 	}
-	return (1);
 }
  //                    echo asd jjn jnjn jj > a >> b

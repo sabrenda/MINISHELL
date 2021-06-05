@@ -78,10 +78,6 @@ int	ft_operators_2(char *str) //проверяет является ли это 
 	if ((!(strcmp(str, "&&")) && str[3] == 0)
 		|| (!(strcmp(str, "||")) && str[3] == 0)
 		|| (!(strcmp(str, "|")) && str[2] == 0)
-		|| (!(strcmp(str, "<")) && str[2] == 0)
-		|| (!(strcmp(str, ">")) && str[2] == 0)
-		|| (!(strcmp(str, ">>")) && str[3] == 0)
-		|| (!(strcmp(str, "<<")) && str[3] == 0)
 		|| (!(strcmp(str, ";")) && str[2] == 0))
 		return (0);
 	return (1);

@@ -98,7 +98,7 @@ int	ft_cd(t_monna *lisa, int *count) //енв
 	else
 		err_cd(lisa, count);
 	lisa->flag_command = 0;
-	while (lisa->tokens[*count] && ft_operators(lisa->tokens[*count]) != 0) //пропускаем аргрументы если есть после env, так как по сабжу без них надо
+	while (lisa->tokens[*count] && ft_operators_2(lisa->tokens[*count]) != 0) //пропускаем аргрументы если есть после env, так как по сабжу без них надо
 		*count += 1;
 	lisa->flag_error = 0;
 	return (0);

@@ -42,7 +42,7 @@ int	ft_unset(t_monna *lisa, int *count)
 	else
 		delete_per(lisa, lisa->tokens[*count]);
 	lisa->flag_command = 0;
-	while (lisa->tokens[*count] && ft_operators(lisa->tokens[*count])) //пропускаем аргрументы если есть после env, так как по сабжу без них надо
+	while (lisa->tokens[*count] && ft_operators_2(lisa->tokens[*count])) //пропускаем аргрументы если есть после env, так как по сабжу без них надо
 		*count += 1;
 	lisa->flag_error = 0;
 	return (0);

@@ -17,17 +17,6 @@ int	ft_init_all(t_monna	*lisa, char **env)
 	while (env[i])
 	{
 		lisa->my_env[i] = ft_strdup(env[i]);
-		// if (!ft_strncmp(lisa->my_env[i],"SHLVL=", 6))
-		// {
-		// 	printf("env ==========  %d\n", g_shell_lvl);
-		// 	if (g_shell_lvl == 0)
-		// 		g_shell_lvl = ft_atoi(lisa->my_env[i]) + 1;
-		// 	else
-		// 		g_shell_lvl++;
-		// 	printf("env ==========  %d\n", g_shell_lvl);
-		// 	free (lisa->my_env[i]);
-		// 	lisa->my_env[i] = ft_strjoin("SHLVL=", ft_itoa(g_shell_lvl));
-		// }
 		if (!(lisa->my_env[i]))
 			return (0);
 		i++;

@@ -39,7 +39,7 @@ int	ft_echo(t_monna *lisa, int *count)
 	}
 	if (new_i == 0)
 		ft_putstr_fd("\n", 1);
-	while (lisa->tokens[*count] && ft_operators(lisa->tokens[*count]))
+	while (lisa->tokens[*count] && ft_operators_2(lisa->tokens[*count]))
 		*count += 1;
 	lisa->flag_command = 0;
 	lisa->flag_error = 0;

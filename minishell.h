@@ -22,19 +22,22 @@ typedef struct s_monna
 	char	**my_env;
 	char	**tokens;
 	char	*tmp_env;
+	char	**bonus_red;
+	char	**pars_tokk;
 	int		status;
 	int		fildes[2];
 	int		shell_lvl;
 	int		flag_pipe;
 	int		fd_input;
 	int		fd_output;
-	char	**pars_tokk;
 	int		flag_error;
 	int		flag_block_zvezda;
 	int		flag_block_operator;
 	int		flag_command;
 	int		flag_red_files;
 	int		flag_red_ex;
+	int		flag_red_input;
+	int		flag_red_output;
 }				t_monna;
 
 typedef struct s_pars
@@ -119,7 +122,7 @@ int	ft_search_syntax_error(t_monna *lisa, char* line);
 //executor
 int	ft_search_com(char *str);
 int	ft_red_serch(char *str);
-int	ft_executor(t_monna *lisa);
+void	ft_executor(t_monna *lisa);
 int	ft_env(t_monna *lisa, int *count);
 int	ft_operators(char *str);
 void	ft_command_start(t_monna *lisa, int *count);
@@ -153,6 +156,7 @@ void	ft_pipe2(t_monna *lisa, int *count);
 //redirect
 void	ft_redirect_executor(t_monna *lisa, int i, int *count); //создает файлы заранее
 int	ft_red_serch_2(char *str);
+int	search_arg_2(t_monna *lisa, int *count);
 
 
 //echo
