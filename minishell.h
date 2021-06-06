@@ -22,8 +22,8 @@ typedef struct s_monna
 	char	**my_env;
 	char	**tokens;
 	char	*tmp_env;
-	char	**bonus_red;
 	char	**pars_tokk;
+	t_list	*list;
 	int		status;
 	int		fildes[2];
 	int		shell_lvl;
@@ -39,6 +39,7 @@ typedef struct s_monna
 	int		flag_red_input;
 	int		flag_red_output;
 	int		flag_bonus_red;
+	int		flag_red_4;
 }				t_monna;
 
 typedef struct s_pars
@@ -140,6 +141,7 @@ void ft_proverka_absol_relat(t_any *any);
 //utils
 int	ft_lenmassive(char **str);
 int	ft_init_all(t_monna	*lisa, char **env);
+void	ft_list_clear(t_list **head);
 int		ft_pwd(t_monna *lisa, int *count);
 void	ft_monnalisa(void);
 void	ft_monnalisa_2(void);
@@ -156,8 +158,17 @@ void	ft_pipe2(t_monna *lisa, int *count);
 
 //redirect
 void	ft_redirect_executor(t_monna *lisa, int i, int *count); //создает файлы заранее
+void	ft_redirect_executor_2(t_monna *lisa, int i, int *count); // осталось добить функции ft_red и сделать как ft_pipe2 для возвразения фд дескрипторов 1 и 0 на полку как было
 int	ft_red_serch_2(char *str);
 int	search_arg_2(t_monna *lisa, int *count);
+void	ft_red_4(t_monna *lisa, int *count) ;// добить ----------------
+void	ft_red_3(t_monna *lisa, int *count);
+void	ft_red_2(t_monna *lisa, int *count);
+void	ft_red_1(t_monna *lisa, int *count);
+void	ft_redirect_end(t_monna *lisa);
+int	ft_operators_red(char *str);
+
+
 
 
 //echo

@@ -11,3 +11,22 @@ int	ft_lenmassive(char **str) // счетчик строк в 2-ном масс�
 		i++;
 	return (i);
 }
+
+void	ft_list_clear(t_list **head)
+{
+	t_list	*tmp;
+	t_list	*list;
+
+	list = *head;
+	tmp = NULL;
+	while (list)
+	{
+		if (list->next)
+			tmp = list->next;
+		else
+			tmp = NULL;
+		free(list->content);
+		free(list);
+		list = tmp;
+	}
+}

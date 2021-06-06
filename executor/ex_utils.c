@@ -34,7 +34,7 @@ char **ft_copy_massive(t_monna *lisa, int i)
 	}
 	str[j] = NULL;
 	str[j + 1] = NULL;
-	if (str[0] && !strncmp(str[0], "./minishell", 11)) // можно переделать на execve("/bin/ps", .., ..) и считать bash и ./minishell
+	if (str[0] && !ft_strncmp(str[0], "./minishell", 11)) // можно переделать на execve("/bin/ps", .., ..) и считать bash и ./minishell
 	{
 		if (str[1] == NULL)
 		{
@@ -46,6 +46,12 @@ char **ft_copy_massive(t_monna *lisa, int i)
 			free (str[1]);
 			str[1] = ft_strdup(ft_itoa(lisa->shell_lvl));
 		}
+	}
+	if ((str[0] && !ft_strcmp(str[0], "cat")) && lisa->flag_red_4)
+	{
+		str[j] = (char *)malloc(sizeof(char ) * 2);
+		str[j][0] = '1';
+		str[j][1] = '\0';
 	}
 	return (str);
 }

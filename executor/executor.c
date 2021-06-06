@@ -104,7 +104,7 @@ void	ft_redirect_executor(t_monna *lisa, int i, int *count)//создает фа
 			else if (!(ft_strcmp(lisa->tokens[i], ">>")) && lisa->tokens[i][3] == 0)
 			{
 				i++;
-				fd = open(lisa->tokens[i], O_WRONLY|O_CREAT, S_IWRITE | S_IREAD);
+				fd = open(lisa->tokens[i], O_WRONLY|O_APPEND|O_CREAT, S_IWRITE | S_IREAD);
 			}
 			lisa->flag_red_files = 1;
 			if (fd > 0)
@@ -114,57 +114,6 @@ void	ft_redirect_executor(t_monna *lisa, int i, int *count)//создает фа
 		}
 		i++;
 	}
-}
-
-void	ft_incepcion_red(t_monna *lisa, char *str)
-{
-	int	i;
-
-	lisa->flag_bonus_red = 1;
-	lisa->bonus_red = (char **)malloc(sizeof(char *) * 2);
-	lisa->bonus_red[0] = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
-	lisa->bonus_red[1] = NULL;
-	i = 0;
-	while (i < ft_strlen(str))
-	{
-		lisa->bonus_red[0][i] = str[i];
-		i++;
-	}
-	lisa->bonus_red[0][i] = '\0';
-}
-
-void	ft_continue_red(t_monna *lisa, char *new_word)
-{
-	int		i;
-	int		j;
-	int		len;
-	char	**str;
-
-	len = ft_lenmassive(lisa->bonus_red);
-	str = (char **)malloc(sizeof(char *) * (len + 2));
-	str[len + 1] = NULL;
-	i = 0;
-	while(i < len)
-	{
-		str[i] = (char *)malloc(sizeof(char) * (ft_strlen(lisa->bonus_red[i]) + 1));
-		j = 0;
-		while(j < ft_strlen(lisa->bonus_red[i]))
-		{
-			str[i][j] = lisa->bonus_red[i][j];
-			j++;
-		}
-		str[i][j] = '\0';
-		i++;
-	}
-	j = 0;
-	while(new_word[j])
-	{
-		str[i][j] = new_word[j];
-		j++;
-	}
-	str[i][j] = '\0';
-	ft_free_mass(lisa->bonus_red);
-	lisa->bonus_red = str;
 }
 
 void	ft_red_1(t_monna *lisa, int *count)
@@ -195,57 +144,59 @@ void	ft_red_3(t_monna *lisa, int *count)
 
 	lisa->flag_red_output = 1;
 	*count += 1;
-	fd = open(lisa->tokens[*count], O_WRONLY|O_CREAT, S_IWRITE | S_IREAD);
+	fd = open(lisa->tokens[*count], O_WRONLY|O_APPEND|O_CREAT, S_IWRITE | S_IREAD);
 	dup2(fd,1);
 	close(fd);
 }
 
-void	ft_red_4(t_monna *lisa, int *count) // добить ----------------
+void	ft_red_4(t_monna *lisa, int *count)
 {
 	int		temp_fd_out;
 	int		temp_fd_in;
 	char	*str;
+	t_list	*tmp;
+	int		fd;
 
-	lisa->flag_red_input = 1;
 	lisa->flag_red_output = 1;
+	lisa->flag_red_4 = 1;
 	dup2(1, temp_fd_out);
 	dup2(lisa->fd_output, 1);
-	dup2(0, temp_fd_in);
-	dup2(lisa->fd_input, 0);
 	*count += 1;
 	while(1)
 	{
 		ft_putstr_fd("> ", 1);
-		get_next_line(0, &str);
+		get_next_line(1, &str);
 		if (!ft_strcmp(str, lisa->tokens[*count]))
 		{
 			if (str)
 				free (str);
 			break ;
 		}
-		if (!lisa->bonus_red)
-			ft_incepcion_red(lisa, str); // добить // создание 2-го массива
-		else
-			ft_continue_red(lisa, str); // добить // продолжение строк , потом сделать в any_arg и в других чтение из fd 0 с функции ft_putendl_fd
-		if (str)
-			free (str);
-	}
-	int i = 0;
-	if (lisa->flag_bonus_red)//malloc
-	{
-		while(i < ft_lenmassive(lisa->bonus_red))
+		if (!lisa->list)
 		{
-			ft_putendl_fd(lisa->bonus_red[i], 0);
-			i++;
+			lisa->list = ft_lstnew((char *)str); // MALLOC
+			tmp = lisa->list;
+		}
+		else
+		{
+			tmp->next = ft_lstnew((char *)str); // MALLOC
+			tmp = tmp->next;
 		}
 	}
-	if (lisa->bonus_red)
-		ft_free_mass(lisa->bonus_red);
-	lisa->bonus_red = NULL;
+	int i = 0;
+	tmp = lisa->list;
+	fd = open("1", O_WRONLY|O_TRUNC|O_CREAT, S_IWRITE | S_IREAD);
+	while(tmp)
+	{
+		if (tmp->content)
+			ft_putendl_fd(tmp->content, fd);
+		tmp = tmp->next;
+	}
+	ft_list_clear(&lisa->list);
+	lisa->list = NULL;
 	dup2(temp_fd_out, 1);
-	dup2(temp_fd_in, 0);
 	close(temp_fd_out);
-	close(temp_fd_in);
+	close(fd);
 }
 
 void	ft_redirect_executor_2(t_monna *lisa, int i, int *count) // осталось добить функции ft_red и сделать как ft_pipe2 для возвразения фд дескрипторов 1 и 0 на полку как было

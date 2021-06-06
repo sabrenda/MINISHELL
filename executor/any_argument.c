@@ -50,11 +50,11 @@ int	ft_any_argument(t_monna *lisa, int *count) //
 	while (!WIFEXITED(any.status) && !WIFSIGNALED(any.status))
 		any.wpid = waitpid(any.pid, &any.status, WUNTRACED);
 	any.status = WEXITSTATUS(any.status);
-	ft_free_mass(any.mas);
-	lisa->flag_bonus_red = 0;
 	if (any.status == 256)
 		any.status = 127;
+	lisa->flag_red_4 = 0;
 	while (lisa->tokens[*count] && ft_operators_2(lisa->tokens[*count]))
 		*count += 1;
+	// ft_free_mass(any.mas);
 	return (any.status);
 }
