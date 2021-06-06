@@ -221,6 +221,12 @@ void	ft_redirect_executor_2(t_monna *lisa, int i, int *count) // осталос�
 	}
 }
 
+void	ft_redred(t_monna *l, int *count)
+{
+	while (l->tokens[*count] && ft_operators_2(l->tokens[*count]))
+		*count += 1;
+}
+
 void	ft_executor(t_monna *lisa) // основная функция выполнения
 {
 	int	count;
@@ -239,6 +245,8 @@ void	ft_executor(t_monna *lisa) // основная функция выполн�
 			ft_ampersant(lisa, &count);
 		else if (!ft_strcmp(lisa->tokens[count], "||"))
 			ft_ili(lisa, &count);
+		else if (ft_red_serch(lisa->tokens[count]))
+			ft_redred(lisa, &count);
 		else if (!ft_strcmp(lisa->tokens[count], ";"))
 		{
 			lisa->flag_red_files = 0;

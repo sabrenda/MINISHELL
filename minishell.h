@@ -167,6 +167,7 @@ void	ft_red_2(t_monna *lisa, int *count);
 void	ft_red_1(t_monna *lisa, int *count);
 void	ft_redirect_end(t_monna *lisa);
 int	ft_operators_red(char *str);
+void	ft_redred(t_monna *l, int *count);
 
 
 
