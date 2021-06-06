@@ -38,6 +38,7 @@ typedef struct s_monna
 	int		flag_red_ex;
 	int		flag_red_input;
 	int		flag_red_output;
+	int		flag_bonus_red;
 }				t_monna;
 
 typedef struct s_pars

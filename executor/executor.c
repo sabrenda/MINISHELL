@@ -116,6 +116,57 @@ void	ft_redirect_executor(t_monna *lisa, int i, int *count)//создает фа
 	}
 }
 
+void	ft_incepcion_red(t_monna *lisa, char *str)
+{
+	int	i;
+
+	lisa->flag_bonus_red = 1;
+	lisa->bonus_red = (char **)malloc(sizeof(char *) * 2);
+	lisa->bonus_red[0] = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
+	lisa->bonus_red[1] = NULL;
+	i = 0;
+	while (i < ft_strlen(str))
+	{
+		lisa->bonus_red[0][i] = str[i];
+		i++;
+	}
+	lisa->bonus_red[0][i] = '\0';
+}
+
+void	ft_continue_red(t_monna *lisa, char *new_word)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	**str;
+
+	len = ft_lenmassive(lisa->bonus_red);
+	str = (char **)malloc(sizeof(char *) * (len + 2));
+	str[len + 1] = NULL;
+	i = 0;
+	while(i < len)
+	{
+		str[i] = (char *)malloc(sizeof(char) * (ft_strlen(lisa->bonus_red[i]) + 1));
+		j = 0;
+		while(j < ft_strlen(lisa->bonus_red[i]))
+		{
+			str[i][j] = lisa->bonus_red[i][j];
+			j++;
+		}
+		str[i][j] = '\0';
+		i++;
+	}
+	j = 0;
+	while(new_word[j])
+	{
+		str[i][j] = new_word[j];
+		j++;
+	}
+	str[i][j] = '\0';
+	ft_free_mass(lisa->bonus_red);
+	lisa->bonus_red = str;
+}
+
 void	ft_red_1(t_monna *lisa, int *count)
 {
 	int	fd;
@@ -151,34 +202,50 @@ void	ft_red_3(t_monna *lisa, int *count)
 
 void	ft_red_4(t_monna *lisa, int *count) // добить ----------------
 {
-	int		temp_fd;
+	int		temp_fd_out;
+	int		temp_fd_in;
 	char	*str;
-	char	**bonus_red;
-
 
 	lisa->flag_red_input = 1;
-	if (lisa->bonus_red)
-		ft_free_mass(lisa->bonus_red);
-	lisa->bonus_red = NULL;
-	dup2(1, temp_fd);
+	lisa->flag_red_output = 1;
+	dup2(1, temp_fd_out);
 	dup2(lisa->fd_output, 1);
+	dup2(0, temp_fd_in);
+	dup2(lisa->fd_input, 0);
 	*count += 1;
 	while(1)
 	{
-		get_next_line(1, &str);
 		ft_putstr_fd("> ", 1);
-		ft_putendl_fd(lisa->tokens[*count], 1);
+		get_next_line(0, &str);
 		if (!ft_strcmp(str, lisa->tokens[*count]))
+		{
+			if (str)
+				free (str);
 			break ;
-		// if (!lisa->bonus_red)
-		// 	ft_incepcion_red(&lisa); // добить // создание 2-го массива
-		// else
-		// 	ft_continue_red(&lisa); // добить // продолжение строк , потом сделать в any_arg и в других чтение из fd 0 с функции ft_putendl_fd
-		ft_putendl_fd(lisa->tokens[*count], 0);
-		free (str);
+		}
+		if (!lisa->bonus_red)
+			ft_incepcion_red(lisa, str); // добить // создание 2-го массива
+		else
+			ft_continue_red(lisa, str); // добить // продолжение строк , потом сделать в any_arg и в других чтение из fd 0 с функции ft_putendl_fd
+		if (str)
+			free (str);
 	}
-	dup2(temp_fd, 1);
-	close(temp_fd);
+	int i = 0;
+	if (lisa->flag_bonus_red)//malloc
+	{
+		while(i < ft_lenmassive(lisa->bonus_red))
+		{
+			ft_putendl_fd(lisa->bonus_red[i], 0);
+			i++;
+		}
+	}
+	if (lisa->bonus_red)
+		ft_free_mass(lisa->bonus_red);
+	lisa->bonus_red = NULL;
+	dup2(temp_fd_out, 1);
+	dup2(temp_fd_in, 0);
+	close(temp_fd_out);
+	close(temp_fd_in);
 }
 
 void	ft_redirect_executor_2(t_monna *lisa, int i, int *count) // осталось добить функции ft_red и сделать как ft_pipe2 для возвразения фд дескрипторов 1 и 0 на полку как было

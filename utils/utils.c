@@ -5,6 +5,8 @@ int	ft_lenmassive(char **str) // счетчик строк в 2-ном масс�
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	while (str[i])
 		i++;
 	return (i);

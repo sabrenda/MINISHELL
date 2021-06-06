@@ -35,7 +35,6 @@ void ft_proverka_absol_relat(t_any *any)
 int	ft_any_argument(t_monna *lisa, int *count) //
 {
 	t_any	any;
-	int		fd;
 
 	any.mas = ft_copy_massive(lisa, *count); //копируем аргументы до "&& || > < ; |"
 	ft_proverka_absol_relat(&any); // проверяю /bin/ релативный и абсолютный путь
@@ -52,6 +51,7 @@ int	ft_any_argument(t_monna *lisa, int *count) //
 		any.wpid = waitpid(any.pid, &any.status, WUNTRACED);
 	any.status = WEXITSTATUS(any.status);
 	ft_free_mass(any.mas);
+	lisa->flag_bonus_red = 0;
 	if (any.status == 256)
 		any.status = 127;
 	while (lisa->tokens[*count] && ft_operators_2(lisa->tokens[*count]))

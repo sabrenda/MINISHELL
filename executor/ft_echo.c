@@ -1,10 +1,10 @@
 #include "../minishell.h"
 
-int search_n(char *str)
+int	search_n(char *str)
 {
-	int i;
+	int	i;
 
-	i = 0;
+	i =	0;
 	if (strncmp("-n", str, 2) == 0)
 	{
 		while(str[++i])
@@ -19,7 +19,7 @@ int search_n(char *str)
 
 int	ft_echo(t_monna *lisa, int *count)
 {
-	int new_i;
+	int	new_i;
 
 	*count += 1;
 	new_i = 0;
@@ -32,7 +32,7 @@ int	ft_echo(t_monna *lisa, int *count)
 		while (lisa->tokens[*count] && ft_operators(lisa->tokens[*count]))
 		{
 			ft_putstr_fd(lisa->tokens[*count], 1);
-			if (lisa->tokens[*count + 1])
+			if (lisa->tokens[*count + 1] && ft_operators(lisa->tokens[*count + 1]))
 				write(1, " ", 1);
 			*count += 1;
 		}
