@@ -8,9 +8,9 @@ void	err_num_arg(t_monna *lisa, char *str)
 
 int	boss_atoi(t_monna *lisa, int *count, const char *str)
 {
-	int			i;
-	unsigned long	res;
-	int b;
+	int						i;
+	int					b;
+	unsigned long long	res;
 
 	i = 0;
 	res = 0;
@@ -49,16 +49,13 @@ int	ft_lenstr(char **mas)
 
 	i_c = 0;
 	i = 0;
-	while(strcmp(mas[i], "exit") != 0)
-		i++;
-	i++;
 	while (mas[i][i_c])
 	{
 		if (boss_isdigit(mas[i]) == -1)
 			return (-1);
 		i_c++;
 	}
-	if (mas[i + 1] && ft_operators(mas[i + 1]))
+	if (mas[i + 1] && ft_operators_2(mas[i + 1]))
 		return(-2);
 	return (i);
 }
@@ -90,10 +87,10 @@ int	ft_exit(t_monna *lisa, int *count)
 	if (ft_lenstr(vika) == -2)
 		err_many_arg(lisa);
 	else
-		exit(boss_atoi(lisa, count, lisa->tokens[*count]) % 256);
-	lisa->flag_command = 0;
-	while (lisa->tokens[*count] && ft_operators(lisa->tokens[*count]))
+		exit((boss_atoi(lisa, count, lisa->tokens[*count])) % 256);
+	while (lisa->tokens[*count])
 		*count += 1;
-	lisa->flag_error = 0;
+	lisa->flag_command = 0;
+	lisa->flag_error = 1;
 	return (0);
 }

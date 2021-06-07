@@ -19,11 +19,11 @@
 
 typedef struct s_monna
 {
+	t_list	*list;
 	char	**my_env;
 	char	**tokens;
-	char	*tmp_env;
 	char	**pars_tokk;
-	t_list	*list;
+	char	*tmp_env;
 	int		status;
 	int		fildes[2];
 	int		shell_lvl;
