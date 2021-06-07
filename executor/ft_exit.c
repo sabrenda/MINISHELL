@@ -19,6 +19,8 @@ int	boss_atoi(t_monna *lisa, int *count, const char *str)
 		b = -1;
 	if (str[i] == '-' || str[i] == '+')
 		i++;
+	if (strcmp(str, "-9223372036854775808") == 0)
+		return (0);
 	while (str[i] >= 48 && str[i] <= 57 && ft_isdigit(str[i]) == 1)
 		res = res * 10 + (str[i++] - '0');
 	if (res > 9223372036854775807)
