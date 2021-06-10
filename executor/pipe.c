@@ -1,6 +1,5 @@
 #include "../minishell.h"
 
-
 void	ft_pipe_stdin(t_monna *lisa)
 {
 	dup2(lisa->fd_output, 1);
@@ -30,21 +29,21 @@ void	ft_pipe2(t_monna *lisa, int *count)
 		*count += 1;
 }
 
-void	ft_pipe(t_monna *lisa, int i)
+void	ft_pipe(t_monna *l, int i)
 {
-	while (lisa->tokens[i] && ft_operators(lisa->tokens[i]))
+	while (l->tokens[i] && ft_operators(l->tokens[i]))
 		i++;
-	if (lisa->tokens[i] && (!ft_strcmp(lisa->tokens[i], "|") && lisa->tokens[i][2] == 0))
+	if (l->tokens[i] && !ft_strcmp(l->tokens[i], "|") && l->tokens[i][2] == 0)
 	{
-		lisa->flag_pipe = 1;
-		pipe(lisa->fildes);
-		ft_pipe_stdout(lisa);
+		l->flag_pipe = 1;
+		pipe(l->fildes);
+		ft_pipe_stdout(l);
 	}
 	else
 	{
-		if (lisa->flag_pipe == 1)
-			lisa->flag_pipe = 2;
+		if (l->flag_pipe == 1)
+			l->flag_pipe = 2;
 		else
-			lisa->flag_pipe = 0;
+			l->flag_pipe = 0;
 	}
 }

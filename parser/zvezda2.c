@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-int ft_zvezda_konec_2(int i, char *str ,char *dir_name)
+int	ft_zvezda_konec_2(int i, char *str, char *dir_name)
 {
 	char	*tmp;
 	int		x;
@@ -28,7 +28,7 @@ int ft_zvezda_konec_2(int i, char *str ,char *dir_name)
 	return (1);
 }
 
-int ft_zvezda_seredina_2(char *str ,char *dir_name, int *flag)
+int	ft_zvezda_seredina_2(char *str, char *dir_name, int *flag)
 {
 	char	*tmp;
 	int		x;
@@ -55,7 +55,7 @@ int ft_zvezda_seredina_2(char *str ,char *dir_name, int *flag)
 	return (0);
 }
 
-int	ft_zvezda_nachalo_2(int i, char *str ,char *dir_name)
+int	ft_zvezda_nachalo_2(int i, char *str, char *dir_name)
 {
 	if (ft_strncmp(str, dir_name, i))
 		return (0);

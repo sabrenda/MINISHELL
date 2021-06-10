@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-int	ft_env(t_monna *lisa, int *count) //енв
+int	ft_env(t_monna *lisa, int *count)
 {
 	int	i;
 

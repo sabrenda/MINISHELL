@@ -2,108 +2,60 @@
 
 void	ft_free_mass(char	**mas)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	while (mas[i])
 		free (mas[i++]);
 	free (mas);
 }
 
-char **ft_copy_massive(t_monna *lisa, int i)
+void	ft_desert_rose(t_copy_mass *me, int *i, t_monna *lisa)
 {
-	char	**str;
-	int		j;
-	int		tmp;
+	me->tmp = *i;
+	me->j = 0;
+	while (lisa->tokens[*i] && ft_operators(lisa->tokens[*i]))
+	{
+		*i += 1;
+		me->j++;
+	}
+	*i = me->tmp;
+	me->str = (char **)malloc(sizeof(char *) * (me->j + 2));
+	me->j = 0;
+	ft_bzero(me->str, sizeof(char **));
+	while (lisa->tokens[*i] && ft_operators(lisa->tokens[*i]))
+	{
+		me->str[me->j] = ft_strdup(lisa->tokens[*i]);
+		me->j++;
+		*i += 1;
+	}
+	me->str[me->j] = NULL;
+	me->str[me->j + 1] = NULL;
+}
 
-	tmp = i;
-	j = 0;
-	while (lisa->tokens[i] && ft_operators(lisa->tokens[i]))
+char	**ft_copy_massive(t_monna *lisa, int i)
+{
+	t_copy_mass	me;
+
+	ft_desert_rose(&me, &i, lisa);
+	if (me.str[0] && !ft_strncmp(me.str[0], "./minishell", 11))
 	{
-		i++;
-		j++;
-	}
-	i = tmp;
-	str = (char **)malloc(sizeof(char *) * (j + 2)); // добавить ее в лизу
-	j = 0;
-	ft_bzero(str, sizeof(char **));
-	while (lisa->tokens[i] && ft_operators(lisa->tokens[i]))
-	{
-		str[j] = ft_strdup(lisa->tokens[i]);
-		j++;
-		i++;
-	}
-	str[j] = NULL;
-	str[j + 1] = NULL;
-	if (str[0] && !ft_strncmp(str[0], "./minishell", 11)) // можно переделать на execve("/bin/ps", .., ..) и считать bash и ./minishell
-	{
-		if (str[1] == NULL)
+		if (me.str[1] == NULL)
 		{
-			str[1] = ft_strdup(ft_itoa(lisa->shell_lvl));
-			str[2] = NULL;
+			me.str[1] = ft_strdup(ft_itoa(lisa->shell_lvl));
+			me.str[2] = NULL;
 		}
 		else
 		{
-			free (str[1]);
-			str[1] = ft_strdup(ft_itoa(lisa->shell_lvl));
+			free (me.str[1]);
+			me.str[1] = ft_strdup(ft_itoa(lisa->shell_lvl));
 		}
 	}
-	if ((str[0] && !ft_strcmp(str[0], "cat")) && lisa->flag_red_4)
+	if ((me.str[0] && !ft_strcmp(me.str[0], "cat")) && lisa->flag_red_4)
 	{
-		str[j] = (char *)malloc(sizeof(char ) * 2);
-		str[j][0] = '1';
-		str[j][1] = '\0';
+		me.str[me.j] = (char *)malloc(sizeof(char ) * 2);
+		me.str[me.j][0] = '1';
+		me.str[me.j][1] = '\0';
 	}
-	return (str);
-}
-
-int	ft_search_com(char *str) // является ли это комадой
-{
-	if (!(strcmp(str, "echo")) || !(strcmp(str, "cd")) || !(strcmp(str, "pwd"))
-		|| !(strcmp(str, "export")) || !(strcmp(str, "unset"))
-			|| !(strcmp(str, "env")) || !(strcmp(str, "exit")))
-		return (1);
-	return (0);
-}
-
-int	ft_operators(char *str) //проверяет является ли это оператором
-{
-	if ((!(strcmp(str, "&&")) && str[3] == 0)
-		|| (!(strcmp(str, "||")) && str[3] == 0)
-		|| (!(strcmp(str, "|")) && str[2] == 0)
-		|| (!(strcmp(str, ">")) && str[2] == 0)
-		|| (!(strcmp(str, "<")) && str[2] == 0)
-		|| (!(strcmp(str, ">>")) && str[3] == 0)
-		|| (!(strcmp(str, "<<")) && str[3] == 0)
-		|| (!(strcmp(str, ";")) && str[2] == 0))
-		return (0);
-	return (1);
-}
-
-int	ft_operators_2(char *str) //проверяет является ли это оператором
-{
-	if ((!(strcmp(str, "&&")) && str[3] == 0)
-		|| (!(strcmp(str, "||")) && str[3] == 0)
-		|| (!(strcmp(str, "|")) && str[2] == 0)
-		|| (!(strcmp(str, ";")) && str[2] == 0))
-		return (0);
-	return (1);
-}
-int	ft_red_serch(char *str) //проверяет является ли это редиректом
-{
-	if ((!(strcmp(str, ">")) && str[2] == 0)
-		|| (!(strcmp(str, "<")) && str[2] == 0)
-		|| (!(strcmp(str, ">>")) && str[3] == 0)
-		|| (!(strcmp(str, "<<")) && str[3] == 0))
-		return (1);
-	return (0);
-}
-
-int	ft_red_serch_2(char *str)
-{
-	if ((!(strcmp(str, "&&")) && str[3] == 0)
-		|| (!(strcmp(str, "|")) && str[2] == 0)
-		|| (!(strcmp(str, "||")) && str[3] == 0)
-		|| (!(strcmp(str, ";")) && str[2] == 0))
-		return (1);
-	return (0);
+	return (me.str);
 }

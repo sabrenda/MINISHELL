@@ -52,23 +52,29 @@ int	ft_copy_massive_env(t_monna *lisa, char *tmp)
 	return (1);
 }
 
-int	search_arg(t_monna *lisa, int *count)
+int	search_arg(t_monna *l, int *count)
 {
-	if (!(lisa->tokens[*count])
-		|| (!ft_strcmp(lisa->tokens[*count], "&&") && lisa->tokens[*count][3] == 0)
-		|| (!ft_strcmp(lisa->tokens[*count], "||") && lisa->tokens[*count][3] == 0)
-		|| (!ft_strcmp(lisa->tokens[*count], "|") && lisa->tokens[*count][2] == 0)
-		|| (!ft_strcmp(lisa->tokens[*count], ";") && lisa->tokens[*count][2] == 0))
-		return 0;
-	return 1;
+	if (!(l->tokens[*count])
+		|| (!ft_strcmp(l->tokens[*count], "&&") && l->tokens[*count][3] == 0)
+		|| (!ft_strcmp(l->tokens[*count], "||") && l->tokens[*count][3] == 0)
+		|| (!ft_strcmp(l->tokens[*count], "|") && l->tokens[*count][2] == 0)
+		|| (!ft_strcmp(l->tokens[*count], ";") && l->tokens[*count][2] == 0))
+		return (0);
+	return (1);
 }
 
-int	search_arg_2(t_monna *lisa, int *count)
+int	search_arg_2(t_monna *l, int *count)
 {
-	if (!(lisa->tokens[*count])
-		|| (!ft_strcmp(lisa->tokens[*count], "&&") && lisa->tokens[*count][3] == 0)
-		|| (!ft_strcmp(lisa->tokens[*count], "||") && lisa->tokens[*count][3] == 0)
-		|| (!ft_strcmp(lisa->tokens[*count], ";") && lisa->tokens[*count][2] == 0))
-		return 0;
-	return 1;
+	if (!(l->tokens[*count])
+		|| (!ft_strcmp(l->tokens[*count], "&&") && l->tokens[*count][3] == 0)
+		|| (!ft_strcmp(l->tokens[*count], "||") && l->tokens[*count][3] == 0)
+		|| (!ft_strcmp(l->tokens[*count], ";") && l->tokens[*count][2] == 0))
+		return (0);
+	return (1);
+}
+
+void	ft_redred(t_monna *l, int *count)
+{
+	while (l->tokens[*count] && ft_operators_2(l->tokens[*count]))
+		*count += 1;
 }

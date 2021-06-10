@@ -2,8 +2,8 @@
 
 void	keep_exp(t_monna *lisa, char *str)
 {
-	int i;
-	int check;
+	int	i;
+	int	check;
 
 	check = 0;
 	i = 0;
@@ -19,7 +19,7 @@ void	keep_exp(t_monna *lisa, char *str)
 
 int	len_arg(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -36,7 +36,7 @@ int	len_arg(char *str)
 
 int	search_per_env(t_monna *lisa, char *str, int len)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while(lisa->my_env[i])
@@ -60,8 +60,8 @@ void	err_exp(t_monna *lisa, char *s)
 
 void	print_sort_env(t_monna *lisa)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (lisa->my_env[i])
@@ -89,7 +89,7 @@ void sort_env(t_monna *lisa)
 	int		i = 0;
 	int		s_i = 0;
 	char	*temp;
-	int	len = 0;
+	int		len = 0;
 
 	while (lisa->my_env[len])
 		len++;
@@ -98,7 +98,7 @@ void sort_env(t_monna *lisa)
 		s_i = 0;
 		while(s_i < len - 1)
 		{
-			if(strcmp(lisa->my_env[s_i],lisa->my_env[s_i + 1]) > 0)
+			if(ft_strcmp(lisa->my_env[s_i],lisa->my_env[s_i + 1]) > 0)
 			{
 				temp = lisa->my_env[s_i + 1];
 				lisa->my_env[s_i + 1] = lisa->my_env[s_i];
@@ -111,30 +111,31 @@ void sort_env(t_monna *lisa)
 	print_sort_env(lisa);
 }
 
-int	ft_export(t_monna *lisa, int *count)
+int	ft_export(t_monna *l, int *i)
 {
-	int t;
-	char *s;
+	int		t;
+	char	*s;
 
-	*count += 1;
-	if (search_arg(lisa, count) == 0)
-		sort_env(lisa);
-	else if (ft_isalpha(*lisa->tokens[*count]) == 0 && strcmp(lisa->tokens[*count], "_") != 0)
-		err_exp(lisa, lisa->tokens[*count]);
+	*i += 1;
+	if (search_arg(l, i) == 0)
+		sort_env(l);
+	else if (ft_isalpha(*l->tokens[*i]) == 0
+		&& ft_strcmp(l->tokens[*i], "_") != 0)
+		err_exp(l, l->tokens[*i]);
 	else
 	{
-		if (strchr(lisa->tokens[*count], 61) != NULL)
+		if (strchr(l->tokens[*i], 61) != NULL)
 		{
-			t = search_per_env(lisa, lisa->tokens[*count], len_arg(lisa->tokens[*count]));
+			t = search_per_env(l, l->tokens[*i], len_arg(l->tokens[*i]));
 			if (t == 1)
-				ft_copy_massive_env(lisa, lisa->tokens[*count]);
+				ft_copy_massive_env(l, l->tokens[*i]);
 		}
 		else
-			keep_exp(lisa, lisa->tokens[*count]);
+			keep_exp(l, l->tokens[*i]);
 	}
-	lisa->flag_command = 0;
-	while (lisa->tokens[*count] && ft_operators_2(lisa->tokens[*count]))
-		*count += 1;
-	lisa->flag_error = 0;
+	l->flag_command = 0;
+	while (l->tokens[*i] && ft_operators_2(l->tokens[*i]))
+		*i += 1;
+	l->flag_error = 0;
 	return (0);
 }

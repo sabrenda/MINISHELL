@@ -1,14 +1,24 @@
 #include "../minishell.h"
 
+int	err_many_arg(t_monna *lisa)
+{
+	printf("Monolisa: exit: too many arguments\n");
+	lisa->flag_error = 1;
+	return (0);
+}
+
 int	ft_bin(char	*str)
 {
-	DIR *mydir;
-	struct dirent *myfile;
-	struct stat mystat;
+	DIR				*mydir;
+	struct dirent	*myfile;
+	struct stat		mystat;
 
 	mydir = opendir("/bin");
-	while((myfile = readdir(mydir)) != NULL)
+	while (1)
 	{
+		myfile = readdir(mydir);
+		if (myfile == NULL)
+			break ;
 		stat(myfile->d_name, &mystat);
 		if (!(strcmp((char *)&myfile->d_name, str)))
 			return (1);
@@ -16,30 +26,30 @@ int	ft_bin(char	*str)
 	closedir(mydir);
 	return (0);
 }
-void ft_proverka_absol_relat(t_any *any)
+
+void	ft_proverka_absol_relat(t_any *any)
 {
 	any->str = NULL;
-	if (ft_bin(any->mas[0])) // bin
+	if (ft_bin(any->mas[0]))
 		any->str = ft_strjoin("/bin/", any->mas[0]);
-	if (!any->str && !(ft_strncmp(any->mas[0], "./", 2))) // релатив
+	if (!any->str && !(ft_strncmp(any->mas[0], "./", 2)))
 	{
-		any->tmp = ft_strjoin(getcwd(NULL, 0) , "/");
-		any->str = ft_strjoin(any->tmp , any->mas[0]);
+		any->tmp = ft_strjoin(getcwd(NULL, 0), "/");
+		any->str = ft_strjoin(any->tmp, any->mas[0]);
 		free (any->tmp);
 	}
-	if (!any->str) //абсолют
-		any->str = ft_strjoin("" , any->mas[0]);
+	if (!any->str)
+		any->str = ft_strjoin("", any->mas[0]);
 }
 
-
-int	ft_any_argument(t_monna *lisa, int *count) //
+int	ft_any_argument(t_monna *lisa, int *count)
 {
 	t_any	any;
 
-	any.mas = ft_copy_massive(lisa, *count); //копируем аргументы до "&& || > < ; |"
-	ft_proverka_absol_relat(&any); // проверяю /bin/ релативный и абсолютный путь
+	any.mas = ft_copy_massive(lisa, *count);
+	ft_proverka_absol_relat(&any);
 	any.pid = fork();
-	if (any.pid == 0) // Дочерний процесс
+	if (any.pid == 0)
 	{
 		if (execve(any.str, any.mas, lisa->my_env) == -1)
 			printf("minishell: %s: command not found\n", any.mas[0]);
@@ -56,5 +66,7 @@ int	ft_any_argument(t_monna *lisa, int *count) //
 	while (lisa->tokens[*count] && ft_operators_2(lisa->tokens[*count]))
 		*count += 1;
 	ft_free_mass(any.mas);
+	if (any.str)
+		free (any.str);
 	return (any.status);
 }

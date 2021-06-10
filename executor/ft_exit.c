@@ -8,7 +8,7 @@ void	err_num_arg(t_monna *lisa, char *str)
 
 int	boss_atoi(t_monna *lisa, int *count, const char *str)
 {
-	int						i;
+	int					i;
 	int					b;
 	unsigned long long	res;
 
@@ -30,12 +30,12 @@ int	boss_atoi(t_monna *lisa, int *count, const char *str)
 
 int	boss_isdigit(char *s)
 {
-	int c;
+	int	c;
 
 	c = 0;
 	if (s[c] == 43 || s[c] == 45)
 		c++;
-	while(s[c])
+	while (s[c])
 	{
 		if (ft_isdigit(s[c]) != 1)
 			return (-1);
@@ -46,8 +46,8 @@ int	boss_isdigit(char *s)
 
 int	ft_lenstr(char **mas)
 {
-	int i_c;
-	int i;
+	int	i_c;
+	int	i;
 
 	i_c = 0;
 	i = 0;
@@ -58,22 +58,14 @@ int	ft_lenstr(char **mas)
 		i_c++;
 	}
 	if (mas[i + 1] && ft_operators_2(mas[i + 1]))
-		return(-2);
+		return (-2);
 	return (i);
-}
-
-int	err_many_arg(t_monna *lisa)
-{
-	printf("Monolisa: exit: too many arguments\n");
-	lisa->flag_error = 1;
-	// не выполнять следующие команды // stop
-	return (0);
 }
 
 int	ft_exit(t_monna *lisa, int *count)
 {
-	int i;
-	char **vika;
+	int		i;
+	char	**vika;
 
 	i = 0;
 	*count += 1;

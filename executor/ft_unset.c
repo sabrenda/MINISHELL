@@ -15,7 +15,7 @@ int	delete_per(t_monna *lisa, char *str)
 	i = 0;
 	while(lisa->my_env[b])
 		b++;
-	new_mas = (char**)malloc(sizeof(char*) * (b)); // не вычитаю 1 , так как NULL
+	new_mas = (char**)malloc(sizeof(char*) * (b));
 	if (new_mas == 0)
 		return (0);
 	int	k;
@@ -37,12 +37,14 @@ int	delete_per(t_monna *lisa, char *str)
 int	ft_unset(t_monna *lisa, int *count)
 {
 	*count += 1;
-	if ((ft_isalpha(*lisa->tokens[*count]) == 0 && ft_strcmp(lisa->tokens[*count], "_") != 0) || (strchr(lisa->tokens[*count], '=') != NULL))
+	if ((ft_isalpha(*lisa->tokens[*count]) == 0
+		&& ft_strcmp(lisa->tokens[*count], "_") != 0)
+			|| (strchr(lisa->tokens[*count], '=') != NULL))
 		err_uns(lisa, lisa->tokens[*count]);
 	else
 		delete_per(lisa, lisa->tokens[*count]);
 	lisa->flag_command = 0;
-	while (lisa->tokens[*count] && ft_operators_2(lisa->tokens[*count])) //пропускаем аргрументы если есть после env, так как по сабжу без них надо
+	while (lisa->tokens[*count] && ft_operators_2(lisa->tokens[*count]))
 		*count += 1;
 	lisa->flag_error = 0;
 	return (0);

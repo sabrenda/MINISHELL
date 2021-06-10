@@ -16,6 +16,8 @@
 # include <stdlib.h>
 # include <dirent.h>
 # include <fcntl.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 typedef struct s_monna
 {
@@ -53,11 +55,43 @@ typedef struct s_pars
 	char	c;
 }			t_pars;
 
+typedef struct s_red_4
+{
+	int		temp_fd_out;
+	char	*str;
+	t_list	*tmp;
+	int		fd;
+}			t_red_4;
+
 typedef struct s_er3
 {
 	int		i;
 	int		flag;
 }			t_er3;
+
+typedef struct s_copy_mass
+{
+	char	**str;
+	int		j;
+	int		tmp;
+}			t_copy_mass;
+
+typedef struct s_ept
+{
+	DIR		*mydir;
+	struct	dirent *myfile;
+	struct	stat mystat;
+}			t_ept;
+
+typedef struct s_vshoke
+{
+	int		flag;
+	int		a;
+	int		i;
+	int		count;
+	int		x;
+	int		j;
+}			t_vshoke;
 
 typedef struct s_any
 {
@@ -137,6 +171,9 @@ int	ft_search_com(char *str);
 int	ft_operators(char *str);
 int	ft_operators_2(char *str);
 void ft_proverka_absol_relat(t_any *any);
+void	ft_tochka(t_monna *lisa, int *count);
+void	ft_else(t_monna *lisa, int *count);
+
 
 //utils
 int	ft_lenmassive(char **str);
@@ -157,7 +194,7 @@ void	ft_pipe_end(t_monna *lisa);
 void	ft_pipe2(t_monna *lisa, int *count);
 
 //redirect
-void	ft_redirect_executor(t_monna *lisa, int i, int *count); //создает файлы заранее
+void	ft_redirect_executor(t_monna *l, int i, int *count); //создает файлы заранее
 void	ft_redirect_executor_2(t_monna *lisa, int i, int *count); // осталось добить функции ft_red и сделать как ft_pipe2 для возвразения фд дескрипторов 1 и 0 на полку как было
 int	ft_red_serch_2(char *str);
 int	search_arg_2(t_monna *lisa, int *count);
@@ -168,6 +205,10 @@ void	ft_red_1(t_monna *lisa, int *count);
 void	ft_redirect_end(t_monna *lisa);
 int	ft_operators_red(char *str);
 void	ft_redred(t_monna *l, int *count);
+void	ft_red_ex_1(int *i, t_monna *l, int *fd, char *red);
+int	ft_red_ex_2(int *i, t_monna *lisa, int *count);
+int	t_red_ex_3(t_monna *lisa, int *fd);
+
 
 
 

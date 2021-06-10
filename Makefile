@@ -23,17 +23,22 @@ SRCS = main.c\
 			executor/ft_pwd.c\
 			executor/cd.c\
 			executor/utils2.c\
+			executor/utils3.c\
 			executor/ft_export.c\
 			executor/ft_unset.c\
 			executor/pipe.c\
 			executor/ft_exit.c\
 			executor/ft_echo.c\
+			executor/search.c\
+			executor/ft_red_1.c\
+			executor/ft_red_2.c\
+			executor/ft_red_3.c\
 
 OBJS = $(SRCS:.c=.o)
 
 GCC = clang
 
-FLAGS = -g -Wall -Wextra -Werror
+FLAGS = -g -Wall -Wextra -Werror -lreadline
 
 %.o: %.c
 	$(GCC) -c $< -o $(<:.c=.o)
@@ -66,5 +71,6 @@ norm:
 	norminette ./libft/*.c
 	norminette ./libft/*.h
 	norminette *.h
+	norminette main.c
 
 .PHONY:	all bonus clean fclean re norm run

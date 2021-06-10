@@ -7,14 +7,14 @@ void	err_cd(t_monna *lisa, int *count)
 	if (stat(lisa->tokens[*count], &status) == 0)
 		printf("Monnalisa: cd: %s: Not a directory\n", lisa->tokens[*count]);
 	else
-		printf("Monnalisa: cd: %s: No such file or directory\n", lisa->tokens[*count]);
-
+		printf("Monnalisa: cd: %s: No such file or directory\n",
+			lisa->tokens[*count]);
 }
 
 int	search_home(t_monna *lisa)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (lisa->my_env[i])
@@ -42,7 +42,7 @@ int	search_home(t_monna *lisa)
 
 void	go_change_pat_pwd(t_monna *lisa, char *s)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	s = getcwd(NULL, 0);
@@ -60,8 +60,8 @@ void	go_change_pat_pwd(t_monna *lisa, char *s)
 
 void	change_oldpwd(t_monna *lisa, char *cur_k)
 {
-	int i;
-	char *old;
+	int		i;
+	char	*old;
 
 	i = 0;
 	while (lisa->my_env[i])
@@ -74,21 +74,21 @@ void	change_oldpwd(t_monna *lisa, char *cur_k)
 		}
 		i++;
 	}
-	// ft_free_mass(lisa->my_env);
 	old = ft_strjoin("OLDPWD=", cur_k);
 	ft_copy_massive_env(lisa, old);
-	// если не нахожу, то strjoin добавляю oldpwd в env
+	if (old)
+		free (old);
 }
 
-int	ft_cd(t_monna *lisa, int *count) //енв
+int	ft_cd(t_monna *lisa, int *count)
 {
-	char *s;
-	char *cur_k;
+	char	*s;
+	char	*cur_k;
 
 	*count += 1;
-	if (search_arg(lisa, count) == 0) // cd без параметров перемещает в $HOME и зависит от него
+	if (search_arg(lisa, count) == 0)
 		search_home(lisa);
-	else if (chdir(lisa->tokens[*count]) == 0) // не
+	else if (chdir(lisa->tokens[*count]) == 0)
 	{
 		cur_k = getcwd(NULL, 0);
 		s = ft_strdup(lisa->tokens[*count]);
@@ -98,7 +98,7 @@ int	ft_cd(t_monna *lisa, int *count) //енв
 	else
 		err_cd(lisa, count);
 	lisa->flag_command = 0;
-	while (lisa->tokens[*count] && ft_operators_2(lisa->tokens[*count]) != 0) //пропускаем аргрументы если есть после env, так как по сабжу без них надо
+	while (lisa->tokens[*count] && ft_operators_2(lisa->tokens[*count]) != 0)
 		*count += 1;
 	lisa->flag_error = 0;
 	return (0);

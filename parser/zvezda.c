@@ -1,147 +1,112 @@
 #include "../minishell.h"
 
-int	ft_zvezda_konec(char *str, char *dir_name, int *flag)
-{
-	int	i;
-
-	i = *flag;
-	// **mba или **mb*** *am*a* *am*****b****
-	while (str[i] == '*')
-		i++;
-	if (ft_zvezda_konec_2(i, str ,dir_name))
-		return (1);
-	return (0);
-}
-
-int	ft_zvezda_seredina(char *str, char *dir_name, int *flag)
-{
-	int	i;
-	int	j;
-
-	i = *flag;
-	j = 0;
-	// **mba или **mb*** *am*a* *am*****b****
-	while (str[i] == '*')
-		i++;
-	while (str[i] != '*' && str[i] != '\0')
-	{
-		i++;
-		if (str[i] == '*')
-			j++;
-	}
-	if (j == 0)
-		return (2);
-	while (str[*flag] == '*')
-		*flag += 1;
-	if (ft_zvezda_seredina_2(str ,dir_name, flag))
-		return (1);
-	return (0);
-}
-
 int	ft_zvezda_nachalo(char *str, char *dir_name, int *flag)
 {
 	int	j;
 
 	j = 0;
-	// lam** или l**am*** l*amba* l*a*ba* l*mba
 	while (str[*flag] != '*')
 		*flag += 1;
-	if (ft_zvezda_nachalo_2(*flag, str ,dir_name))
+	if (ft_zvezda_nachalo_2(*flag, str, dir_name))
 		return (1);
 	return (0);
 }
 
 int	ft_zvezda_v_shoke(char *str, char *dir_name)
 {
-	int	j;
-	int	flag;
-	int	a;
+	t_vshoke	sh;
 
-	flag = 0;
-	if (str[flag] && str[flag] != '*') //проверка начала lam** или l**am*** l*amba* l*a*ba* l*mba
+	sh.flag = 0;
+	if (str[sh.flag] && str[sh.flag] != '*')
 	{
-		a = ft_zvezda_nachalo(str, dir_name, &flag);
-		if (a == 0)
+		sh.a = ft_zvezda_nachalo(str, dir_name, &sh.flag);
+		if (sh.a == 0)
 			return (0);
 	}
-	if (str[flag] == '*') // проверка середины **am*** *a*a*
+	if (str[sh.flag] == '*')
 	{
 		while (1)
 		{
-			a = ft_zvezda_seredina(str, dir_name, &flag);
-			if (a == 0)
+			sh.a = ft_zvezda_seredina(str, dir_name, &sh.flag);
+			if (sh.a == 0)
 				return (0);
-			if (a == 2)
+			if (sh.a == 2)
 				break ;
 		}
 	}
-	if (str[flag] == '*' && str[ft_strlen(str) - 1] != '*') //проверка концовки **mba или **mb *am*a
-	{
-		a = ft_zvezda_konec(str, dir_name, &flag);
-		if (a == 0)
+	if (str[sh.flag] == '*' && str[ft_strlen(str) - 1] != '*')
+		if (!ft_zvezda_konec(str, dir_name, &sh.flag))
 			return (0);
-	}
 	return (1);
 }
 
-void	ft_zvezda_epta(t_monna *lisa, int nomer_ukaza)
+void	ft_zvezda_epta_pt1(t_ept *pt, t_vshoke *sh, t_monna *lisa, int num)
 {
-	DIR	*mydir;
-	struct	dirent *myfile;
-	struct	stat mystat;
-	int	i;
-	int	count;
-	int	x;
-	int	j;
+	while (1)
+	{
+		pt->myfile = readdir(pt->mydir);
+		if (pt->myfile == NULL)
+			break ;
+		sh->x = 0;
+		stat(pt->myfile->d_name, &pt->mystat);
+		if (pt->myfile->d_name[0] == '.')
+			continue ;
+		while (pt->myfile->d_name[sh->x])
+			lisa->tokens[num][sh->j++] = pt->myfile->d_name[sh->x++];
+		lisa->tokens[num][sh->j++] = ' ';
+	}
+	lisa->tokens[num][sh->j - 1] = '\0';
+	closedir(pt->mydir);
+}
 
-	count = 0;
-	i = 0;
-	j = 0;
+void	ft_zvezda_epta_pt2(t_ept *pt, t_vshoke *sh, t_monna *lisa, int num)
+{
+	sh->count = 0;
+	while (1)
+	{
+		pt->myfile = readdir(pt->mydir);
+		if (pt->myfile == NULL)
+			break ;
+		sh->x = 0;
+		stat(pt->myfile->d_name, &pt->mystat);
+		if (pt->myfile->d_name[0] == '.')
+			continue ;
+		if (ft_zvezda_v_shoke(lisa->tmp_env, pt->myfile->d_name))
+		{
+			while (pt->myfile->d_name[sh->x])
+				lisa->tokens[num][sh->j++] = pt->myfile->d_name[sh->x++];
+			lisa->tokens[num][sh->j++] = ' ';
+			sh->count = 1;
+		}
+	}
+	if (sh->count)
+		lisa->tokens[num][sh->j - 1] = '\0';
+	closedir(pt->mydir);
+}
+
+void	ft_zvezda_epta(t_monna *lisa, int num_u)
+{
+	t_ept		pt;
+	t_vshoke	sh;
+
+	ft_bzero(&sh, sizeof(t_vshoke));
 	if (lisa->flag_block_zvezda)
 		return ;
 	ft_clean_tmp_env(lisa);
-	ft_strcopy(lisa->tmp_env, lisa->tokens[nomer_ukaza]);
-	while (lisa->tmp_env[i])
+	ft_strcopy(lisa->tmp_env, lisa->tokens[num_u]);
+	while (lisa->tmp_env[sh.i])
 	{
-		if (lisa->tmp_env[i] == '*')
-			count++;
-		i++;
+		if (lisa->tmp_env[sh.i] == '*')
+			sh.count++;
+		sh.i++;
 	}
-	if (count == 0)
+	if (sh.count == 0)
 		return ;
-	mydir = opendir(".");
-	if (i == count)
+	pt.mydir = opendir(".");
+	if (sh.i == sh.count)
 	{
-		while((myfile = readdir(mydir)) != NULL)
-		{
-			x = 0;
-			stat(myfile->d_name, &mystat);
-			if (myfile->d_name[0] == '.')
-				continue ;
-			while (myfile->d_name[x])
-				lisa->tokens[nomer_ukaza][j++] = myfile->d_name[x++];
-			lisa->tokens[nomer_ukaza][j++] = ' ';
-		}
-		lisa->tokens[nomer_ukaza][j - 1] = '\0';
-		closedir(mydir);
+		ft_zvezda_epta_pt1(&pt, &sh, lisa, num_u);
 		return ;
 	}
-	count = 0;
-	while((myfile = readdir(mydir)) != NULL)
-	{
-		x = 0;
-		stat(myfile->d_name, &mystat);
-		if (myfile->d_name[0] == '.')
-			continue ;
-		if (ft_zvezda_v_shoke(lisa->tmp_env, myfile->d_name))
-		{
-			while (myfile->d_name[x])
-				lisa->tokens[nomer_ukaza][j++] = myfile->d_name[x++];
-			lisa->tokens[nomer_ukaza][j++] = ' ';
-			count = 1;
-		}
-	}
-	if (count)
-		lisa->tokens[nomer_ukaza][j - 1] = '\0';
-	closedir(mydir);
+	ft_zvezda_epta_pt2(&pt, &sh, lisa, num_u);
 }
