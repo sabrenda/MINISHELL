@@ -59,3 +59,11 @@ char	**ft_copy_massive(t_monna *lisa, int i)
 	}
 	return (me.str);
 }
+
+int	srch_null_arg(int c)
+{
+	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122) || (c == 95))
+		return (1);
+	else
+		return (0);
+}

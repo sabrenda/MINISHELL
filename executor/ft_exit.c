@@ -6,7 +6,7 @@ void	err_num_arg(t_monna *lisa, char *str)
 	exit(255);
 }
 
-int	boss_atoi(t_monna *lisa, int *count, const char *str)
+int	boss_atoi(t_monna *lisa, int *count, char *str)
 {
 	int					i;
 	int					b;
@@ -19,7 +19,7 @@ int	boss_atoi(t_monna *lisa, int *count, const char *str)
 		b = -1;
 	if (str[i] == '-' || str[i] == '+')
 		i++;
-	if (strcmp(str, "-9223372036854775808") == 0)
+	if (ft_strcmp(str, "-9223372036854775808") == 0)
 		return (0);
 	while (str[i] >= 48 && str[i] <= 57 && ft_isdigit(str[i]) == 1)
 		res = res * 10 + (str[i++] - '0');
@@ -69,11 +69,12 @@ int	ft_exit(t_monna *lisa, int *count)
 
 	i = 0;
 	*count += 1;
-	ft_putendl_fd("exit", 1);
+	write(1, "exit\n", 5);
 	vika = ft_copy_massive(lisa, *count);
 	if (!vika[0])
 	{
 		ft_free_mass(vika);
+		free_all_2(NULL, lisa);
 		exit(EXIT_SUCCESS);
 	}
 	if (ft_lenstr(vika) == -1)

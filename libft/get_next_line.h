@@ -6,7 +6,7 @@
 /*   By: sabrenda <sabrenda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 14:14:26 by tchariss          #+#    #+#             */
-/*   Updated: 2021/04/15 17:58:41 by sabrenda         ###   ########.fr       */
+/*   Updated: 2021/06/12 22:02:46 by sabrenda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ typedef struct s_gnl
 	char	buf[BUFFER_SIZE + 2];
 	char	*ukaz_n;
 }				t_gnl;
+
+typedef struct s_gnl2
+{
+	int			sym;
+	int			check;
+}				t_gnl2;
 
 int		get_next_line(int fd, char **line);
 char	*ft_strdup(const char *s);

@@ -10,16 +10,16 @@ int	ft_err_1(t_monna *l)
 	while (l->tokens[++i] && flag_1 != 2)
 	{
 		if (flag_1 == 0
-			&& ((!strcmp(l->tokens[i], "&&") && l->tokens[i][3] == 0)
-			|| (!strcmp(l->tokens[i], "||") && l->tokens[i][3] == 0)
-			|| (!strcmp(l->tokens[i], "|") && l->tokens[i][2] == 0)
-			|| (!strcmp(l->tokens[i], ";") && l->tokens[i][2] == 0)))
+			&& ((!ft_strcmp(l->tokens[i], "&&") && l->tokens[i][3] == 0)
+			|| (!ft_strcmp(l->tokens[i], "||") && l->tokens[i][3] == 0)
+			|| (!ft_strcmp(l->tokens[i], "|") && l->tokens[i][2] == 0)
+			|| (!ft_strcmp(l->tokens[i], ";") && l->tokens[i][2] == 0)))
 			flag_1 = 2;
 		else if (flag_1 == 1
-			&& ((!strcmp(l->tokens[i], "&&") && l->tokens[i][3] == 0)
-			|| (!strcmp(l->tokens[i], "||") && l->tokens[i][3] == 0)
-			|| (!strcmp(l->tokens[i], "|") && l->tokens[i][2] == 0)
-			|| (!strcmp(l->tokens[i], ";") && l->tokens[i][2] == 0)))
+			&& ((!ft_strcmp(l->tokens[i], "&&") && l->tokens[i][3] == 0)
+			|| (!ft_strcmp(l->tokens[i], "||") && l->tokens[i][3] == 0)
+			|| (!ft_strcmp(l->tokens[i], "|") && l->tokens[i][2] == 0)
+			|| (!ft_strcmp(l->tokens[i], ";") && l->tokens[i][2] == 0)))
 			flag_1 = 0;
 		else
 			flag_1 = 1;
@@ -38,13 +38,13 @@ int	ft_err_2(t_monna *l)
 		i++;
 	if (i == 0)
 		return (flag_1);
-	if ((!strcmp(l->tokens[i - 1], "&&") && l->tokens[i - 1][3] == 0)
-		|| (!strcmp(l->tokens[i - 1], "||") && l->tokens[i - 1][3] == 0)
-		|| (!strcmp(l->tokens[i - 1], "|") && l->tokens[i - 1][2] == 0)
-		|| (!strcmp(l->tokens[i - 1], "<") && l->tokens[i - 1][2] == 0)
-		|| (!strcmp(l->tokens[i - 1], "<<") && l->tokens[i - 1][3] == 0)
-		|| (!strcmp(l->tokens[i - 1], ">") && l->tokens[i - 1][2] == 0)
-		|| (!strcmp(l->tokens[i - 1], ">>") && l->tokens[i - 1][3] == 0))
+	if ((!ft_strcmp(l->tokens[i - 1], "&&") && l->tokens[i - 1][3] == 0)
+		|| (!ft_strcmp(l->tokens[i - 1], "||") && l->tokens[i - 1][3] == 0)
+		|| (!ft_strcmp(l->tokens[i - 1], "|") && l->tokens[i - 1][2] == 0)
+		|| (!ft_strcmp(l->tokens[i - 1], "<") && l->tokens[i - 1][2] == 0)
+		|| (!ft_strcmp(l->tokens[i - 1], "<<") && l->tokens[i - 1][3] == 0)
+		|| (!ft_strcmp(l->tokens[i - 1], ">") && l->tokens[i - 1][2] == 0)
+		|| (!ft_strcmp(l->tokens[i - 1], ">>") && l->tokens[i - 1][3] == 0))
 	{
 		flag_1 = 2;
 		return (flag_1);
@@ -66,20 +66,20 @@ int	ft_err_3(t_monna *l)
 	while (l->tokens[++er.i] && er.flag != 2)
 	{
 		if (er.flag == 0
-			&& ((!strcmp(l->tokens[er.i], ">") && l->tokens[er.i][2] == 0)
-			|| (!strcmp(l->tokens[er.i], "<") && l->tokens[er.i][2] == 0)
-			|| (!strcmp(l->tokens[er.i], ">>") && l->tokens[er.i][3] == 0)
-			|| (!strcmp(l->tokens[er.i], "<<") && l->tokens[er.i][3] == 0)))
+			&& ((!ft_strcmp(l->tokens[er.i], ">") && l->tokens[er.i][2] == 0)
+			|| (!ft_strcmp(l->tokens[er.i], "<") && l->tokens[er.i][2] == 0)
+			|| (!ft_strcmp(l->tokens[er.i], ">>") && l->tokens[er.i][3] == 0)
+			|| (!ft_strcmp(l->tokens[er.i], "<<") && l->tokens[er.i][3] == 0)))
 			er.flag = 1;
 		else if (er.flag == 1
-			&& ((!strcmp(l->tokens[er.i], "&&") && l->tokens[er.i][3] == 0)
-			|| (!strcmp(l->tokens[er.i], "||") && l->tokens[er.i][3] == 0)
-			|| (!strcmp(l->tokens[er.i], "|") && l->tokens[er.i][2] == 0)
-			|| (!strcmp(l->tokens[er.i], ";") && l->tokens[er.i][2] == 0)
-			|| (!strcmp(l->tokens[er.i], ">") && l->tokens[er.i][2] == 0)
-			|| (!strcmp(l->tokens[er.i], ">>") && l->tokens[er.i][3] == 0)
-			|| (!strcmp(l->tokens[er.i], "<") && l->tokens[er.i][2] == 0)
-			|| (!strcmp(l->tokens[er.i], "<<") && l->tokens[er.i][3] == 0)))
+			&& ((!ft_strcmp(l->tokens[er.i], "&&") && l->tokens[er.i][3] == 0)
+			|| (!ft_strcmp(l->tokens[er.i], "||") && l->tokens[er.i][3] == 0)
+			|| (!ft_strcmp(l->tokens[er.i], "|") && l->tokens[er.i][2] == 0)
+			|| (!ft_strcmp(l->tokens[er.i], ";") && l->tokens[er.i][2] == 0)
+			|| (!ft_strcmp(l->tokens[er.i], ">") && l->tokens[er.i][2] == 0)
+			|| (!ft_strcmp(l->tokens[er.i], ">>") && l->tokens[er.i][3] == 0)
+			|| (!ft_strcmp(l->tokens[er.i], "<") && l->tokens[er.i][2] == 0)
+			|| (!ft_strcmp(l->tokens[er.i], "<<") && l->tokens[er.i][3] == 0)))
 			er.flag = 2;
 		else
 			er.flag = 0;

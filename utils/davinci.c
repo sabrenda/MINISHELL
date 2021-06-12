@@ -51,15 +51,15 @@ void	ft_monnalisa_2(void)
 	m("!!!!!                       $$$$$$$$$hc,.,,cc$$$$$             !!\n", 1);
 	m("!!!!!                  .,zcc$$$$$$$$$$$$$$$$$$$$$$             !!\n", 1);
 	m("!!!!!               .z$$$$$$$$$$$$$$$$$$$$$$$$$$$$             !!\n", 1);
-	m("!!!!!             ,d$$$$\033[35m|..@Tchariss..|\033[0m$$$$$$$$$  \n", 1);
-	m("!!!!!           ,d$$$$$$\033[36m|..@Sabrenda..|\033[0m$$$$$$$$   \n", 1);
-	m("!!!!!         ,d$$$$$$$$\033[31m|..MonnaLisa..|\033[0m$$$$$$$    \n", 1);
-	m("!!!!!        c$$$$$$$$$$\033[32m|..MiniShell..|\033[0m$$$$$      \n", 1);
+	m("!!!!!\033[35m             ,d$$$$|..@Tchariss..|$$$$$$$$$  \033[0m\n", 1);
+	m("!!!!!\033[2;35m           ,d$$$$$$|..MonnaLisa..|$$$$$$$$   \033[0m\n", 1);
+	m("!!!!!\033[32m         ,d$$$$$$$$|..@Sabrenda..|$$$$$$$    \033[0m\n", 1);
+	m("!!!!!\033[2;32m        c$$$$$$$$$$|..LeoDVinci..|$$$$$      \033[0m\n", 1);
 }
 
-void	ft_davinci(void)// Leonardo di ser Piero da Vinci
+void	ft_davinci(void)
 {
 	m("\033[0m", 1);
-	ft_monnalisa();		// Ritratto di Monna Lisa del Giocondo
-	ft_monnalisa_2();	// 1503—1519
+	ft_monnalisa();
+	ft_monnalisa_2();
 }

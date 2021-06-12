@@ -20,7 +20,7 @@ int	ft_bin(char	*str)
 		if (myfile == NULL)
 			break ;
 		stat(myfile->d_name, &mystat);
-		if (!(strcmp((char *)&myfile->d_name, str)))
+		if (!(ft_strcmp((char *)&myfile->d_name, str)))
 			return (1);
 	}
 	closedir(mydir);

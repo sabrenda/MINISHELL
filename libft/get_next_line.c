@@ -6,7 +6,7 @@
 /*   By: sabrenda <sabrenda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 11:32:09 by tchariss          #+#    #+#             */
-/*   Updated: 2021/05/03 21:44:18 by sabrenda         ###   ########.fr       */
+/*   Updated: 2021/06/12 22:03:17 by sabrenda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,27 +71,28 @@ int	get_line(t_gnl *gnl, char ***line, char **static_memory, int sym)
 int	get_next_line(int fd, char **line)
 {
 	t_gnl		*gnl;
-	int			sym;
-	int			check;
+	t_gnl2		vi;
 	static char	*static_memory;
 
-	check = 0;
-	sym = 0;
+	vi.check = 0;
+	vi.sym = 0;
 	if (line == NULL || read(fd, 0, 0) == -1 || BUFFER_SIZE <= 0)
 		return (-1);
 	gnl = (t_gnl *)malloc(sizeof(t_gnl));
-	if (!gnl)
-		return (-1);
 	gnl->ukaz_n = NULL;
-	check = proverka_static_memory(static_memory, line);
-	if (check == -1)
+	vi.check = proverka_static_memory(static_memory, line);
+	if (vi.check == -1)
 		return (free_gnl(&gnl));
-	if (check != 1)
+	if (vi.check != 1)
 		free_str(&static_memory);
-	while (check == 0 && gnl->ukaz_n == 0
-		&& (sym = read(fd, gnl->buf, BUFFER_SIZE)) > 0)
-		if (get_line(gnl, &line, &static_memory, sym) == -1)
+	while (vi.check == 0 && gnl->ukaz_n == 0)
+	{
+		vi.sym = read(fd, gnl->buf, BUFFER_SIZE);
+		if (vi.sym <= 0)
+			break ;
+		if (get_line(gnl, &line, &static_memory, vi.sym) == -1)
 			return (free_gnl(&gnl));
+	}
 	free(gnl);
-	return ((sym || check));
+	return ((vi.sym || vi.check));
 }

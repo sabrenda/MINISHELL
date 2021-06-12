@@ -7,39 +7,40 @@ void	err_uns(t_monna *lisa, char *s)
 
 int	delete_per(t_monna *lisa, char *str)
 {
-	int		i;
-	int		b;
-	char	**new_mas;
+	t_unset	set;
 
-	b = 0;
-	i = 0;
-	while(lisa->my_env[b])
-		b++;
-	new_mas = (char**)malloc(sizeof(char*) * (b));
-	if (new_mas == 0)
+	set.b = 0;
+	set.i = 0;
+	while (lisa->my_env[set.b])
+		set.b++;
+	set.new_mas = (char **)malloc(sizeof(char *) * (set.b));
+	if (set.new_mas == 0)
 		return (0);
-	int	k;
-	k = 0;
-	while(lisa->my_env[i])
+	set.k = 0;
+	while (lisa->my_env[set.i])
 	{
-		if (ft_strncmp(lisa->my_env[i], str, ft_strlen(str)) == 0)
-			i++;
-		new_mas[k] = ft_strdup(lisa->my_env[i]);
-		i++;
-		k++;
+		if (ft_strncmp(lisa->my_env[set.i], str, ft_strlen(str)) == 0)
+		{
+			set.i++;
+			continue ;
+		}
+		set.new_mas[set.k] = ft_strdup(lisa->my_env[set.i]);
+		set.i++;
+		set.k++;
 	}
-	new_mas[k] = NULL;
+	set.new_mas[set.k] = NULL;
 	ft_free_mass(lisa->my_env);
-	lisa->my_env = new_mas;
+	lisa->my_env = set.new_mas;
 	return (1);
 }
 
 int	ft_unset(t_monna *lisa, int *count)
 {
 	*count += 1;
-	if ((ft_isalpha(*lisa->tokens[*count]) == 0
-		&& ft_strcmp(lisa->tokens[*count], "_") != 0)
-			|| (strchr(lisa->tokens[*count], '=') != NULL))
+	if (!lisa->tokens[*count])
+		return (0);
+	if (srch_null_arg(*lisa->tokens[*count]) == 0
+		|| ft_strchr(lisa->tokens[*count], '=') != NULL)
 		err_uns(lisa, lisa->tokens[*count]);
 	else
 		delete_per(lisa, lisa->tokens[*count]);

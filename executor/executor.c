@@ -31,17 +31,17 @@ void	ft_ili(t_monna *lisa, int *count)
 
 void	ft_command_start(t_monna *lisa, int *count)
 {
-	if (!(ft_strcmp(lisa->tokens[*count], "env")))
+	if (!(ft_boss_reg(lisa->tokens[*count], "env")))
 		lisa->flag_command = ft_env(lisa, count);
-	else if (!(ft_strcmp(lisa->tokens[*count], "cd")))
+	else if (!(ft_boss_reg(lisa->tokens[*count], "cd")))
 		lisa->flag_command = ft_cd(lisa, count);
-	else if (!(ft_strcmp(lisa->tokens[*count], "pwd")))
+	else if (!(ft_boss_reg(lisa->tokens[*count], "pwd")))
 		lisa->flag_command = ft_pwd(lisa, count);
 	else if (!(ft_strcmp(lisa->tokens[*count], "export")))
 		lisa->flag_command = ft_export(lisa, count);
 	else if (!(ft_strcmp(lisa->tokens[*count], "unset")))
 		lisa->flag_command = ft_unset(lisa, count);
-	else if (!(ft_strcmp(lisa->tokens[*count], "echo")))
+	else if (!(ft_boss_reg(lisa->tokens[*count], "echo")))
 		lisa->flag_command = ft_echo(lisa, count);
 	else if (!(ft_strcmp(lisa->tokens[*count], "exit")))
 		ft_exit(lisa, count);

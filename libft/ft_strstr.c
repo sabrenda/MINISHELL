@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Ahmed <Ahmed@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tchariss <tchariss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 20:02:06 by tchariss          #+#    #+#             */
-/*   Updated: 2021/04/28 12:48:35 by Ahmed            ###   ########.fr       */
+/*   Updated: 2021/06/10 16:31:54 by tchariss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*ft_strstr(char *str, char *to_find)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	if (to_find[0] == '\0')

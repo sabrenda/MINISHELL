@@ -22,19 +22,19 @@ void	free_all_2(char *line, t_monna *lisa)
 	i = 0;
 	if (line)
 		free (line);
-	while (lisa->tokens[i])
+	if (lisa->tokens)
 	{
-		free (lisa->tokens[i]);
-		i++;
+		while (lisa->tokens[i])
+			free (lisa->tokens[i++]);
+		free (lisa->tokens);
 	}
-	free (lisa->tokens);
 	i = 0;
-	while (lisa->my_env[i])
+	if (lisa->my_env)
 	{
-		free (lisa->my_env[i]);
-		i++;
+		while (lisa->my_env[i])
+			free (lisa->my_env[i++]);
+		free (lisa->my_env);
 	}
-	free (lisa->my_env);
 	if (lisa->tmp_env)
 		free (lisa->tmp_env);
 }
